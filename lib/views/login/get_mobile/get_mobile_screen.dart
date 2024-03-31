@@ -91,10 +91,12 @@ class _GetMobileScreenState extends State<GetMobileScreen> {
                           Center(
                             child: SizedBox(
                               width: constraints.maxHeight * 0.3,
+                              height: 55,
                               child: ElevatedButton(
                                 onPressed: () {},
                                 style: ElevatedButton.styleFrom(
-                                  padding: const EdgeInsets.symmetric(vertical: 15),
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 15),
                                   backgroundColor:
                                       const Color.fromARGB(255, 48, 24, 172),
                                 ),
