@@ -22,7 +22,7 @@ class _GetMobileScreenState extends State<GetMobileScreen> {
                 Container(
                   height: constraints.maxHeight * 0.75,
                   decoration: const BoxDecoration(
-                    color: Color.fromARGB(255, 48, 24, 172),
+                    color: Color.fromRGBO(48, 24, 172, 1),
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(30),
                       topRight: Radius.circular(30),
