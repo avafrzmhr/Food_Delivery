@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery/views/category_shops/category_shops_screen.dart';
 
 class CategoryContainerWidget extends StatefulWidget {
   final BoxConstraints constraints;
@@ -23,12 +24,19 @@ class _CategoryContainerWidgetState extends State<CategoryContainerWidget> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Container(
-            width: widget.constraints.maxWidth * 0.28,
-            height: widget.constraints.maxHeight * 0.18,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(15),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return const CategoryShopsScreen();
+              }));
+            },
+            child: Container(
+              width: widget.constraints.maxWidth * 0.28,
+              height: widget.constraints.maxHeight * 0.18,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(15),
+              ),
             ),
           ),
           Container(

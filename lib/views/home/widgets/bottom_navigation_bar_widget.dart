@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery/views/home/bottom_navigation_provider.dart';
+import 'package:provider/provider.dart';
 
 class BottomNavigationBarWidget extends StatelessWidget {
-  final int selectedPageIndex;
-  final void Function(int)? onTap;
-  const BottomNavigationBarWidget(
-      {this.onTap, required this.selectedPageIndex, super.key});
+  final void Function(int) onTap;
+  const BottomNavigationBarWidget({required this.onTap, super.key});
 
   @override
   Widget build(BuildContext context) {
+    final provider =
+        Provider.of<BottomNavigationProvider>(context, listen: false);
+
     return Container(
       margin: const EdgeInsets.all(15),
       padding: const EdgeInsets.only(right: 20, left: 20),
@@ -43,7 +46,7 @@ class BottomNavigationBarWidget extends StatelessWidget {
             ),
           ],
           backgroundColor: Colors.black.withOpacity(0.8),
-          currentIndex: selectedPageIndex,
+          currentIndex: provider.selectedIndex,
           onTap: onTap,
         ),
       ),

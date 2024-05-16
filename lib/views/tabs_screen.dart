@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery/views/home/bottom_navigation_provider.dart';
 import 'package:food_delivery/views/home/home_screen.dart';
 import 'package:food_delivery/views/home/widgets/bottom_navigation_bar_widget.dart';
+import 'package:provider/provider.dart';
 
 class TabsScreen extends StatefulWidget {
   static const routeName = '/tabs_screen';
@@ -13,13 +15,11 @@ class TabsScreen extends StatefulWidget {
 class _TabsScreenState extends State<TabsScreen> {
   late List<Map<String, Object>> _pages;
 
-  int _selectedPageIndex = 0;
-
   @override
   void initState() {
     _pages = [
       {
-        'page': HomeScreen(),
+        'page': const HomeScreen(),
         'title': 'خانه',
       },
       {
@@ -31,12 +31,14 @@ class _TabsScreenState extends State<TabsScreen> {
         'title': 'پروفایل',
       },
     ];
+
     super.initState();
   }
 
   void _selectPage(int index) {
     setState(() {
-      _selectedPageIndex = index;
+      Provider.of<BottomNavigationProvider>(context, listen: false)
+          .setSelectedIndex(index);
     });
   }
 
@@ -44,10 +46,11 @@ class _TabsScreenState extends State<TabsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        body: _pages[_selectedPageIndex]['page'] as Widget,
+        body: Consumer<BottomNavigationProvider>(
+            builder: (context, provider, _) =>
+                _pages[provider.selectedIndex]['page'] as Widget),
         bottomNavigationBar: BottomNavigationBarWidget(
           onTap: _selectPage,
-          selectedPageIndex: _selectedPageIndex,
         ));
   }
 }
