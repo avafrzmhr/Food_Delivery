@@ -19,7 +19,7 @@ class _CategoryContainerWidgetState extends State<CategoryContainerWidget> {
       height: widget.constraints.maxHeight * 0.22,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
-        color: Colors.red,
+        color: const Color.fromRGBO(48, 24, 172, 1),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

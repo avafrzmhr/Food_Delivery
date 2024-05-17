@@ -25,6 +25,7 @@ class BottomNavigationBarWidget extends StatelessWidget {
           items: const [
             BottomNavigationBarItem(
               icon: Icon(
+                size: 30,
                 Icons.person,
                 color: Colors.white,
               ),
@@ -32,6 +33,7 @@ class BottomNavigationBarWidget extends StatelessWidget {
             ),
             BottomNavigationBarItem(
               icon: Icon(
+                size: 30,
                 Icons.shopping_bag_rounded,
                 color: Colors.white,
               ),
@@ -39,6 +41,7 @@ class BottomNavigationBarWidget extends StatelessWidget {
             ),
             BottomNavigationBarItem(
               icon: Icon(
+                size: 30,
                 Icons.home_rounded,
                 color: Colors.white,
               ),

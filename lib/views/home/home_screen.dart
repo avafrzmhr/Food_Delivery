@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:food_delivery/views/home/widgets/category_container_widget.dart';
 import 'package:food_delivery/views/home/widgets/search_bar_widget.dart';
 import 'package:food_delivery/views/home/widgets/top_bar_widget.dart';
-import 'package:food_delivery/views/home/widgets/tops_listview_widget.dart';
+import 'package:food_delivery/views/home/widgets/restaurants_listview_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -12,17 +12,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  TextEditingController searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
       return Column(
         children: [
           TopBarWidget(constraints),
-          Padding(
-            padding: const EdgeInsets.only(top: 30),
-            child: SearchBarWidget(searchController, constraints),
-          ),
+          SearchBarWidget(constraints),
           CategoryContainerWidget(constraints),
           const SizedBox(
             height: 40,
@@ -53,7 +49,14 @@ class _HomeScreenState extends State<HomeScreen> {
             height: 30,
           ),
           Expanded(
-            child: TopsListViewWidget(constraints),
+            child: Container(
+                margin: const EdgeInsets.only(right: 15),
+                child: RestaurantsListViewWidget(
+                  scrollDirection: Axis.horizontal,
+                  constraints: constraints,
+                  width: constraints.maxWidth * 0.8,
+                  height: constraints.maxHeight * 0.3,
+                )),
           ),
         ],
       );
