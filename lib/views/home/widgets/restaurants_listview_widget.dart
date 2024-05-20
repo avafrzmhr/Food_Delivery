@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:food_delivery/views/restaurant_page/restaurant_page.dart';
 
 class RestaurantsListViewWidget extends StatefulWidget {
@@ -24,7 +23,6 @@ class _RestaurantsListViewWidgetState extends State<RestaurantsListViewWidget> {
   Widget build(BuildContext context) {
     return ListView(
       scrollDirection: widget.scrollDirection,
-      reverse: true,
       children: [
         GestureDetector(
           onTap: () =>

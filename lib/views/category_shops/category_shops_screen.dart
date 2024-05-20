@@ -62,14 +62,16 @@ class _CategoryShopsScreenState extends State<CategoryShopsScreen> {
               ),
             ),
             Expanded(
-                child: Container(
-                    margin: const EdgeInsets.only(left: 22, top: 15),
-                    child: RestaurantsListViewWidget(
-                      scrollDirection: Axis.vertical,
-                      constraints: constraints,
-                      width: constraints.maxWidth * 0.9,
-                      height: constraints.maxHeight * 0.3,
-                    )))
+              child: Container(
+                margin: const EdgeInsets.only(left: 22, top: 15),
+                child: RestaurantsListViewWidget(
+                  scrollDirection: Axis.vertical,
+                  constraints: constraints,
+                  width: constraints.maxWidth * 0.9,
+                  height: constraints.maxHeight * 0.3,
+                ),
+              ),
+            ),
           ],
         ),
         bottomNavigationBar: Consumer<BottomNavigationProvider>(
