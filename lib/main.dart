@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/views/home/bottom_navigation_provider.dart';
-import 'package:food_delivery/views/auth/get_mobile/get_mobile_screen.dart';
+import 'package:food_delivery/views/auth/get_mobile/auth_screen.dart';
 import 'package:food_delivery/views/tabs_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: GetMobileScreen(),
+        home: AuthScreen(),
       ),
     );
   }

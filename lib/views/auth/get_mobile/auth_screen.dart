@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/views/auth/get_mobile/widgets/auth_textfield_widget.dart';
 
-class GetMobileScreen extends StatefulWidget {
-  const GetMobileScreen({super.key});
+class AuthScreen extends StatefulWidget {
+  const AuthScreen({super.key});
 
   @override
-  State<GetMobileScreen> createState() => _GetMobileScreenState();
+  State<AuthScreen> createState() => _AuthScreenState();
 }
 
-class _GetMobileScreenState extends State<GetMobileScreen> {
+class _AuthScreenState extends State<AuthScreen> {
   var _isLogin = true;
   TextEditingController lastNameController = TextEditingController();
   TextEditingController nameController = TextEditingController();
