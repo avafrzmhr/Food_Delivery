@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery/providers.dart';
 import 'package:food_delivery/views/home/bottom_navigation_provider.dart';
 import 'package:food_delivery/views/auth/get_mobile/auth_screen.dart';
-import 'package:food_delivery/views/tabs_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -12,8 +12,15 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => BottomNavigationProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => BottomNavigationProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => Providers(),
+        ),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',

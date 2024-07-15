@@ -19,4 +19,20 @@ class AuthDataSource {
     );
     return response;
   }
+
+  Future<Response> verifyOtp(String phoneNumber, String otpCode) async {
+    Response response = await dio.post(
+      "http://127.0.0.1:8000/account/verify/",
+      data: {
+        'phone_number': phoneNumber,
+        'otp': otpCode,
+      },
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      ),
+    );
+    return response;
+  }
 }

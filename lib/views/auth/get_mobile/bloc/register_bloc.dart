@@ -2,26 +2,29 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery/data/repository/auth_repository.dart';
+import 'package:food_delivery/providers.dart';
 
 part 'register_event.dart';
 part 'register_state.dart';
 
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
-  RegisterBloc() : super(RegisterInitial()) {
+  AuthRepository authRepository;
+  RegisterBloc(this.authRepository) : super(RegisterInitial()) {
     on<RegisterEvent>((event, emit) async {
-      AuthRepository authRepository = AuthRepository();
       if (event is SubmitRegisterEvent) {
         try {
           emit(RegisterLoading());
           final res = await authRepository.register(
               event.name, event.lastName, event.phoneNumber);
           if (res.statusCode == 200) {
+            print(res.data);
+            Providers.prefs.setString('phone_number', event.phoneNumber);
             emit(RegisterSuccess());
           } else {
-            emit(RegisterError('error in register'));
+            emit(RegisterError(res.statusMessage.toString()));
           }
         } catch (e) {
-          emit(RegisterError('error in register'));
+          emit(RegisterError(e.toString()));
         }
       }
     });

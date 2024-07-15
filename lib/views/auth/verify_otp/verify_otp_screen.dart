@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_delivery/providers.dart';
+import 'package:food_delivery/views/auth/verify_otp/bloc/verify_otp_bloc.dart';
+import 'package:food_delivery/views/tabs_screen.dart';
 import 'package:pinput/pinput.dart';
 
 class VerifyOTPScreen extends StatefulWidget {
@@ -13,106 +17,133 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
   final focusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
+    context.read<Providers>().init(context);
     return LayoutBuilder(builder: (context, constraints) {
-      return Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.only(top: 10, right: 25, left: 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Icon(Icons.arrow_back),
-              Container(
-                alignment: AlignmentDirectional.topEnd,
-                child: const Text(
-                  textDirection: TextDirection.rtl,
-                  'کد تایید خود را وارد کنید',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25,
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              Container(
-                alignment: AlignmentDirectional.topEnd,
-                child: const Text(
-                  'کد تایید به شماره ۰۹۵۴۴۵۴ ارسال شد',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.grey,
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: constraints.maxHeight * 0.12,
-              ),
-              Center(
-                child: Pinput(
-                  defaultPinTheme: PinTheme(
-                    margin: const EdgeInsets.all(3),
-                    width: 65,
-                    height: 70,
-                    textStyle: const TextStyle(
-                      fontSize: 22,
-                      color: Color.fromRGBO(30, 60, 87, 1),
-                    ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(19),
-                      border:
-                          Border.all(color: Color.fromARGB(255, 48, 24, 172)),
+      return BlocProvider(
+        create: (context) => VerifyOtpBloc(),
+        child: Scaffold(
+          body: Padding(
+            padding: const EdgeInsets.only(top: 10, right: 25, left: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Icon(Icons.arrow_back),
+                Container(
+                  alignment: AlignmentDirectional.topEnd,
+                  child: const Text(
+                    textDirection: TextDirection.rtl,
+                    'کد تایید خود را وارد کنید',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25,
                     ),
                   ),
-                  controller: pinController,
-                  focusNode: focusNode,
-                  androidSmsAutofillMethod:
-                      AndroidSmsAutofillMethod.smsUserConsentApi,
-                  listenForMultipleSmsOnAndroid: true,
-                  hapticFeedbackType: HapticFeedbackType.lightImpact,
-                  onCompleted: (String verificationCode) {
-                    // debugPrint('onCompleted: $pin');
-                  },
-                  onChanged: (code) {
-                    // debugPrint('onChanged: $value');
-                  },
-                  cursor: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(bottom: 9),
-                        width: 22,
-                        height: 1,
-                        color: const Color.fromARGB(255, 48, 24, 172),
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                Container(
+                  alignment: AlignmentDirectional.topEnd,
+                  child: const Text(
+                    'کد تایید به شماره ۰۹۵۴۴۵۴ ارسال شد',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: constraints.maxHeight * 0.12,
+                ),
+                Center(
+                  child: Pinput(
+                    length: 6,
+                    defaultPinTheme: PinTheme(
+                      margin: const EdgeInsets.all(3),
+                      width: 65,
+                      height: 70,
+                      textStyle: const TextStyle(
+                        fontSize: 22,
+                        color: Color.fromRGBO(30, 60, 87, 1),
                       ),
-                    ],
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(19),
+                        border:
+                            Border.all(color: Color.fromARGB(255, 48, 24, 172)),
+                      ),
+                    ),
+                    controller: pinController,
+                    focusNode: focusNode,
+                    androidSmsAutofillMethod:
+                        AndroidSmsAutofillMethod.smsUserConsentApi,
+                    listenForMultipleSmsOnAndroid: true,
+                    hapticFeedbackType: HapticFeedbackType.lightImpact,
+                    onCompleted: (String verificationCode) {
+                      print(pinController.text);
+                    },
+                    onChanged: (code) {
+                      // debugPrint('onChanged: $value');
+                    },
+                    cursor: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(bottom: 9),
+                          width: 22,
+                          height: 1,
+                          color: const Color.fromARGB(255, 48, 24, 172),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: constraints.maxHeight * 0.3,
-              ),
-              Center(
-                child: SizedBox(
-                  width: constraints.maxWidth * 0.4,
-                  height: 60,
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      backgroundColor: const Color.fromARGB(255, 48, 24, 172),
-                    ),
-                    child: const Text(
-                      'تایید',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 17),
-                    ),
-                  ),
+                SizedBox(
+                  height: constraints.maxHeight * 0.3,
                 ),
-              )
-            ],
+                BlocListener<VerifyOtpBloc, VerifyOtpState>(
+                  listener: (context, state) {
+                    if (state is VerifyOtpSuccess) {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return const TabsScreen();
+                      }));
+                    }
+                  },
+                  child: BlocBuilder<VerifyOtpBloc, VerifyOtpState>(
+                    builder: (context, state) {
+                      return Center(
+                        child: SizedBox(
+                          width: constraints.maxWidth * 0.4,
+                          height: 60,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              BlocProvider.of<VerifyOtpBloc>(context).add(
+                                  VerifyOtpRequestEvent(
+                                      Providers.prefs
+                                              .getString('phone_number') ??
+                                          '',
+                                      pinController.text));
+                            },
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(vertical: 15),
+                              backgroundColor:
+                                  const Color.fromARGB(255, 48, 24, 172),
+                            ),
+                            child: const Text(
+                              'تایید',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 17),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       );
