@@ -4,6 +4,7 @@ import 'package:food_delivery/data/source/auth_data_source.dart';
 abstract class IAuthRepository {
   Future<Response> register(String name, String lastName, String phoneNumber);
   Future<Response> verifyOtp(String phoneNumber, String otpCode);
+  Future<Response> login(String phoneNumber);
 }
 
 class AuthRepository implements IAuthRepository {
@@ -21,5 +22,11 @@ class AuthRepository implements IAuthRepository {
   Future<Response> verifyOtp(String phoneNumber, String otpCode) async {
     var otpResponse = await AuthDataSource().verifyOtp(phoneNumber, otpCode);
     return otpResponse;
+  }
+
+  @override
+  Future<Response> login(String phoneNumber) async {
+    var loginResponse = await AuthDataSource().login(phoneNumber);
+    return loginResponse;
   }
 }

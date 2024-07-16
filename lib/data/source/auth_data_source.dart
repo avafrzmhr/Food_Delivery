@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:food_delivery/providers.dart';
 
 class AuthDataSource {
   Dio dio = Dio();
@@ -30,6 +31,22 @@ class AuthDataSource {
       options: Options(
         headers: {
           'Content-Type': 'application/json',
+        },
+      ),
+    );
+    return response;
+  }
+
+  Future<Response> login(String phoneNumber) async {
+    Response response = await dio.post(
+      "http://127.0.0.1:8000/account/login/",
+      data: {
+        'phone_number': phoneNumber,
+      },
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json',
+          // 'Authorization': 'Bearer ${Providers.prefs.getString('access')}',
         },
       ),
     );

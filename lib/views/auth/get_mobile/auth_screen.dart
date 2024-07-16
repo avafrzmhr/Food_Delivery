@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/data/repository/auth_repository.dart';
 import 'package:food_delivery/data/source/auth_data_source.dart';
 import 'package:food_delivery/providers.dart';
-import 'package:food_delivery/views/auth/get_mobile/bloc/register_bloc.dart';
+import 'package:food_delivery/views/auth/get_mobile/bloc/login/bloc/login_bloc.dart';
+import 'package:food_delivery/views/auth/get_mobile/bloc/register/register_bloc.dart';
 import 'package:food_delivery/views/auth/get_mobile/widgets/auth_textfield_widget.dart';
 import 'package:food_delivery/views/auth/verify_otp/verify_otp_screen.dart';
 
@@ -24,8 +25,15 @@ class _AuthScreenState extends State<AuthScreen> {
     context.read<Providers>().init(context);
 
     return LayoutBuilder(builder: (context, constraints) {
-      return BlocProvider(
-        create: (context) => RegisterBloc(AuthRepository(AuthDataSource())),
+      return MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => RegisterBloc(AuthRepository(AuthDataSource())),
+          ),
+          BlocProvider(
+            create: (context) => LoginBloc(AuthRepository(AuthDataSource())),
+          ),
+        ],
         child: Scaffold(
           body: Column(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -105,24 +113,46 @@ class _AuthScreenState extends State<AuthScreen> {
                             child: SizedBox(
                               width: constraints.maxHeight * 0.3,
                               height: 55,
-                              child: BlocListener<RegisterBloc, RegisterState>(
-                                listener: (context, state) {
-                                  if (state is RegisterSuccess) {
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) {
-                                      return const VerifyOTPScreen();
-                                    }));
-                                  }
-                                },
+                              child: MultiBlocListener(
+                                listeners: [
+                                  BlocListener<RegisterBloc, RegisterState>(
+                                    listener: (context, state) {
+                                      if (state is RegisterSuccess) {
+                                        Navigator.push(context,
+                                            MaterialPageRoute(
+                                                builder: (context) {
+                                          return const VerifyOTPScreen();
+                                        }));
+                                      }
+                                    },
+                                  ),
+                                  BlocListener<LoginBloc, LoginState>(
+                                    listener: (context, state) {
+                                      if (state is LoginSuccess) {
+                                        Navigator.push(context,
+                                            MaterialPageRoute(
+                                                builder: (context) {
+                                          return const VerifyOTPScreen();
+                                        }));
+                                      }
+                                    },
+                                  ),
+                                ],
                                 child: BlocBuilder<RegisterBloc, RegisterState>(
                                   builder: (context, state) {
                                     return ElevatedButton(
                                       onPressed: () {
-                                        BlocProvider.of<RegisterBloc>(context)
-                                            .add(SubmitRegisterEvent(
-                                                nameController.text,
-                                                lastNameController.text,
-                                                mobileNumController.text));
+                                        _isLogin
+                                            ? BlocProvider.of<LoginBloc>(
+                                                    context)
+                                                .add(SubmitLoginEvent(
+                                                    mobileNumController.text))
+                                            : BlocProvider.of<RegisterBloc>(
+                                                    context)
+                                                .add(SubmitRegisterEvent(
+                                                    nameController.text,
+                                                    lastNameController.text,
+                                                    mobileNumController.text));
                                       },
                                       style: ElevatedButton.styleFrom(
                                         padding: const EdgeInsets.symmetric(

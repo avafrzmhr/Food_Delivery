@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/gen/assets.gen.dart';
+import 'package:food_delivery/views/home/location_screen.dart';
 
 class TopBarWidget extends StatelessWidget {
   final BoxConstraints constraints;
@@ -28,11 +29,28 @@ class TopBarWidget extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'مقصد',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
+                Row(
+                  children: [
+                    const Text(
+                      'مقصد',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return LocationScreen();
+                        }));
+                      },
+                      child: Container(
+                          margin: EdgeInsets.only(
+                            left: 30,
+                          ),
+                          child: Icon(Icons.location_on_sharp)),
+                    ),
+                  ],
                 ),
                 const SizedBox(
                   height: 7,
@@ -48,7 +66,7 @@ class TopBarWidget extends StatelessWidget {
                     ),
                     Container(
                       margin: EdgeInsets.only(
-                        left: constraints.maxWidth * 0.12,
+                        left: 45,
                       ),
                       width: 10,
                       height: 10,
