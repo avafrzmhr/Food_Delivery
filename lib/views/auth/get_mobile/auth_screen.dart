@@ -16,7 +16,7 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
-  var _isLogin = false;
+  var _isLogin = true;
   TextEditingController lastNameController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   TextEditingController mobileNumController = TextEditingController();

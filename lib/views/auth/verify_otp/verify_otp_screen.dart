@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_delivery/data/repository/auth_repository.dart';
+import 'package:food_delivery/data/source/auth_data_source.dart';
 import 'package:food_delivery/providers.dart';
 import 'package:food_delivery/views/auth/verify_otp/bloc/verify_otp_bloc.dart';
 import 'package:food_delivery/views/tabs_screen.dart';
@@ -20,7 +22,7 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
     context.read<Providers>().init(context);
     return LayoutBuilder(builder: (context, constraints) {
       return BlocProvider(
-        create: (context) => VerifyOtpBloc(),
+        create: (context) => VerifyOtpBloc(AuthRepository(AuthDataSource())),
         child: Scaffold(
           body: Padding(
             padding: const EdgeInsets.only(top: 10, right: 25, left: 10),
