@@ -22,8 +22,12 @@ class $AssetsIconsGen {
   SvgGenImage get svgexport23 =>
       const SvgGenImage('assets/icons/svgexport-23.svg');
 
+  /// File path: assets/icons/svgexport-7.svg
+  SvgGenImage get svgexport7 =>
+      const SvgGenImage('assets/icons/svgexport-7.svg');
+
   /// List of all assets
-  List<SvgGenImage> get values => [svgexport17, svgexport23];
+  List<SvgGenImage> get values => [svgexport17, svgexport23, svgexport7];
 }
 
 class Assets {

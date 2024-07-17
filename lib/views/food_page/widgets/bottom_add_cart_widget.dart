@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery/views/food_page/widgets/add_or_remove_widget.dart';
 
 class BottomAddCardWidget extends StatefulWidget {
   final BoxConstraints constraints;
@@ -42,35 +43,7 @@ class _BottomAddCardWidgetState extends State<BottomAddCardWidget> {
                       borderRadius: BorderRadius.circular(40),
                       color: const Color.fromARGB(255, 0, 7, 25),
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Card(
-                          shape: const CircleBorder(),
-                          color: Colors.grey.withOpacity(0.7),
-                          child: const Icon(
-                            Icons.remove_rounded,
-                            size: 30,
-                          ),
-                        ),
-                        const Text(
-                          '2',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
-                        Card(
-                          shape: const CircleBorder(),
-                          color: Colors.grey.withOpacity(0.7),
-                          child: const Icon(
-                            Icons.add_rounded,
-                            size: 30,
-                          ),
-                        )
-                      ],
-                    ),
+                    child: AddOrRemoveWidget(),
                   ),
                 ],
               ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/gen/assets.gen.dart';
 import 'package:food_delivery/views/home/location_screen.dart';
+import 'package:food_delivery/views/shopping_cart/shopping_cart_screen.dart';
 
 class TopBarWidget extends StatelessWidget {
   final BoxConstraints constraints;
@@ -21,7 +22,14 @@ class TopBarWidget extends StatelessWidget {
               ),
               height: 40,
               width: 40,
-              child: Assets.icons.svgexport17.svg(),
+              child: IconButton(
+                icon: Assets.icons.svgexport7.svg(),
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return ShoppingCartScreen();
+                  }));
+                },
+              ),
             ),
             const SizedBox(
               width: 25,

@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:food_delivery/views/category_shops/category_shops_screen.dart';
 
 class CategoryContainerWidget extends StatefulWidget {
+  final String text;
   final BoxConstraints constraints;
-  const CategoryContainerWidget(this.constraints, {super.key});
+  const CategoryContainerWidget(this.constraints,
+      {super.key, required this.text});
 
   @override
   State<CategoryContainerWidget> createState() =>
@@ -13,46 +15,51 @@ class CategoryContainerWidget extends StatefulWidget {
 class _CategoryContainerWidgetState extends State<CategoryContainerWidget> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(left: 15, right: 15, top: 35),
-      width: widget.constraints.maxWidth,
-      height: widget.constraints.maxHeight * 0.22,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
-        color: const Color.fromRGBO(48, 24, 172, 1),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return const CategoryShopsScreen();
+        }));
+      },
+      child: Column(
         children: [
-          GestureDetector(
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return const CategoryShopsScreen();
-              }));
-            },
-            child: Container(
-              width: widget.constraints.maxWidth * 0.28,
-              height: widget.constraints.maxHeight * 0.18,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(15),
+          Stack(
+            alignment: AlignmentDirectional.center,
+            children: [
+              Container(
+                width: 150,
+                height: 150,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.4),
+                      spreadRadius: 3,
+                      blurRadius: 7,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
+                  borderRadius: BorderRadius.circular(15),
+                ),
               ),
-            ),
+              Container(
+                width: 130,
+                height: 130,
+                decoration: BoxDecoration(
+                  color: Colors.grey,
+                  borderRadius: BorderRadius.circular(15),
+                ),
+              ),
+            ],
           ),
-          Container(
-            width: widget.constraints.maxWidth * 0.28,
-            height: widget.constraints.maxHeight * 0.18,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(15),
-            ),
+          const SizedBox(
+            height: 12,
           ),
-          Container(
-            width: widget.constraints.maxWidth * 0.28,
-            height: widget.constraints.maxHeight * 0.18,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(15),
+          Text(
+            widget.text,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
             ),
           ),
         ],

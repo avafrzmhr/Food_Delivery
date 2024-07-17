@@ -19,7 +19,17 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           TopBarWidget(constraints),
           SearchBarWidget(constraints),
-          CategoryContainerWidget(constraints),
+          Padding(
+            padding: EdgeInsets.only(top: constraints.maxHeight * 0.05),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                CategoryContainerWidget(constraints, text: 'سوپرمارکت'),
+                CategoryContainerWidget(constraints, text: 'کافه'),
+                CategoryContainerWidget(constraints, text: 'رستوران'),
+              ],
+            ),
+          ),
           const SizedBox(
             height: 40,
           ),

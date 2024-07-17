@@ -46,9 +46,9 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
                 ),
                 Container(
                   alignment: AlignmentDirectional.topEnd,
-                  child: const Text(
-                    'کد تایید به شماره ۰۹۵۴۴۵۴ ارسال شد',
-                    style: TextStyle(
+                  child: Text(
+                    'کد تایید به شماره ${Providers.prefs.getString('phone_number')} ارسال شد',
+                    style: const TextStyle(
                       fontSize: 18,
                       color: Colors.grey,
                     ),
@@ -70,8 +70,8 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
                       ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(19),
-                        border:
-                            Border.all(color: Color.fromARGB(255, 48, 24, 172)),
+                        border: Border.all(
+                            color: const Color.fromARGB(255, 48, 24, 172)),
                       ),
                     ),
                     controller: pinController,
