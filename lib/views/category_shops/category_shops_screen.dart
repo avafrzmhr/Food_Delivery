@@ -21,7 +21,10 @@ class _CategoryShopsScreenState extends State<CategoryShopsScreen> {
       return Scaffold(
         body: Column(
           children: [
-            TopBarWidget(constraints),
+            TopBarWidget(
+              constraints: constraints,
+              isOnline: false,
+            ),
             SearchBarWidget(constraints),
             Container(
               margin: const EdgeInsets.only(right: 22, top: 25),
