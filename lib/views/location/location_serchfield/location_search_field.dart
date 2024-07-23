@@ -6,7 +6,6 @@ import 'package:food_delivery/data/model/neshan/neshan_search_response/item.dart
 import 'package:food_delivery/data/repository/location_repository.dart';
 import 'package:food_delivery/data/source/location_source.dart';
 import 'package:food_delivery/providers.dart';
-import 'package:food_delivery/views/location/bloc/location_bloc.dart';
 import 'package:food_delivery/views/location/location_serchfield/bloc/location_search_field_bloc.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 

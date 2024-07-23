@@ -3,7 +3,6 @@ import 'package:equatable/equatable.dart';
 import 'package:food_delivery/data/model/neshan/neshan_search_address_request.dart';
 import 'package:food_delivery/data/model/neshan/neshan_search_response/item.dart';
 import 'package:food_delivery/data/repository/location_repository.dart';
-import 'package:food_delivery/data/source/location_source.dart';
 part 'location_search_field_event.dart';
 part 'location_search_field_state.dart';
 

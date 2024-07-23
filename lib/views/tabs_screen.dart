@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery/views/home/bottom_navigation_provider.dart';
-import 'package:food_delivery/views/home/home_screen.dart';
-import 'package:food_delivery/views/home/widgets/bottom_navigation_bar_widget.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_delivery/data/repository/location_repository.dart';
+import 'package:food_delivery/data/source/location_source.dart';
+import 'package:food_delivery/views/customers/home/bottom_navigation_provider.dart';
+import 'package:food_delivery/views/customers/home/home_screen.dart';
+import 'package:food_delivery/views/customers/home/widgets/bottom_navigation_bar_widget.dart';
+import 'package:food_delivery/views/location/bloc/location_bloc.dart';
 import 'package:provider/provider.dart';
 
 class TabsScreen extends StatefulWidget {
@@ -19,15 +23,15 @@ class _TabsScreenState extends State<TabsScreen> {
   void initState() {
     _pages = [
       {
-        'page': const HomeScreen(),
+        'page': HomeScreen(),
         'title': 'خانه',
       },
       {
-        'page': const HomeScreen(),
+        'page': HomeScreen(),
         'title': 'سبد خرید',
       },
       {
-        'page': const HomeScreen(),
+        'page': HomeScreen(),
         'title': 'پروفایل',
       },
     ];
@@ -44,13 +48,17 @@ class _TabsScreenState extends State<TabsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: Consumer<BottomNavigationProvider>(
-            builder: (context, provider, _) =>
-                _pages[provider.selectedIndex]['page'] as Widget),
-        bottomNavigationBar: BottomNavigationBarWidget(
-          onTap: _selectPage,
-        ));
+    return BlocProvider(
+      create: (context) =>
+          LocationBloc(LocationRepository(LocationDataSource())),
+      child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          body: Consumer<BottomNavigationProvider>(
+              builder: (context, provider, _) =>
+                  _pages[provider.selectedIndex]['page'] as Widget),
+          bottomNavigationBar: BottomNavigationBarWidget(
+            onTap: _selectPage,
+          )),
+    );
   }
 }

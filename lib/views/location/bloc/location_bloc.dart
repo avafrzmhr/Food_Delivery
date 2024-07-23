@@ -16,21 +16,20 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     on<LocationEvent>((event, emit) async {
       log('event is $event ****');
       if (event is LocationStarted) {
-        emit(LocationLoading());
         try {
           var locationData = await locationRepository.getLocation();
-          if (locationData != null &&
-              locationData.latitude != null &&
-              locationData.longitude != null) {
-            var neshanLocation = await locationRepository.getNeshanLocation(
-                locationData.latitude!, locationData.longitude!);
+          // if (locationData != null &&
+          //     locationData.latitude != null &&
+          //     locationData.longitude != null) {
+          var neshanLocation = await locationRepository.getNeshanLocation(
+              locationData!.latitude!, locationData.longitude!);
 
-            if (neshanLocation != null) {
-              emit(LocationSuccess(
-                  location: neshanLocation, locationData: locationData));
-            } else {
-              emit(const LocationError('موقعیت دریافت نشد'));
-            }
+          if (neshanLocation != null) {
+            emit(LocationSuccess(
+                location: neshanLocation, locationData: locationData));
+          } else {
+            emit(const LocationError('موقعیت دریافت نشد'));
+            // }
           }
         } catch (e) {
           log(e.toString());
@@ -45,6 +44,8 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
             var locationData = LocationData.fromMap(
                 {'latitude': event.lat, 'longitude': event.lang});
             Providers.prefs.setString('City', neshanLocation.city!);
+            Providers.prefs
+                .setString('Address', neshanLocation.formattedAddress!);
             emit(
               LocationSuccess(
                   location: neshanLocation, locationData: locationData),

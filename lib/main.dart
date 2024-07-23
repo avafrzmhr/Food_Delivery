@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_delivery/data/repository/location_repository.dart';
+import 'package:food_delivery/data/source/location_source.dart';
 import 'package:food_delivery/providers.dart';
-import 'package:food_delivery/views/home/bottom_navigation_provider.dart';
-import 'package:food_delivery/views/auth/get_mobile/auth_screen.dart';
+import 'package:food_delivery/views/customers/home/bottom_navigation_provider.dart';
+import 'package:food_delivery/views/customers/auth/get_mobile/auth_screen.dart';
+import 'package:food_delivery/views/location/bloc/location_bloc.dart';
+import 'package:food_delivery/views/location/location_provider.dart';
 import 'package:food_delivery/views/tabs_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -15,6 +20,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => LocationProvider()),
+        BlocProvider(
+          create: (context) =>
+              LocationBloc(LocationRepository(LocationDataSource())),
+        ),
         ChangeNotifierProvider(
           create: (context) => BottomNavigationProvider(),
         ),
@@ -29,7 +39,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: TabsScreen(),
+        home: AuthScreen(),
       ),
     );
   }

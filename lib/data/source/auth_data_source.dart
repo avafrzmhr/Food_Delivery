@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:food_delivery/providers.dart';
 
 class AuthDataSource {
   Dio dio = Dio();

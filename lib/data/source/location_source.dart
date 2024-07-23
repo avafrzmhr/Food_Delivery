@@ -11,7 +11,6 @@ class LocationDataSource {
   late PermissionStatus _permissionGranted;
   late LocationData _locationData;
 
-  @override
   Future<LocationData?> getLocation() async {
     _permissionGranted = await location.hasPermission();
     if (_permissionGranted == PermissionStatus.granted) {
@@ -22,7 +21,7 @@ class LocationDataSource {
         _permissionGranted == PermissionStatus.deniedForever) {
       _permissionGranted = await location.requestPermission();
       if (_permissionGranted == PermissionStatus.granted) {
-        await getLocation();
+        return await getLocation();
       }
     }
 
