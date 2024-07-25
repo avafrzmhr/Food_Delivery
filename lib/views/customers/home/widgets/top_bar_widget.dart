@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:food_delivery/data/repository/location_repository.dart';
-import 'package:food_delivery/data/source/location_source.dart';
 import 'package:food_delivery/gen/assets.gen.dart';
 import 'package:food_delivery/providers.dart';
 import 'package:food_delivery/views/customers/home/bloc/customer_address_bloc.dart';
@@ -121,7 +119,7 @@ class _TopBarWidgetState extends State<TopBarWidget> {
                     height: 40,
                     width: 40,
                     child: IconButton(
-                      icon: Icon(Icons
+                      icon: const Icon(Icons
                           .shopping_cart), // Update this icon as per your assets
                       onPressed: () {
                         Navigator.push(context,

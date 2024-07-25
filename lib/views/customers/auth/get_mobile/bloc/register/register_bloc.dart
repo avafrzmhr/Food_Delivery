@@ -14,7 +14,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       if (event is SubmitRegisterEvent) {
         try {
           emit(RegisterLoading());
-          final res = await authRepository.register(
+          final res = await authRepository.customerRegister(
               event.name, event.lastName, event.phoneNumber);
           if (res.statusCode == 200) {
             print(res.data);

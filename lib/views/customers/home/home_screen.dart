@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:food_delivery/data/repository/location_repository.dart';
-import 'package:food_delivery/data/source/location_source.dart';
 import 'package:food_delivery/providers.dart';
 import 'package:food_delivery/views/customers/home/widgets/category_container_widget.dart';
 import 'package:food_delivery/views/customers/home/widgets/search_bar_widget.dart';
 import 'package:food_delivery/views/customers/home/widgets/top_bar_widget.dart';
 import 'package:food_delivery/views/customers/home/widgets/restaurants_listview_widget.dart';
-import 'package:food_delivery/views/location/bloc/location_bloc.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -33,7 +30,6 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                CategoryContainerWidget(constraints, text: 'سوپرمارکت'),
                 CategoryContainerWidget(constraints, text: 'کافه'),
                 CategoryContainerWidget(constraints, text: 'رستوران'),
               ],

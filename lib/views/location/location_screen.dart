@@ -5,7 +5,6 @@ import 'package:food_delivery/data/model/neshan/neshan_search_address_request.da
 import 'package:food_delivery/data/repository/location_repository.dart';
 import 'package:food_delivery/data/source/location_source.dart';
 import 'package:food_delivery/providers.dart';
-import 'package:food_delivery/views/customers/home/home_screen.dart';
 import 'package:food_delivery/views/location/bloc/location_bloc.dart';
 import 'package:food_delivery/views/location/location_provider.dart';
 import 'package:food_delivery/views/location/location_serchfield/bloc/location_search_field_bloc.dart';
