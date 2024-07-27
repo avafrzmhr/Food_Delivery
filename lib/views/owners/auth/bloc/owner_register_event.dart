@@ -14,6 +14,5 @@ class SubmitOwnerRegisterEvent extends OwnerRegisterEvent {
   SubmitOwnerRegisterEvent(this.name, this.lastName, this.phoneNumber,
       this.email, this.storeName, this.storeType, this.storeDesc);
 
-  @override
   List<Object?> get props => [name, lastName, phoneNumber];
 }

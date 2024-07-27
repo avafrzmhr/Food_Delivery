@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery/views/customers/category_shops/food_types_widget.dart';
+import 'package:food_delivery/data/model/restaurant/restaurant_response.dart';
 import 'package:food_delivery/views/customers/home/bottom_navigation_provider.dart';
 import 'package:food_delivery/views/customers/home/widgets/bottom_navigation_bar_widget.dart';
 import 'package:food_delivery/views/customers/home/widgets/search_bar_widget.dart';
 import 'package:food_delivery/views/customers/home/widgets/top_bar_widget.dart';
 import 'package:food_delivery/views/customers/home/widgets/restaurants_listview_widget.dart';
+import 'package:food_delivery/views/customers/restaurant_page/restaurant_page.dart';
 import 'package:provider/provider.dart';
 
 class CategoryShopsScreen extends StatefulWidget {
@@ -25,7 +26,18 @@ class _CategoryShopsScreenState extends State<CategoryShopsScreen> {
               constraints: constraints,
               isOnline: false,
             ),
-            SearchBarWidget(constraints),
+            SearchBarWidget(
+              constraints,
+              onSuggestionSelected: (p0) {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return RestaurantPage(
+                    imageSrc: p0.image,
+                    resName: p0.name,
+                    id: p0.id,
+                  );
+                }));
+              },
+            ),
             Container(
               margin: const EdgeInsets.only(right: 22, top: 25),
               alignment: Alignment.topRight,
@@ -48,7 +60,7 @@ class _CategoryShopsScreenState extends State<CategoryShopsScreen> {
             const SizedBox(
               height: 20,
             ),
-            FoodTypesWidget(constraints),
+            // FoodTypesWidget(constraints),
             const SizedBox(
               height: 5,
             ),

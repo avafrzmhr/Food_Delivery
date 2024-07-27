@@ -4,11 +4,14 @@ import 'package:food_delivery/data/repository/auth_repository.dart';
 import 'package:food_delivery/data/source/auth_data_source.dart';
 import 'package:food_delivery/providers.dart';
 import 'package:food_delivery/views/customers/auth/verify_otp/bloc/verify_otp_bloc.dart';
+import 'package:food_delivery/views/owners/home/owner_home.dart';
 import 'package:food_delivery/views/tabs_screen.dart';
 import 'package:pinput/pinput.dart';
 
+// ignore: must_be_immutable
 class VerifyOTPScreen extends StatefulWidget {
-  const VerifyOTPScreen({super.key});
+  bool isOwner = false;
+  VerifyOTPScreen({super.key, required this.isOwner});
 
   @override
   State<VerifyOTPScreen> createState() => _VerifyOTPScreenState();
@@ -107,7 +110,9 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
                     if (state is VerifyOtpSuccess) {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                        return const TabsScreen();
+                        return !widget.isOwner
+                            ? TabsScreen()
+                            : OwnerHomeScreen();
                       }));
                     }
                   },

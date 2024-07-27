@@ -3,7 +3,9 @@ import 'package:food_delivery/views/customers/food_page/widgets/bottom_add_cart_
 import 'package:food_delivery/views/customers/restaurant_page/widgets/topbar_picture_widget.dart';
 
 class FoodScreen extends StatefulWidget {
-  const FoodScreen({super.key});
+  final String imageSrc;
+  final String resName;
+  const FoodScreen({super.key, required this.imageSrc, required this.resName});
 
   @override
   State<FoodScreen> createState() => _FoodScreenState();
@@ -19,13 +21,16 @@ class _FoodScreenState extends State<FoodScreen> {
           children: [
             Column(
               children: [
-                TopBarPictureWidget(constraints),
+                TopBarPictureWidget(
+                  constraints,
+                  imageSrc: widget.imageSrc,
+                ),
                 const SizedBox(
                   height: 30,
                 ),
-                const Text(
-                  'Spicy restaurant',
-                  style: TextStyle(
+                Text(
+                  widget.resName,
+                  style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),

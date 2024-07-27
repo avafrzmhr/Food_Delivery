@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:food_delivery/data/model/restaurant/menu_response.dart';
 import 'package:food_delivery/data/model/restaurant/restaurant_response.dart';
 import 'package:food_delivery/providers.dart';
 
@@ -52,6 +53,25 @@ class CustomerDataSource {
       var restaurantResponse = restaurantFromJson(jsonEncode(response.data));
       print(Providers.prefs.getString('access'));
       return restaurantResponse;
+    } else {
+      throw Exception('erorr');
+    }
+  }
+
+  Future<List<Menu>> fetchFoods(int id) async {
+    Response response = await dio.get(
+      'http://127.0.0.1:8000/customer/restaurants/$id/foods',
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'JWT ${Providers.prefs.getString('access')}',
+        },
+      ),
+    );
+    if (response.statusCode == 200) {
+      var foodResponse = menuFromJson(jsonEncode(response.data));
+      print(Providers.prefs.getString('access'));
+      return foodResponse;
     } else {
       throw Exception('erorr');
     }

@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/data/model/restaurant/restaurant_response.dart';
@@ -33,12 +34,19 @@ class _RestaurantsListViewWidgetState extends State<RestaurantsListViewWidget> {
                 .restaurants; // Assuming `state.restaurants` is a list of Restaurant objects.
 
             return ListView.builder(
+              dragStartBehavior: DragStartBehavior.start,
+              reverse: true,
+              physics: const BouncingScrollPhysics(),
               itemCount: restaurants.data.length,
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () => Navigator.push(context,
                       MaterialPageRoute(builder: (context) {
-                    return const RestaurantPage();
+                    return RestaurantPage(
+                      imageSrc: restaurants.data[index].image,
+                      resName: restaurants.data[index].name,
+                      id: restaurants.data[index].id,
+                    );
                   })),
                   child: Stack(
                     children: [

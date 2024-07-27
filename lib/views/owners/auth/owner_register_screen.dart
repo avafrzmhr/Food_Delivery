@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_delivery/data/repository/auth_repository.dart';
+import 'package:food_delivery/data/source/auth_data_source.dart';
 import 'package:food_delivery/providers.dart';
 import 'package:food_delivery/views/customers/auth/get_mobile/auth_screen.dart';
 import 'package:food_delivery/views/customers/auth/get_mobile/bloc/login/bloc/login_bloc.dart';
@@ -15,7 +17,6 @@ class OwnerRegisterScreen extends StatefulWidget {
 }
 
 class _OwnerRegisterScreenState extends State<OwnerRegisterScreen> {
-  var _isLogin = false;
   TextEditingController lastNameController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   TextEditingController mobileNumController = TextEditingController();
@@ -29,8 +30,15 @@ class _OwnerRegisterScreenState extends State<OwnerRegisterScreen> {
     var dropdownValue = list[0];
     context.read<Providers>().init(context);
 
-    return BlocProvider(
-      create: (context) => OwnerRegisterBloc(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => OwnerRegisterBloc(),
+        ),
+        BlocProvider(
+          create: (context) => LoginBloc(AuthRepository(AuthDataSource())),
+        ),
+      ],
       child: LayoutBuilder(builder: (context, constraints) {
         return Scaffold(
           body: Column(
@@ -65,11 +73,11 @@ class _OwnerRegisterScreenState extends State<OwnerRegisterScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.only(right: 30),
+                            const Padding(
+                              padding: EdgeInsets.only(right: 30),
                               child: Text(
-                                _isLogin ? 'ورود' : 'ثبت نام',
-                                style: const TextStyle(
+                                'ثبت نام',
+                                style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 30,
                                 ),
@@ -95,26 +103,22 @@ class _OwnerRegisterScreenState extends State<OwnerRegisterScreen> {
                                 controller: mobileNumController,
                                 constraints: constraints,
                                 label: 'شماره تلفن'),
-                            if (!_isLogin)
-                              AuthTextFieldWidget(
-                                  controller: nameController,
-                                  constraints: constraints,
-                                  label: 'نام'),
-                            if (!_isLogin)
-                              AuthTextFieldWidget(
-                                  controller: lastNameController,
-                                  constraints: constraints,
-                                  label: 'نام خانوادگی'),
-                            if (!_isLogin)
-                              AuthTextFieldWidget(
-                                  controller: emailController,
-                                  constraints: constraints,
-                                  label: 'ایمیل'),
-                            if (!_isLogin)
-                              AuthTextFieldWidget(
-                                  controller: emailController,
-                                  constraints: constraints,
-                                  label: 'نام مکان'),
+                            AuthTextFieldWidget(
+                                controller: nameController,
+                                constraints: constraints,
+                                label: 'نام'),
+                            AuthTextFieldWidget(
+                                controller: lastNameController,
+                                constraints: constraints,
+                                label: 'نام خانوادگی'),
+                            AuthTextFieldWidget(
+                                controller: emailController,
+                                constraints: constraints,
+                                label: 'ایمیل'),
+                            AuthTextFieldWidget(
+                                controller: emailController,
+                                constraints: constraints,
+                                label: 'نام مکان'),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -178,7 +182,9 @@ class _OwnerRegisterScreenState extends State<OwnerRegisterScreen> {
                                           Navigator.push(context,
                                               MaterialPageRoute(
                                                   builder: (context) {
-                                            return const VerifyOTPScreen();
+                                            return VerifyOTPScreen(
+                                              isOwner: true,
+                                            );
                                           }));
                                         }
                                       },
@@ -189,7 +195,9 @@ class _OwnerRegisterScreenState extends State<OwnerRegisterScreen> {
                                           Navigator.push(context,
                                               MaterialPageRoute(
                                                   builder: (context) {
-                                            return const VerifyOTPScreen();
+                                            return VerifyOTPScreen(
+                                              isOwner: true,
+                                            );
                                           }));
                                         }
                                       },
@@ -200,23 +208,17 @@ class _OwnerRegisterScreenState extends State<OwnerRegisterScreen> {
                                     builder: (context, state) {
                                       return ElevatedButton(
                                         onPressed: () {
-                                          _isLogin
-                                              ? BlocProvider.of<LoginBloc>(
-                                                      context)
-                                                  .add(SubmitLoginEvent(
-                                                      mobileNumController.text))
-                                              : BlocProvider.of<
-                                                          OwnerRegisterBloc>(
-                                                      context)
-                                                  .add(SubmitOwnerRegisterEvent(
-                                                  nameController.text,
-                                                  lastNameController.text,
-                                                  mobileNumController.text,
-                                                  emailController.text,
-                                                  storeNameController.text,
-                                                  dropdownValue,
-                                                  storeDescController.text,
-                                                ));
+                                          BlocProvider.of<OwnerRegisterBloc>(
+                                                  context)
+                                              .add(SubmitOwnerRegisterEvent(
+                                            nameController.text,
+                                            lastNameController.text,
+                                            mobileNumController.text,
+                                            emailController.text,
+                                            storeNameController.text,
+                                            dropdownValue,
+                                            storeDescController.text,
+                                          ));
                                         },
                                         style: ElevatedButton.styleFrom(
                                           padding: const EdgeInsets.symmetric(
@@ -244,19 +246,6 @@ class _OwnerRegisterScreenState extends State<OwnerRegisterScreen> {
                               child: TextButton(
                                   onPressed: () {
                                     setState(() {
-                                      _isLogin = !_isLogin;
-                                    });
-                                  },
-                                  child: _isLogin
-                                      ? const Text(
-                                          'حسابی ندارید؟برای ایجاد حساب اینجا کلیک کنید')
-                                      : const Text(
-                                          'حسابی دارید؟برای ورود اینجا کلیک کنید')),
-                            ),
-                            Center(
-                              child: TextButton(
-                                  onPressed: () {
-                                    setState(() {
                                       Navigator.push(context,
                                           MaterialPageRoute(builder: (context) {
                                         return const AuthScreen();
@@ -264,7 +253,7 @@ class _OwnerRegisterScreenState extends State<OwnerRegisterScreen> {
                                     });
                                   },
                                   child: const Text(
-                                      'میخواهید به عنوان کاربر وارد شوید اینجا کلیک کنید')),
+                                      'حسابی دارید؟اینجا کلیک کنید')),
                             ),
                           ],
                         ),

@@ -92,10 +92,12 @@ class _LocationSearchFieldState extends State<LocationSearchField> {
             noItemsFoundBuilder: (context) => Container(),
             scrollController: _scrollController,
             suggestionsBoxDecoration: SuggestionsBoxDecoration(
-              color: Color.fromRGBO(48, 24, 172, 1),
+              color: Colors.white,
               borderRadius: BorderRadius.circular(8),
             ),
             textFieldConfiguration: TextFieldConfiguration(
+              textAlign: TextAlign.right,
+              textDirection: TextDirection.rtl,
               controller: _textController,
               decoration: InputDecoration(
                 fillColor: Colors.white,
@@ -112,7 +114,7 @@ class _LocationSearchFieldState extends State<LocationSearchField> {
                           });
                         },
                         child: const Icon(
-                          Icons.close,
+                          Icons.close_rounded,
                           color: Colors.red,
                         ),
                       )
@@ -131,14 +133,18 @@ class _LocationSearchFieldState extends State<LocationSearchField> {
                         turns: _turn,
                         duration: const Duration(milliseconds: 200),
                         child: const Icon(Icons.keyboard_arrow_down_rounded)),
-                // border: borderStyle(borderRadius: 8),
-                // focusedBorder: borderStyle(borderRadius: 8),
-                // enabledBorder: borderStyle(borderRadius: 8),
-                // disabledBorder: borderStyle(borderRadius: 8),
-                // focusedErrorBorder: borderStyle(
-                //   borderRadius: 8,
-                //   color: App.theme.value.colors.colorError,
-                // ),
+                border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey.shade100),
+                    borderRadius: BorderRadius.circular(20)),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey.shade100),
+                    borderRadius: BorderRadius.circular(20)),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey.shade100),
+                    borderRadius: BorderRadius.circular(20)),
+                disabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey.shade100),
+                    borderRadius: BorderRadius.circular(20)),
               ),
             ),
             itemBuilder: (context, suggestion) {
@@ -146,6 +152,7 @@ class _LocationSearchFieldState extends State<LocationSearchField> {
                 title: Padding(
                   padding: const EdgeInsets.only(right: 30),
                   child: Text(
+                    style: TextStyle(color: Colors.black),
                     suggestion.title ?? '',
                     textDirection: TextDirection.rtl,
                   ),

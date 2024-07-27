@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 class TopBarPictureWidget extends StatelessWidget {
+  final String imageSrc;
   final BoxConstraints constraints;
-  const TopBarPictureWidget(this.constraints, {super.key});
+  const TopBarPictureWidget(this.constraints,
+      {super.key, required this.imageSrc});
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +18,7 @@ class TopBarPictureWidget extends StatelessWidget {
                 bottomLeft: Radius.circular(25),
                 bottomRight: Radius.circular(25),
               )),
+          child: Image.network(imageSrc),
         ),
         Card(
           margin: const EdgeInsets.only(top: 15, left: 10),

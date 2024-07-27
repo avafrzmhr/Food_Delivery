@@ -7,6 +7,5 @@ class SubmitLoginEvent extends LoginEvent {
 
   SubmitLoginEvent(this.phoneNumber);
 
-  @override
   List<Object?> get props => [phoneNumber];
 }

@@ -122,7 +122,9 @@ class _AuthScreenState extends State<AuthScreen> {
                                         Navigator.push(context,
                                             MaterialPageRoute(
                                                 builder: (context) {
-                                          return const VerifyOTPScreen();
+                                          return VerifyOTPScreen(
+                                            isOwner: false,
+                                          );
                                         }));
                                       }
                                     },
@@ -133,7 +135,9 @@ class _AuthScreenState extends State<AuthScreen> {
                                         Navigator.push(context,
                                             MaterialPageRoute(
                                                 builder: (context) {
-                                          return const VerifyOTPScreen();
+                                          return VerifyOTPScreen(
+                                            isOwner: false,
+                                          );
                                         }));
                                       }
                                     },

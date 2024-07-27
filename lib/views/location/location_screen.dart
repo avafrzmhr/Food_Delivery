@@ -31,6 +31,7 @@ class LocationScreen extends StatefulWidget {
 
 class _LocationScreenState extends State<LocationScreen> {
   final MapController mapController = MapController();
+  // ignore: unused_field
   LocationData? _locationData;
   Marker? _marker;
   double? newLat;
@@ -108,14 +109,6 @@ class _LocationScreenState extends State<LocationScreen> {
                   FlutterMap(
                     mapController: mapController,
                     options: MapOptions(
-                      // onPositionChanged: (position, hasGesture) {
-                      //   hasGesture = true;
-                      //   if (hasGesture) {
-                      //     _positionChanged(
-                      //         position.center.latitude, position.center.longitude);
-                      //         _setMarker(LatLng(position.center.latitude, position.center.longitude));
-                      //   }
-                      // },
                       minZoom: 2,
                       initialCenter: const LatLng(35.592781, 51.351981),
                       initialZoom: 10,
@@ -145,13 +138,20 @@ class _LocationScreenState extends State<LocationScreen> {
                   Positioned(
                     bottom: 85,
                     right: 16,
-                    child: IconButton(
-                      onPressed: () {
-                        _gotToCurrentLocation();
-                      },
-                      icon: const Icon(Icons.my_location),
-                      color: Colors.blueAccent,
-                      iconSize: 32,
+                    child: Container(
+                      padding: const EdgeInsets.all(5),
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white,
+                      ),
+                      child: IconButton(
+                        onPressed: () {
+                          _gotToCurrentLocation();
+                        },
+                        icon: const Icon(Icons.my_location),
+                        color: Colors.blueAccent,
+                        iconSize: 30,
+                      ),
                     ),
                   ),
                   Positioned(
@@ -159,7 +159,10 @@ class _LocationScreenState extends State<LocationScreen> {
                     left: 16,
                     right: 16,
                     child: Container(
-                      color: Colors.white70,
+                      decoration: BoxDecoration(
+                        color: Colors.white70,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
                       child: LocationSearchField(
                         request: request,
                         onSuggestionSelected: (selectedGuild) {
@@ -176,39 +179,41 @@ class _LocationScreenState extends State<LocationScreen> {
                     bottom: 16,
                     right: 16,
                     left: 16,
-                    child: SizedBox(
-                      width: 90,
-                      height: 64,
-                      child: ElevatedButton(
-                          child: Text(
-                            'انتخاب',
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleLarge!
-                                .copyWith(
-                                    color:
-                                        const Color.fromRGBO(48, 24, 172, 1)),
-                          ),
-                          onPressed: () {
-                            Future.delayed(const Duration(microseconds: 300))
-                                .then((value) {
-                              // context.read<LocationBloc>().add(LocationChanged(
-                              //       lat: newLat ?? widget.lat,
-                              //       lang: newLang ?? widget.lang,
-                              //     ));
-                              Provider.of<LocationProvider>(context,
-                                      listen: false)
-                                  .updateLocation(
-                                newLat ?? widget.lat,
-                                newLang ?? widget.lang,
-                              );
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.72,
+                        height: 50,
+                        child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  const Color.fromRGBO(48, 24, 172, 1),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20)),
+                            ),
+                            child: const Text('انتخاب',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                )),
+                            onPressed: () {
+                              Future.delayed(const Duration(microseconds: 300))
+                                  .then((value) {
+                                Provider.of<LocationProvider>(context,
+                                        listen: false)
+                                    .updateLocation(
+                                  newLat ?? widget.lat,
+                                  newLang ?? widget.lang,
+                                );
 
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                return const TabsScreen();
-                              }));
-                            });
-                          }),
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return const TabsScreen();
+                                }));
+                              });
+                            }),
+                      ),
                     ),
                   )
                 ],

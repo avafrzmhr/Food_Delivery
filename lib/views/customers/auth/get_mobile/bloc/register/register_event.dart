@@ -9,6 +9,5 @@ class SubmitRegisterEvent extends RegisterEvent {
 
   SubmitRegisterEvent(this.name, this.lastName, this.phoneNumber);
 
-  @override
   List<Object?> get props => [name, lastName, phoneNumber];
 }
