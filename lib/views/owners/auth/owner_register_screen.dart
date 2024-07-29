@@ -26,10 +26,10 @@ class _OwnerRegisterScreenState extends State<OwnerRegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List<String> list = ['رستوران', 'کافه'];
+    List<String> list = ['cofe', 'restaurant'];
     var dropdownValue = list[0];
-    context.read<Providers>().init(context);
 
+    context.read<Providers>().init();
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -100,23 +100,28 @@ class _OwnerRegisterScreenState extends State<OwnerRegisterScreen> {
                               height: 45,
                             ),
                             AuthTextFieldWidget(
+                                width: constraints.maxWidth * 0.75,
                                 controller: mobileNumController,
                                 constraints: constraints,
                                 label: 'شماره تلفن'),
                             AuthTextFieldWidget(
+                                width: constraints.maxWidth * 0.75,
                                 controller: nameController,
                                 constraints: constraints,
                                 label: 'نام'),
                             AuthTextFieldWidget(
+                                width: constraints.maxWidth * 0.75,
                                 controller: lastNameController,
                                 constraints: constraints,
                                 label: 'نام خانوادگی'),
                             AuthTextFieldWidget(
+                                width: constraints.maxWidth * 0.75,
                                 controller: emailController,
                                 constraints: constraints,
                                 label: 'ایمیل'),
                             AuthTextFieldWidget(
-                                controller: emailController,
+                                width: constraints.maxWidth * 0.75,
+                                controller: storeNameController,
                                 constraints: constraints,
                                 label: 'نام مکان'),
                             Row(
@@ -152,11 +157,12 @@ class _OwnerRegisterScreenState extends State<OwnerRegisterScreen> {
                             Center(
                               child: SizedBox(
                                 width: constraints.maxWidth * 0.75,
-                                child: const TextField(
+                                child: TextField(
+                                  controller: storeDescController,
                                   textAlign: TextAlign.end,
-                                  style: TextStyle(),
+                                  style: const TextStyle(),
                                   maxLines: 2,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     border: OutlineInputBorder(
                                       borderSide: BorderSide(
                                         color: Color.fromRGBO(48, 24, 172, 1),
@@ -182,22 +188,7 @@ class _OwnerRegisterScreenState extends State<OwnerRegisterScreen> {
                                           Navigator.push(context,
                                               MaterialPageRoute(
                                                   builder: (context) {
-                                            return VerifyOTPScreen(
-                                              isOwner: true,
-                                            );
-                                          }));
-                                        }
-                                      },
-                                    ),
-                                    BlocListener<LoginBloc, LoginState>(
-                                      listener: (context, state) {
-                                        if (state is LoginSuccess) {
-                                          Navigator.push(context,
-                                              MaterialPageRoute(
-                                                  builder: (context) {
-                                            return VerifyOTPScreen(
-                                              isOwner: true,
-                                            );
+                                            return VerifyOTPScreen();
                                           }));
                                         }
                                       },

@@ -3,12 +3,16 @@ import 'package:flutter/material.dart';
 class AuthTextFieldWidget extends StatelessWidget {
   final BoxConstraints constraints;
   final TextEditingController controller;
+  final double width;
   final String label;
+  final String? suffixText;
   const AuthTextFieldWidget({
     super.key,
+    required this.width,
     required this.controller,
     required this.constraints,
     required this.label,
+    this.suffixText,
   });
 
   @override
@@ -16,14 +20,15 @@ class AuthTextFieldWidget extends StatelessWidget {
     return Center(
       child: Container(
         padding: EdgeInsets.only(bottom: 15),
-        width: constraints.maxWidth * 0.75,
+        width: width,
         child: TextFormField(
           controller: controller,
           decoration: InputDecoration(
+            suffixText: suffixText,
             contentPadding: const EdgeInsets.all(15),
             label: Text(label),
             border: const OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(25)),
+              borderRadius: BorderRadius.all(Radius.circular(20)),
               borderSide: BorderSide(
                 color: Color.fromARGB(255, 48, 24, 172),
               ),

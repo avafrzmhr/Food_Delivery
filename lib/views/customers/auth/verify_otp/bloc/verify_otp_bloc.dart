@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:food_delivery/data/repository/auth_repository.dart';
+import 'package:food_delivery/main.dart';
 import 'package:food_delivery/providers.dart';
 import 'package:meta/meta.dart';
 
@@ -17,8 +18,10 @@ class VerifyOtpBloc extends Bloc<VerifyOtpEvent, VerifyOtpState> {
         if (res.statusCode == 200) {
           print(res);
           print(res.data);
-          Providers.prefs.setString('refresh', res.data['refresh']);
-          Providers.prefs.setString('access', res.data['access']);
+          MyApp.sharedPreferences.setString('refresh', res.data['refresh']);
+          MyApp.sharedPreferences.setString('access', res.data['access']);
+          MyApp.sharedPreferences.setBool('isOwner', res.data['is_owner']);
+
           emit(VerifyOtpSuccess());
         } else {
           emit(VerifyOtpError(res.statusMessage.toString()));

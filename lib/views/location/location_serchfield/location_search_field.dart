@@ -67,7 +67,7 @@ class _LocationSearchFieldState extends State<LocationSearchField> {
 
   @override
   Widget build(BuildContext context) {
-    context.read<Providers>().init(context);
+    context.read<Providers>().init();
     return BlocProvider(
       create: (context) {
         return _bloc;

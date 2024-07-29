@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/gen/assets.gen.dart';
-import 'package:food_delivery/providers.dart';
+import 'package:food_delivery/main.dart';
 import 'package:food_delivery/views/customers/home/bloc/customer_address_bloc.dart';
 import 'package:food_delivery/views/location/bloc/location_bloc.dart';
 import 'package:food_delivery/views/location/location_provider.dart';
@@ -59,7 +59,6 @@ class _TopBarWidgetState extends State<TopBarWidget> {
 
   @override
   Widget build(BuildContext context) {
-    context.read<Providers>().init(context);
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -72,7 +71,7 @@ class _TopBarWidgetState extends State<TopBarWidget> {
           if (state is LocationLoading || state is LocationInitial) {
             print('state is Loading****');
           } else if (state is LocationSuccess) {
-            city = Providers.prefs.getString('City') ??
+            city = MyApp.sharedPreferences.getString('City') ??
                 state.location.city ??
                 state.location.county ??
                 '';
@@ -81,16 +80,18 @@ class _TopBarWidgetState extends State<TopBarWidget> {
               widget.lat = state.locationData?.latitude;
               widget.lang = state.locationData?.longitude;
             } else {
-              widget.lat = Providers.prefs.getDouble('Lat') ?? defaultLat;
-              widget.lang = Providers.prefs.getDouble('Long') ?? defaultLong;
+              widget.lat =
+                  MyApp.sharedPreferences.getDouble('Lat') ?? defaultLat;
+              widget.lang =
+                  MyApp.sharedPreferences.getDouble('Long') ?? defaultLong;
             }
             BlocProvider.of<CustomerAddressBloc>(context)
                 .add(CustomerAddressRequestEvent(
-              Providers.prefs.getString('Address') ?? '',
+              MyApp.sharedPreferences.getString('Address') ?? '',
               widget.lat!,
               widget.lang!,
             ));
-            print(Providers.prefs.getString('Address'));
+            print(MyApp.sharedPreferences.getString('Address'));
             print(widget.lang);
             print(widget.lat);
           } else if (state is LocationError) {
@@ -154,11 +155,11 @@ class _TopBarWidgetState extends State<TopBarWidget> {
                                               MaterialPageRoute(
                                                 builder: (context) =>
                                                     LocationScreen(
-                                                  lat: Providers.prefs
+                                                  lat: MyApp.sharedPreferences
                                                           .getDouble('Lat') ??
                                                       widget.lat ??
                                                       defaultLat,
-                                                  lang: Providers.prefs
+                                                  lang: MyApp.sharedPreferences
                                                           .getDouble('Long') ??
                                                       widget.lang ??
                                                       defaultLong,
@@ -174,11 +175,11 @@ class _TopBarWidgetState extends State<TopBarWidget> {
                                               MaterialPageRoute(
                                                 builder: (context) =>
                                                     LocationScreen(
-                                                  lat: Providers.prefs
+                                                  lat: MyApp.sharedPreferences
                                                           .getDouble('Lat') ??
                                                       state.locationData!
                                                           .latitude!,
-                                                  lang: Providers.prefs
+                                                  lang: MyApp.sharedPreferences
                                                           .getDouble('Long') ??
                                                       state.locationData!
                                                           .longitude!,

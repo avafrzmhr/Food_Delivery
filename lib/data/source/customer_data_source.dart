@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:food_delivery/data/model/restaurant/menu_response.dart';
 import 'package:food_delivery/data/model/restaurant/restaurant_response.dart';
+import 'package:food_delivery/main.dart';
 import 'package:food_delivery/providers.dart';
 
 class CustomerDataSource {
@@ -15,7 +16,7 @@ class CustomerDataSource {
       options: Options(
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'JWT ${Providers.prefs.getString('access')}',
+          'Authorization': 'JWT ${MyApp.sharedPreferences.getString('access')}',
         },
       ),
     );
@@ -31,7 +32,7 @@ class CustomerDataSource {
       options: Options(
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'JWT ${Providers.prefs.getString('access')}',
+          'Authorization': 'JWT ${MyApp.sharedPreferences.getString('access')}',
         },
       ),
     );
@@ -45,13 +46,13 @@ class CustomerDataSource {
       options: Options(
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'JWT ${Providers.prefs.getString('access')}',
+          'Authorization': 'JWT ${MyApp.sharedPreferences.getString('access')}',
         },
       ),
     );
     if (response.statusCode == 200) {
       var restaurantResponse = restaurantFromJson(jsonEncode(response.data));
-      print(Providers.prefs.getString('access'));
+      print(MyApp.sharedPreferences.getString('access'));
       return restaurantResponse;
     } else {
       throw Exception('erorr');
@@ -64,13 +65,13 @@ class CustomerDataSource {
       options: Options(
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'JWT ${Providers.prefs.getString('access')}',
+          'Authorization': 'JWT ${MyApp.sharedPreferences.getString('access')}',
         },
       ),
     );
     if (response.statusCode == 200) {
       var foodResponse = menuFromJson(jsonEncode(response.data));
-      print(Providers.prefs.getString('access'));
+      print(MyApp.sharedPreferences.getString('access'));
       return foodResponse;
     } else {
       throw Exception('erorr');

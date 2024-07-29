@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery/data/repository/auth_repository.dart';
+import 'package:food_delivery/main.dart';
 import 'package:food_delivery/providers.dart';
 
 part 'register_event.dart';
@@ -18,7 +19,9 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
               event.name, event.lastName, event.phoneNumber);
           if (res.statusCode == 200) {
             print(res.data);
-            Providers.prefs.setString('phone_number', event.phoneNumber);
+            MyApp.sharedPreferences
+                .setString('phone_number', event.phoneNumber);
+
             emit(RegisterSuccess());
           } else {
             emit(RegisterError(res.statusMessage.toString()));

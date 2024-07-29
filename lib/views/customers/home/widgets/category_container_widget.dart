@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery/data/model/restaurant/restaurant_response.dart';
 import 'package:food_delivery/views/customers/category_shops/category_shops_screen.dart';
 
 class CategoryContainerWidget extends StatefulWidget {
   final String text;
   final BoxConstraints constraints;
-  const CategoryContainerWidget(this.constraints,
-      {super.key, required this.text});
+  CategoryContainerWidget(this.constraints, {super.key, required this.text});
 
   @override
   State<CategoryContainerWidget> createState() =>
@@ -18,7 +18,7 @@ class _CategoryContainerWidgetState extends State<CategoryContainerWidget> {
     return GestureDetector(
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return const CategoryShopsScreen();
+          return CategoryShopsScreen();
         }));
       },
       child: Column(

@@ -26,7 +26,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
 
   @override
   Widget build(BuildContext context) {
-    context.read<Providers>().init(context);
+    context.read<Providers>().init();
 
     return BlocProvider(
       create: (context) => RestaurantBloc(),

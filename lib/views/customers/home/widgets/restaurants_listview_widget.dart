@@ -10,12 +10,14 @@ class RestaurantsListViewWidget extends StatefulWidget {
   final double width;
   final double height;
   final Axis scrollDirection;
-  const RestaurantsListViewWidget(
-      {super.key,
-      required this.scrollDirection,
-      required this.constraints,
-      required this.height,
-      required this.width});
+
+  const RestaurantsListViewWidget({
+    super.key,
+    required this.scrollDirection,
+    required this.constraints,
+    required this.height,
+    required this.width,
+  });
 
   @override
   State<RestaurantsListViewWidget> createState() =>
@@ -30,12 +32,10 @@ class _RestaurantsListViewWidgetState extends State<RestaurantsListViewWidget> {
       child: BlocBuilder<RestaurantBloc, RestaurantState>(
         builder: (context, state) {
           if (state is RestaurantSuccess) {
-            Restaurant restaurants = state
-                .restaurants; // Assuming `state.restaurants` is a list of Restaurant objects.
-
+            final restaurants = state.restaurants;
             return ListView.builder(
               dragStartBehavior: DragStartBehavior.start,
-              reverse: true,
+              scrollDirection: widget.scrollDirection,
               physics: const BouncingScrollPhysics(),
               itemCount: restaurants.data.length,
               itemBuilder: (context, index) {
@@ -51,21 +51,56 @@ class _RestaurantsListViewWidgetState extends State<RestaurantsListViewWidget> {
                   child: Stack(
                     children: [
                       Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: const Color.fromARGB(255, 144, 142, 145),
-                        ),
                         width: widget.width,
                         height: widget.height,
-                        child: Image.network(restaurants.data[index].image),
-                      ),
-                      Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
-                          color: const Color.fromRGBO(48, 24, 172, 1),
+                          color: const Color.fromARGB(255, 242, 240, 255),
                         ),
-                        width: widget.width,
-                        height: 150,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: widget.width,
+                              height: 150,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(15),
+                                child: Image.network(
+                                  restaurants.data[index].image,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 5, top: 8),
+                              child: Text(
+                                restaurants.data[index].name,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.deepPurple,
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 5, vertical: 20),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(restaurants.data[index].deliveryPrice
+                                      .toString()),
+                                  Text(restaurants.data[index].averageRating
+                                      .toString()),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ],
                   ),

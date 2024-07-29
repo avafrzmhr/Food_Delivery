@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/data/repository/auth_repository.dart';
 import 'package:food_delivery/data/source/auth_data_source.dart';
+import 'package:food_delivery/owner_provider.dart';
 import 'package:food_delivery/providers.dart';
 import 'package:food_delivery/views/customers/auth/get_mobile/bloc/login/bloc/login_bloc.dart';
 import 'package:food_delivery/views/customers/auth/get_mobile/bloc/register/register_bloc.dart';
 import 'package:food_delivery/views/customers/auth/get_mobile/widgets/auth_textfield_widget.dart';
 import 'package:food_delivery/views/customers/auth/verify_otp/verify_otp_screen.dart';
 import 'package:food_delivery/views/owners/auth/owner_register_screen.dart';
+import 'package:provider/provider.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -23,7 +25,8 @@ class _AuthScreenState extends State<AuthScreen> {
   TextEditingController mobileNumController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    context.read<Providers>().init(context);
+    // final ownerProvider = Provider.of<OwnerProvider>(context);
+    context.read<Providers>().init();
 
     return LayoutBuilder(builder: (context, constraints) {
       return MultiBlocProvider(
@@ -94,16 +97,19 @@ class _AuthScreenState extends State<AuthScreen> {
                             height: 45,
                           ),
                           AuthTextFieldWidget(
+                              width: constraints.maxWidth * 0.75,
                               controller: mobileNumController,
                               constraints: constraints,
                               label: 'شماره تلفن'),
                           if (!_isLogin)
                             AuthTextFieldWidget(
+                                width: constraints.maxWidth * 0.75,
                                 controller: nameController,
                                 constraints: constraints,
                                 label: 'نام'),
                           if (!_isLogin)
                             AuthTextFieldWidget(
+                                width: constraints.maxWidth * 0.75,
                                 controller: lastNameController,
                                 constraints: constraints,
                                 label: 'نام خانوادگی'),
@@ -122,9 +128,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                         Navigator.push(context,
                                             MaterialPageRoute(
                                                 builder: (context) {
-                                          return VerifyOTPScreen(
-                                            isOwner: false,
-                                          );
+                                          return VerifyOTPScreen();
                                         }));
                                       }
                                     },
@@ -135,9 +139,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                         Navigator.push(context,
                                             MaterialPageRoute(
                                                 builder: (context) {
-                                          return VerifyOTPScreen(
-                                            isOwner: false,
-                                          );
+                                          return VerifyOTPScreen();
                                         }));
                                       }
                                     },

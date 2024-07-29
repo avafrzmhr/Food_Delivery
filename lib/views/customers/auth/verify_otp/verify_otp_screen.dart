@@ -2,27 +2,35 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/data/repository/auth_repository.dart';
 import 'package:food_delivery/data/source/auth_data_source.dart';
+import 'package:food_delivery/main.dart';
+import 'package:food_delivery/owner_provider.dart';
 import 'package:food_delivery/providers.dart';
 import 'package:food_delivery/views/customers/auth/verify_otp/bloc/verify_otp_bloc.dart';
 import 'package:food_delivery/views/owners/home/owner_home.dart';
 import 'package:food_delivery/views/tabs_screen.dart';
 import 'package:pinput/pinput.dart';
+import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class VerifyOTPScreen extends StatefulWidget {
-  bool isOwner = false;
-  VerifyOTPScreen({super.key, required this.isOwner});
+  VerifyOTPScreen({super.key});
 
   @override
   State<VerifyOTPScreen> createState() => _VerifyOTPScreenState();
 }
 
 class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   final pinController = TextEditingController();
   final focusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
-    context.read<Providers>().init(context);
+    context.read<Providers>().init();
     return LayoutBuilder(builder: (context, constraints) {
       return BlocProvider(
         create: (context) => VerifyOtpBloc(AuthRepository(AuthDataSource())),
@@ -50,7 +58,7 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
                 Container(
                   alignment: AlignmentDirectional.topEnd,
                   child: Text(
-                    'کد تایید به شماره ${Providers.prefs.getString('phone_number')} ارسال شد',
+                    'کد تایید به شماره ${MyApp.sharedPreferences.getString('phone_number')} ارسال شد',
                     style: const TextStyle(
                       fontSize: 18,
                       color: Colors.grey,
@@ -108,12 +116,17 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
                 BlocListener<VerifyOtpBloc, VerifyOtpState>(
                   listener: (context, state) {
                     if (state is VerifyOtpSuccess) {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return !widget.isOwner
-                            ? TabsScreen()
-                            : OwnerHomeScreen();
-                      }));
+                      if (MyApp.sharedPreferences.getBool('isOwner')!) {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return OwnerHomeScreen();
+                        }));
+                      } else {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return TabsScreen();
+                        }));
+                      }
                     }
                   },
                   child: BlocBuilder<VerifyOtpBloc, VerifyOtpState>(
@@ -126,7 +139,7 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
                             onPressed: () {
                               BlocProvider.of<VerifyOtpBloc>(context).add(
                                   VerifyOtpRequestEvent(
-                                      Providers.prefs
+                                      MyApp.sharedPreferences
                                               .getString('phone_number') ??
                                           '',
                                       pinController.text));

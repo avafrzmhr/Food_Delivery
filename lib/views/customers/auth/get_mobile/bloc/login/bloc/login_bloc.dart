@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery/data/repository/auth_repository.dart';
+import 'package:food_delivery/main.dart';
 import 'package:food_delivery/providers.dart';
 
 part 'login_event.dart';
@@ -17,7 +18,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           final res = await authRepository.login(event.phoneNumber);
           print(res.statusCode);
           if (res.statusCode == 200) {
-            Providers.prefs.setString('phone_number', event.phoneNumber);
+            MyApp.sharedPreferences
+                .setString('phone_number', event.phoneNumber);
             print(res.data);
             emit(LoginSuccess());
           } else {

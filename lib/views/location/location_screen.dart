@@ -4,6 +4,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:food_delivery/data/model/neshan/neshan_search_address_request.dart';
 import 'package:food_delivery/data/repository/location_repository.dart';
 import 'package:food_delivery/data/source/location_source.dart';
+import 'package:food_delivery/main.dart';
 import 'package:food_delivery/providers.dart';
 import 'package:food_delivery/views/location/bloc/location_bloc.dart';
 import 'package:food_delivery/views/location/location_provider.dart';
@@ -56,8 +57,8 @@ class _LocationScreenState extends State<LocationScreen> {
       newLat = lat;
       newLang = lang;
 
-      Providers.prefs.setDouble('Lat', newLat!);
-      Providers.prefs.setDouble('Long', newLang!);
+      MyApp.sharedPreferences.setDouble('Lat', newLat!);
+      MyApp.sharedPreferences.setDouble('Long', newLang!);
     });
   }
 
@@ -80,7 +81,7 @@ class _LocationScreenState extends State<LocationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    context.read<Providers>().init(context);
+    context.read<Providers>().init();
     var request = NeshanSearchAddressRequest(
       address: widget.cityName,
       lat: widget.lat,

@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery/data/repository/auth_repository.dart';
 import 'package:food_delivery/data/source/auth_data_source.dart';
+import 'package:food_delivery/main.dart';
 import 'package:food_delivery/providers.dart';
 
 part 'owner_register_event.dart';
@@ -26,7 +27,8 @@ class OwnerRegisterBloc extends Bloc<OwnerRegisterEvent, OwnerRegisterState> {
           );
           if (res.statusCode == 200) {
             print(res.data);
-            Providers.prefs.setString('phone_number', event.phoneNumber);
+            MyApp.sharedPreferences
+                .setString('phone_number', event.phoneNumber);
             emit(OwnerRegisterSuccess());
           } else {
             emit(OwnerRegisterError(res.statusMessage.toString()));

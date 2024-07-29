@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/views/owners/menu/menu_screen.dart';
+import 'package:food_delivery/views/owners/restaurant/add_restaurant_screen.dart';
 
 class OwnerHomeScreen extends StatefulWidget {
   const OwnerHomeScreen({super.key});
@@ -52,7 +53,7 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
         ),
         body: const TabBarView(
           children: [
-            Center(child: Text('Restaurant Page')),
+            AddRestaurantScreen(),
             MenuScreen(),
             Center(child: Text('Orders Page')),
           ],

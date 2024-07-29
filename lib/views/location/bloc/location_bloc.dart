@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:food_delivery/data/model/neshan/neshan_response.dart';
 import 'package:food_delivery/data/model/neshan/neshan_search_response/neshan_search_response.dart';
 import 'package:food_delivery/data/repository/location_repository.dart';
+import 'package:food_delivery/main.dart';
 import 'package:food_delivery/providers.dart';
 import 'package:location/location.dart';
 part 'location_event.dart';
@@ -43,8 +44,8 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
           if (neshanLocation != null) {
             var locationData = LocationData.fromMap(
                 {'latitude': event.lat, 'longitude': event.lang});
-            Providers.prefs.setString('City', neshanLocation.city!);
-            Providers.prefs
+            MyApp.sharedPreferences.setString('City', neshanLocation.city!);
+            MyApp.sharedPreferences
                 .setString('Address', neshanLocation.formattedAddress!);
             emit(
               LocationSuccess(

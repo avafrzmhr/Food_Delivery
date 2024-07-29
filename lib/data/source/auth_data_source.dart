@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:food_delivery/providers.dart';
 
 class AuthDataSource {
   Dio dio = Dio();
@@ -45,7 +47,7 @@ class AuthDataSource {
       options: Options(
         headers: {
           'Content-Type': 'application/json',
-          // 'Authorization': 'Bearer ${Providers.prefs.getString('access')}',
+          // 'Authorization': 'Bearer ${MyApp.sharedPreferences.getString('access')}',
         },
       ),
     );
@@ -61,23 +63,39 @@ class AuthDataSource {
     String storeType,
     String storeDesc,
   ) async {
-    Response response = await dio.post(
-      "http://127.0.0.1:8000/account/owner_register/",
-      data: {
-        "phone_number": phoneNumber,
-        "name": name,
-        "last_name": lastName,
-        "email": email,
-        "stores_name": storeName,
-        "storetype_name": storeType,
-        "storetype_desc": storeDesc
-      },
-      options: Options(
-        headers: {
-          'Content-Type': 'application/json',
+    try {
+      Response response = await dio.post(
+        "http://127.0.0.1:8000/account/owner_register/",
+        data: {
+          "phone_number": phoneNumber,
+          "name": name,
+          "last_name": lastName,
+          "email": email,
+          "stores_name": storeName,
+          "storetype_name": storeType,
+          "storetype_desc": storeDesc
         },
-      ),
-    );
-    return response;
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
+      return response;
+    } on DioError catch (e) {
+      // Handle DioError here
+      print('DioError: ${e.message}');
+      if (e.response != null) {
+        print('Response data: ${e.response?.data}');
+        print('Response headers: ${e.response?.headers}');
+      } else {
+        print('Error sending request: ${e.message}');
+      }
+      rethrow; // Optionally rethrow the error
+    } catch (e) {
+      // Handle other types of errors
+      print('Error: ${e.toString()}');
+      rethrow; // Optionally rethrow the error
+    }
   }
 }

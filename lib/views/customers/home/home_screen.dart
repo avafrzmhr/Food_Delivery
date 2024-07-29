@@ -17,10 +17,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<Restaurant> restaurants = [];
   @override
   Widget build(BuildContext context) {
-    context.read<Providers>().init(context);
+    context.read<Providers>().init();
 
     return BlocProvider(
       create: (context) => RestaurantBloc(),
@@ -82,14 +81,17 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 30,
             ),
             Expanded(
-              child: Container(
-                  margin: const EdgeInsets.only(right: 15),
-                  child: RestaurantsListViewWidget(
-                    scrollDirection: Axis.horizontal,
-                    constraints: constraints,
-                    width: constraints.maxWidth * 0.8,
-                    height: constraints.maxHeight * 0.3,
-                  )),
+              child: Directionality(
+                textDirection: TextDirection.rtl,
+                child: Container(
+                    margin: const EdgeInsets.only(right: 15),
+                    child: RestaurantsListViewWidget(
+                      scrollDirection: Axis.horizontal,
+                      constraints: constraints,
+                      width: constraints.maxWidth * 0.72,
+                      height: constraints.maxHeight * 0.32,
+                    )),
+              ),
             ),
           ],
         );
