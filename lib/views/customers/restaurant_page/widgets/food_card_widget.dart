@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:food_delivery/data/model/restaurant/menu_response.dart';
 import 'package:food_delivery/views/customers/food_page/food_screen.dart';
 
@@ -18,8 +19,9 @@ class _FoodCardWidgetState extends State<FoodCardWidget> {
         itemCount: widget.menu.length,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2, // number of items in each row
-          mainAxisSpacing: 15, // spacing between rows
+          mainAxisSpacing: 0, // spacing between rows
           crossAxisSpacing: 15,
+          childAspectRatio: 4 / 5,
         ),
         itemBuilder: (context, index) {
           return GestureDetector(
@@ -27,13 +29,14 @@ class _FoodCardWidgetState extends State<FoodCardWidget> {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
               return FoodScreen(
                 imageSrc: widget.menu[index].image,
-                resName: widget.resName,
+                foodName: widget.menu[index].name,
+                rate: widget.menu[index].averageRating,
+                desc: widget.menu[index].desc,
+                price: widget.menu[index].price,
               );
             })),
             child: Container(
-              margin: const EdgeInsets.only(right: 15, top: 15),
-              width: 200,
-              height: 220,
+              margin: const EdgeInsets.only(right: 15, left: 15),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(15),
@@ -42,14 +45,17 @@ class _FoodCardWidgetState extends State<FoodCardWidget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Center(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: Container(
-                        height: 100,
-                        width: 150,
-                        decoration: BoxDecoration(
-                            color: Colors.grey,
-                            borderRadius: BorderRadius.circular(10)),
+                    child: Container(
+                      height: 130,
+                      width: 180,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10)),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.network(
+                          widget.menu[index].image,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                   ),
@@ -74,24 +80,26 @@ class _FoodCardWidgetState extends State<FoodCardWidget> {
                     height: 15,
                   ),
                   // ignore: prefer_const_constructors
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          widget.menu[index].price.toString(),
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            widget.menu[index].price.toString(),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
                           ),
-                        ),
-                        const Icon(
-                          Icons.add_circle,
-                          color: Color.fromRGBO(48, 24, 172, 1),
-                          size: 35,
-                        )
-                      ],
+                          const Icon(
+                            Icons.add_circle,
+                            color: Color.fromRGBO(48, 24, 172, 1),
+                            size: 35,
+                          )
+                        ],
+                      ),
                     ),
                   )
                 ],

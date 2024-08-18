@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery/data/model/restaurant/restaurant_response.dart';
 import 'package:food_delivery/views/customers/home/bottom_navigation_provider.dart';
 import 'package:food_delivery/views/customers/home/widgets/bottom_navigation_bar_widget.dart';
 import 'package:food_delivery/views/customers/home/widgets/search_bar_widget.dart';
@@ -69,7 +68,7 @@ class _CategoryShopsScreenState extends State<CategoryShopsScreen> {
               margin: const EdgeInsets.only(right: 22, top: 13),
               alignment: Alignment.topRight,
               child: const Text(
-                'رستوران باز۲۰',
+                'رستوران باز',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,

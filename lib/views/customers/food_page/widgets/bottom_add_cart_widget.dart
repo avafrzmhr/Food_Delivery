@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:food_delivery/views/customers/food_page/widgets/add_or_remove_widget.dart';
 
 class BottomAddCardWidget extends StatefulWidget {
+  final double price;
   final BoxConstraints constraints;
-  const BottomAddCardWidget(this.constraints, {super.key});
+  const BottomAddCardWidget(this.price, this.constraints, {super.key});
 
   @override
   State<BottomAddCardWidget> createState() => _BottomAddCardWidgetState();
@@ -32,9 +33,23 @@ class _BottomAddCardWidgetState extends State<BottomAddCardWidget> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    '\$32',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 27),
+                  Row(
+                    children: [
+                      const Text(
+                        'تومان',
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 20,
+                        ),
+                      ),
+                      Text(
+                        '${widget.price}',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 27,
+                        ),
+                      ),
+                    ],
                   ),
                   Container(
                     height: 60,
@@ -43,7 +58,7 @@ class _BottomAddCardWidgetState extends State<BottomAddCardWidget> {
                       borderRadius: BorderRadius.circular(40),
                       color: const Color.fromARGB(255, 0, 7, 25),
                     ),
-                    child: AddOrRemoveWidget(),
+                    child: const AddOrRemoveWidget(),
                   ),
                 ],
               ),

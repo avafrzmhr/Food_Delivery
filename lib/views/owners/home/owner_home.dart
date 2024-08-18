@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery/main.dart';
 import 'package:food_delivery/views/owners/menu/menu_screen.dart';
-import 'package:food_delivery/views/owners/restaurant/add_restaurant_screen.dart';
+import 'package:food_delivery/views/owners/restaurant/restaurant_page.dart';
 
 class OwnerHomeScreen extends StatefulWidget {
   const OwnerHomeScreen({super.key});
@@ -10,11 +11,29 @@ class OwnerHomeScreen extends StatefulWidget {
 }
 
 class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
+        key: _scaffoldKey,
+        drawer: Drawer(
+            backgroundColor: Colors.white,
+            child: Container(
+              alignment: Alignment.bottomCenter,
+              width: 50,
+              height: 50,
+              child: ElevatedButton(
+                  onPressed: () {
+                    MyApp.sharedPreferences.remove('access');
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                        '/login', (Route<dynamic> route) => false);
+                  },
+                  child: const Text('Logout')),
+            ) // Populate the Drawer in the next step.
+            ),
         appBar: AppBar(
           title: const Text(
             'Restaurant Name',
@@ -42,9 +61,9 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
                   labelColor: Colors.white,
                   unselectedLabelColor: Colors.black54,
                   tabs: [
-                    Text('Restaurant'),
-                    Text('Menu'),
-                    Text('Orders'),
+                    Text('رستوران'),
+                    Text('منو'),
+                    Text('سفارش ها'),
                   ],
                 ),
               ),
@@ -53,7 +72,7 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
         ),
         body: const TabBarView(
           children: [
-            AddRestaurantScreen(),
+            OwnerRestaurantPage(),
             MenuScreen(),
             Center(child: Text('Orders Page')),
           ],

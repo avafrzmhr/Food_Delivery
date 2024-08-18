@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery/data/model/restaurant/restaurant_response.dart';
 import 'package:food_delivery/views/customers/category_shops/category_shops_screen.dart';
 
 class CategoryContainerWidget extends StatefulWidget {
   final String text;
+  final String name;
   final BoxConstraints constraints;
-  CategoryContainerWidget(this.constraints, {super.key, required this.text});
+  CategoryContainerWidget(
+    this.constraints, {
+    super.key,
+    required this.text,
+    required this.name,
+  });
 
   @override
   State<CategoryContainerWidget> createState() =>
@@ -46,8 +51,15 @@ class _CategoryContainerWidgetState extends State<CategoryContainerWidget> {
                 width: 130,
                 height: 130,
                 decoration: BoxDecoration(
-                  color: Colors.grey,
+                  // color: Colors.grey,
                   borderRadius: BorderRadius.circular(15),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: Image.asset(
+                    widget.name,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ],

@@ -10,7 +10,6 @@ import 'package:food_delivery/views/location/bloc/location_bloc.dart';
 import 'package:food_delivery/views/location/location_provider.dart';
 import 'package:food_delivery/views/location/location_serchfield/bloc/location_search_field_bloc.dart';
 import 'package:food_delivery/views/location/location_serchfield/location_search_field.dart';
-import 'package:food_delivery/views/tabs_screen.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
@@ -208,10 +207,11 @@ class _LocationScreenState extends State<LocationScreen> {
                                   newLang ?? widget.lang,
                                 );
 
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) {
-                                  return const TabsScreen();
-                                }));
+                                // Navigator.push(context,
+                                //     MaterialPageRoute(builder: (context) {
+                                //   return const TabsScreen();
+                                // }));
+                                Navigator.pop(context);
                               });
                             }),
                       ),

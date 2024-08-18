@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/data/repository/auth_repository.dart';
 import 'package:food_delivery/data/source/auth_data_source.dart';
 import 'package:food_delivery/main.dart';
-import 'package:food_delivery/owner_provider.dart';
 import 'package:food_delivery/providers.dart';
 import 'package:food_delivery/views/customers/auth/verify_otp/bloc/verify_otp_bloc.dart';
 import 'package:food_delivery/views/owners/home/owner_home.dart';
@@ -143,6 +142,8 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
                                               .getString('phone_number') ??
                                           '',
                                       pinController.text));
+                              print(
+                                  MyApp.sharedPreferences.getString('access'));
                             },
                             style: ElevatedButton.styleFrom(
                               padding: const EdgeInsets.symmetric(vertical: 15),

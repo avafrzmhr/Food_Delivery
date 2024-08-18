@@ -4,8 +4,18 @@ import 'package:food_delivery/views/customers/restaurant_page/widgets/topbar_pic
 
 class FoodScreen extends StatefulWidget {
   final String imageSrc;
-  final String resName;
-  const FoodScreen({super.key, required this.imageSrc, required this.resName});
+  final String foodName;
+  final String desc;
+  final double price;
+  final int rate;
+  const FoodScreen({
+    super.key,
+    required this.desc,
+    required this.price,
+    required this.imageSrc,
+    required this.foodName,
+    required this.rate,
+  });
 
   @override
   State<FoodScreen> createState() => _FoodScreenState();
@@ -16,6 +26,10 @@ class _FoodScreenState extends State<FoodScreen> {
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
       return Scaffold(
+        appBar: AppBar(
+          title: Text(widget.foodName),
+          backgroundColor: Color.fromARGB(255, 224, 213, 255),
+        ),
         backgroundColor: const Color.fromARGB(255, 235, 235, 235),
         body: Stack(
           children: [
@@ -29,7 +43,7 @@ class _FoodScreenState extends State<FoodScreen> {
                   height: 30,
                 ),
                 Text(
-                  widget.resName,
+                  widget.foodName,
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -48,22 +62,10 @@ class _FoodScreenState extends State<FoodScreen> {
                       color: Color.fromRGBO(48, 24, 172, 1),
                       size: 32,
                     ),
-                    const Text(
-                      '4.7',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                    ),
-                    SizedBox(
-                      width: constraints.maxWidth * 0.2,
-                    ),
-                    const Icon(
-                      Icons.av_timer_rounded,
-                      color: Color.fromRGBO(48, 24, 172, 1),
-                    ),
-                    const Text(
-                      '20 min',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    Text(
+                      widget.rate.toString(),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                   ],
                 ),
@@ -73,7 +75,8 @@ class _FoodScreenState extends State<FoodScreen> {
                 Container(
                   margin: const EdgeInsets.only(left: 15),
                   child: Text(
-                    'Maecenas sed diam eget risus varius blandit sit amet non magna. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.',
+                    textAlign: TextAlign.right,
+                    widget.desc,
                     style: TextStyle(
                       color: Colors.grey[800],
                       fontSize: 16,
@@ -97,7 +100,7 @@ class _FoodScreenState extends State<FoodScreen> {
                 // ),
               ],
             ),
-            BottomAddCardWidget(constraints),
+            BottomAddCardWidget(widget.price, constraints),
           ],
         ),
       );

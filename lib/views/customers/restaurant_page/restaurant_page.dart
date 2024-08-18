@@ -28,6 +28,10 @@ class _RestaurantPageState extends State<RestaurantPage> {
         create: (context) =>
             RestaurantDetailBloc()..add(LoadRestaurantDetailEvent(widget.id)),
         child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Color.fromARGB(255, 224, 213, 255),
+            title: Text(widget.resName),
+          ),
           backgroundColor: const Color.fromARGB(255, 235, 235, 235),
           body: Column(
             children: [
@@ -69,13 +73,6 @@ class _RestaurantPageState extends State<RestaurantPage> {
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: Color.fromRGBO(48, 24, 172, 1),
-                      ),
-                    ),
-                    Text(
-                      '۱۰نظر',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ],

@@ -1,15 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:food_delivery/gen/assets.gen.dart';
 import 'package:food_delivery/main.dart';
 import 'package:food_delivery/views/customers/home/bloc/customer_address_bloc.dart';
 import 'package:food_delivery/views/location/bloc/location_bloc.dart';
-import 'package:food_delivery/views/location/location_provider.dart';
 import 'package:food_delivery/views/location/location_screen.dart';
 import 'package:food_delivery/views/customers/shopping_cart/shopping_cart_screen.dart';
 import 'package:location/location.dart';
-import 'package:provider/provider.dart';
 
 class TopBarWidget extends StatefulWidget {
   final BoxConstraints? constraints;
@@ -41,13 +38,25 @@ class _TopBarWidgetState extends State<TopBarWidget> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final bloc = BlocProvider.of<LocationBloc>(context);
-      final locationProvider =
-          Provider.of<LocationProvider>(context, listen: false);
 
       if (!widget.isOnline) {
-        if (!widget.isLocationChaned) {
-          bloc.add(LocationStarted());
-        } else {
+        // Check if location is already set or cached
+        if (!widget.isLocationChaned &&
+            (widget.lat == null || widget.lang == null)) {
+          // Fetch the cached location
+          widget.lat = MyApp.sharedPreferences.getDouble('Lat');
+          widget.lang = MyApp.sharedPreferences.getDouble('Long');
+
+          // If no cached location, start the location fetching process
+          if (widget.lat == null || widget.lang == null) {
+            bloc.add(LocationStarted());
+          } else {
+            bloc.add(LocationChanged(
+              lat: widget.lat!,
+              lang: widget.lang!,
+            ));
+          }
+        } else if (widget.isLocationChaned) {
           bloc.add(LocationChanged(
             lat: widget.lat ?? defaultLat,
             lang: widget.lang ?? defaultLong,
@@ -117,9 +126,10 @@ class _TopBarWidgetState extends State<TopBarWidget> {
                     margin: const EdgeInsets.only(
                       left: 20,
                     ),
-                    height: 40,
-                    width: 40,
+                    // height: 40,
+                    // width: 40,
                     child: IconButton(
+                      iconSize: 27,
                       icon: const Icon(Icons
                           .shopping_cart), // Update this icon as per your assets
                       onPressed: () {
@@ -193,10 +203,14 @@ class _TopBarWidgetState extends State<TopBarWidget> {
                                       },
                                       child: Container(
                                           margin: const EdgeInsets.only(
-                                            left: 30,
+                                            left: 25,
                                           ),
                                           child: const Icon(
-                                              Icons.location_on_sharp)),
+                                            size: 27,
+                                            Icons.location_on_sharp,
+                                            color:
+                                                Color.fromRGBO(48, 24, 172, 1),
+                                          )),
                                     )
                                   : state is LocationError
                                       ? Text(state.message)
@@ -206,26 +220,21 @@ class _TopBarWidgetState extends State<TopBarWidget> {
                       const SizedBox(
                         height: 7,
                       ),
-                      Row(
-                        children: [
-                          const Text(
-                            'آدرس',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(
-                              left: 45,
-                            ),
-                            width: 10,
-                            height: 10,
-                            child: Assets.icons.svgexport17
-                                .svg(), // Update this icon as per your assets
-                          ),
-                        ],
-                      ),
+                      MyApp.sharedPreferences.getString('Address') != null
+                          ? Row(
+                              children: [
+                                Text(
+                                  MyApp.sharedPreferences
+                                          .getString('Address') ??
+                                      '',
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ],
+                            )
+                          : Container(),
                     ],
                   ),
                 ],

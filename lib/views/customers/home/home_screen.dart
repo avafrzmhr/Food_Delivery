@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:food_delivery/data/model/restaurant/restaurant_response.dart';
+import 'package:food_delivery/gen/assets.gen.dart';
 import 'package:food_delivery/providers.dart';
 import 'package:food_delivery/views/customers/home/res_bloc/restaurant_bloc.dart';
 import 'package:food_delivery/views/customers/home/widgets/category_container_widget.dart';
@@ -26,6 +26,9 @@ class _HomeScreenState extends State<HomeScreen> {
       child: LayoutBuilder(builder: (context, constraints) {
         return Column(
           children: [
+            SizedBox(
+              height: 15,
+            ),
             TopBarWidget(
               constraints: constraints,
               isOnline: false,
@@ -47,8 +50,16 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  CategoryContainerWidget(constraints, text: 'کافه'),
-                  CategoryContainerWidget(constraints, text: 'رستوران'),
+                  CategoryContainerWidget(
+                    constraints,
+                    text: 'کافه',
+                    name: Assets.images.nathanDumlaoZUNs99PGDg0Unsplash.keyName,
+                  ),
+                  CategoryContainerWidget(
+                    constraints,
+                    text: 'رستوران',
+                    name: Assets.images.davideCantelliJpkfc5DDIUnsplash.keyName,
+                  ),
                 ],
               ),
             ),
@@ -89,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       scrollDirection: Axis.horizontal,
                       constraints: constraints,
                       width: constraints.maxWidth * 0.72,
-                      height: constraints.maxHeight * 0.32,
+                      height: constraints.maxHeight * 0.28,
                     )),
               ),
             ),

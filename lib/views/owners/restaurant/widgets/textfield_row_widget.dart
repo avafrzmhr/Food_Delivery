@@ -26,6 +26,7 @@ class TextFieldRowWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           AuthTextFieldWidget(
+            keyboardType: TextInputType.none,
             label: label,
             width: width,
             controller: controller,

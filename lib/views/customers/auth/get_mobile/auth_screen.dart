@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/data/repository/auth_repository.dart';
 import 'package:food_delivery/data/source/auth_data_source.dart';
-import 'package:food_delivery/owner_provider.dart';
 import 'package:food_delivery/providers.dart';
 import 'package:food_delivery/views/customers/auth/get_mobile/bloc/login/bloc/login_bloc.dart';
 import 'package:food_delivery/views/customers/auth/get_mobile/bloc/register/register_bloc.dart';
@@ -39,6 +38,7 @@ class _AuthScreenState extends State<AuthScreen> {
           ),
         ],
         child: Scaffold(
+          resizeToAvoidBottomInset: false,
           body: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -67,12 +67,12 @@ class _AuthScreenState extends State<AuthScreen> {
                     ),
                     child: Padding(
                       padding: const EdgeInsets.only(top: 20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
+                      child: ListView(
                         children: [
                           Padding(
                             padding: const EdgeInsets.only(right: 30),
                             child: Text(
+                              textAlign: TextAlign.end,
                               _isLogin ? 'ورود' : 'ثبت نام',
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
@@ -83,32 +83,35 @@ class _AuthScreenState extends State<AuthScreen> {
                           const SizedBox(
                             height: 15,
                           ),
-                          const Padding(
-                            padding: EdgeInsets.only(right: 30),
-                            child: Text(
-                              'لطفا شماره تلفن خود را وارد کنید',
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 18,
-                              ),
-                            ),
-                          ),
+                          // const Padding(
+                          //   padding: EdgeInsets.only(right: 30),
+                          //   child: Text(
+                          //     'لطفا شماره تلفن خود را وارد کنید',
+                          //     style: TextStyle(
+                          //       color: Colors.grey,
+                          //       fontSize: 18,
+                          //     ),
+                          //   ),
+                          // ),
                           const SizedBox(
                             height: 45,
                           ),
                           AuthTextFieldWidget(
+                              keyboardType: TextInputType.number,
                               width: constraints.maxWidth * 0.75,
                               controller: mobileNumController,
                               constraints: constraints,
                               label: 'شماره تلفن'),
                           if (!_isLogin)
                             AuthTextFieldWidget(
+                                keyboardType: TextInputType.name,
                                 width: constraints.maxWidth * 0.75,
                                 controller: nameController,
                                 constraints: constraints,
                                 label: 'نام'),
                           if (!_isLogin)
                             AuthTextFieldWidget(
+                                keyboardType: TextInputType.name,
                                 width: constraints.maxWidth * 0.75,
                                 controller: lastNameController,
                                 constraints: constraints,

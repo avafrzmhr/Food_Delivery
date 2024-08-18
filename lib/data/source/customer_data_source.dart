@@ -4,7 +4,6 @@ import 'package:dio/dio.dart';
 import 'package:food_delivery/data/model/restaurant/menu_response.dart';
 import 'package:food_delivery/data/model/restaurant/restaurant_response.dart';
 import 'package:food_delivery/main.dart';
-import 'package:food_delivery/providers.dart';
 
 class CustomerDataSource {
   Dio dio = Dio();

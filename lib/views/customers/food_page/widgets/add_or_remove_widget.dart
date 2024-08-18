@@ -11,13 +11,14 @@ class AddOrRemoveWidget extends StatelessWidget {
         Card(
           shape: const CircleBorder(),
           color: Colors.grey.withOpacity(0.7),
-          child: const Icon(
-            Icons.remove_rounded,
-            size: 30,
+          child: IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.remove_rounded),
+            iconSize: 30,
           ),
         ),
         const Text(
-          '2',
+          '0',
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -27,9 +28,10 @@ class AddOrRemoveWidget extends StatelessWidget {
         Card(
           shape: const CircleBorder(),
           color: Colors.grey.withOpacity(0.7),
-          child: const Icon(
-            Icons.add_rounded,
-            size: 30,
+          child: IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.add_rounded),
+            iconSize: 30,
           ),
         )
       ],

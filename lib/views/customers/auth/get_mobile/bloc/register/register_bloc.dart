@@ -3,7 +3,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery/data/repository/auth_repository.dart';
 import 'package:food_delivery/main.dart';
-import 'package:food_delivery/providers.dart';
 
 part 'register_event.dart';
 part 'register_state.dart';

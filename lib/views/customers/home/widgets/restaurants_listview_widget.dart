@@ -1,7 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:food_delivery/data/model/restaurant/restaurant_response.dart';
 import 'package:food_delivery/views/customers/home/res_bloc/restaurant_bloc.dart';
 import 'package:food_delivery/views/customers/restaurant_page/restaurant_page.dart';
 
@@ -85,20 +84,20 @@ class _RestaurantsListViewWidgetState extends State<RestaurantsListViewWidget> {
                                 ),
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 5, vertical: 20),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(restaurants.data[index].deliveryPrice
-                                      .toString()),
-                                  Text(restaurants.data[index].averageRating
-                                      .toString()),
-                                ],
-                              ),
-                            )
+                            // Padding(
+                            //   padding: const EdgeInsets.symmetric(
+                            //       horizontal: 5, vertical: 20),
+                            //   child: Row(
+                            //     mainAxisAlignment:
+                            //         MainAxisAlignment.spaceBetween,
+                            //     children: [
+                            //       Text(restaurants.data[index].deliveryPrice
+                            //           .toString()),
+                            //       Text(restaurants.data[index].averageRating
+                            //           .toString()),
+                            //     ],
+                            //   ),
+                            // )
                           ],
                         ),
                       ),

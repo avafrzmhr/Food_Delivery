@@ -31,8 +31,8 @@ class RestaurantModel {
   String image;
   String category;
   String deliveryTime;
-  int minCartPrice;
-  int deliveryPrice;
+  double minCartPrice;
+  double deliveryPrice;
   String name;
   String phoneNumber;
   String openTime;
@@ -40,9 +40,8 @@ class RestaurantModel {
   String addressName;
   double latitude;
   double longitude;
-  bool isOpen;
   dynamic distance;
-  int averageRating;
+  int? averageRating;
 
   RestaurantModel({
     required this.id,
@@ -58,9 +57,8 @@ class RestaurantModel {
     required this.addressName,
     required this.latitude,
     required this.longitude,
-    required this.isOpen,
-    required this.distance,
-    required this.averageRating,
+    this.distance,
+    this.averageRating,
   });
 
   factory RestaurantModel.fromJson(Map<String, dynamic> json) =>
@@ -78,7 +76,6 @@ class RestaurantModel {
         addressName: json["address_name"],
         latitude: json["latitude"]?.toDouble(),
         longitude: json["longitude"]?.toDouble(),
-        isOpen: json["is_open"],
         distance: json["distance"],
         averageRating: json["average_rating"],
       );
@@ -97,7 +94,6 @@ class RestaurantModel {
         "address_name": addressName,
         "latitude": latitude,
         "longitude": longitude,
-        "is_open": isOpen,
         "distance": distance,
         "average_rating": averageRating,
       };

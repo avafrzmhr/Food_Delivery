@@ -33,10 +33,16 @@ class _FoodTypesWidgetState extends State<FoodTypesWidget> {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(25),
-                color: const Color.fromARGB(255, 144, 142, 145),
+                color: Colors.white,
               ),
               width: 100,
-              child: Center(child: Text(uniqueMenu[index].categoryName)),
+              child: Center(
+                  child: Text(
+                uniqueMenu[index].categoryName,
+                style: TextStyle(
+                  color: Color.fromRGBO(48, 24, 172, 1),
+                ),
+              )),
             ),
           );
         },

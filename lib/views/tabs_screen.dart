@@ -4,10 +4,10 @@ import 'package:food_delivery/data/repository/location_repository.dart';
 import 'package:food_delivery/data/source/location_source.dart';
 import 'package:food_delivery/main.dart';
 import 'package:food_delivery/providers.dart';
-import 'package:food_delivery/views/customers/auth/get_mobile/auth_screen.dart';
 import 'package:food_delivery/views/customers/home/bottom_navigation_provider.dart';
 import 'package:food_delivery/views/customers/home/home_screen.dart';
 import 'package:food_delivery/views/customers/home/widgets/bottom_navigation_bar_widget.dart';
+import 'package:food_delivery/views/customers/shopping_cart/shopping_cart_screen.dart';
 import 'package:food_delivery/views/location/bloc/location_bloc.dart';
 import 'package:provider/provider.dart';
 
@@ -30,7 +30,7 @@ class _TabsScreenState extends State<TabsScreen> {
         'title': 'خانه',
       },
       {
-        'page': const HomeScreen(),
+        'page': const ShoppingCartScreen(),
         'title': 'سبد خرید',
       },
       {
@@ -82,7 +82,7 @@ class _TabsScreenState extends State<TabsScreen> {
                   _pages[provider.selectedIndex]['page'] as Widget,
             ),
             Positioned(
-              top: 30,
+              top: 35,
               right: 20,
               child: IconButton(
                 icon: const Icon(Icons.menu),

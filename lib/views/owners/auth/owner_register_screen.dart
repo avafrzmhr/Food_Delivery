@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/data/repository/auth_repository.dart';
 import 'package:food_delivery/data/source/auth_data_source.dart';
+import 'package:food_delivery/main.dart';
 import 'package:food_delivery/providers.dart';
 import 'package:food_delivery/views/customers/auth/get_mobile/auth_screen.dart';
 import 'package:food_delivery/views/customers/auth/get_mobile/bloc/login/bloc/login_bloc.dart';
@@ -84,42 +85,34 @@ class _OwnerRegisterScreenState extends State<OwnerRegisterScreen> {
                               ),
                             ),
                             const SizedBox(
-                              height: 15,
-                            ),
-                            const Padding(
-                              padding: EdgeInsets.only(right: 30),
-                              child: Text(
-                                'لطفا شماره تلفن خود را وارد کنید',
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 18,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
                               height: 45,
                             ),
                             AuthTextFieldWidget(
+                                keyboardType: TextInputType.number,
                                 width: constraints.maxWidth * 0.75,
                                 controller: mobileNumController,
                                 constraints: constraints,
                                 label: 'شماره تلفن'),
                             AuthTextFieldWidget(
+                                keyboardType: TextInputType.name,
                                 width: constraints.maxWidth * 0.75,
                                 controller: nameController,
                                 constraints: constraints,
                                 label: 'نام'),
                             AuthTextFieldWidget(
+                                keyboardType: TextInputType.name,
                                 width: constraints.maxWidth * 0.75,
                                 controller: lastNameController,
                                 constraints: constraints,
                                 label: 'نام خانوادگی'),
                             AuthTextFieldWidget(
+                                keyboardType: TextInputType.emailAddress,
                                 width: constraints.maxWidth * 0.75,
                                 controller: emailController,
                                 constraints: constraints,
                                 label: 'ایمیل'),
                             AuthTextFieldWidget(
+                                keyboardType: TextInputType.none,
                                 width: constraints.maxWidth * 0.75,
                                 controller: storeNameController,
                                 constraints: constraints,
@@ -210,6 +203,8 @@ class _OwnerRegisterScreenState extends State<OwnerRegisterScreen> {
                                             dropdownValue,
                                             storeDescController.text,
                                           ));
+                                          print(MyApp.sharedPreferences
+                                              .getString('access'));
                                         },
                                         style: ElevatedButton.styleFrom(
                                           padding: const EdgeInsets.symmetric(

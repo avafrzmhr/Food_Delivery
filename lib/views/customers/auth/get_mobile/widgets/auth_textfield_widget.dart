@@ -4,11 +4,14 @@ class AuthTextFieldWidget extends StatelessWidget {
   final BoxConstraints constraints;
   final TextEditingController controller;
   final double width;
+  // final String? validator;
+  final TextInputType? keyboardType;
   final String label;
   final String? suffixText;
   const AuthTextFieldWidget({
     super.key,
     required this.width,
+    required this.keyboardType,
     required this.controller,
     required this.constraints,
     required this.label,
@@ -19,9 +22,11 @@ class AuthTextFieldWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        padding: EdgeInsets.only(bottom: 15),
+        padding: const EdgeInsets.only(bottom: 15),
         width: width,
         child: TextFormField(
+          keyboardType: keyboardType,
+          // validator: (value) => validator!,
           controller: controller,
           decoration: InputDecoration(
             suffixText: suffixText,

@@ -6,7 +6,7 @@ abstract class RestaurantEvent extends Equatable {
 }
 
 class LoadRestaurantEvent extends RestaurantEvent {
-  LoadRestaurantEvent();
+  const LoadRestaurantEvent();
   @override
   List<Object?> get props => [];
 }

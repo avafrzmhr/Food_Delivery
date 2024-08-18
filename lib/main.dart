@@ -23,6 +23,9 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   static late SharedPreferences sharedPreferences;
 
+  static double defaultLat = 35.6997;
+  static double defaultLong = 51.3380;
+
   const MyApp({super.key});
 
   @override
@@ -52,7 +55,7 @@ class MyApp extends StatelessWidget {
         // home: const AuthScreen(),
         // initialRoute: '/',
         routes: {
-          '/': (context) => InitializationScreen(),
+          '/': (context) => const InitializationScreen(),
           '/login': (context) => const AuthScreen(),
           '/home': (context) => const TabsScreen(),
           '/owner': (context) => const OwnerHomeScreen(),
@@ -90,7 +93,7 @@ class _InitializationScreenState extends State<InitializationScreen> {
     // final ownerProvider = Provider.of<OwnerProvider>(context, listen: false);
     // ownerProvider.setOwner(isOwner);
     if (token != null) {
-      if (MyApp.sharedPreferences.getBool('isOwner')!) {
+      if (MyApp.sharedPreferences.getBool('isOwner') == true) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => const OwnerHomeScreen()),
         );
@@ -101,7 +104,7 @@ class _InitializationScreenState extends State<InitializationScreen> {
       }
     } else {
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => AuthScreen()),
+        MaterialPageRoute(builder: (context) => const AuthScreen()),
       );
     }
   }

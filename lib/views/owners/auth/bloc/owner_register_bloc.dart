@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:food_delivery/data/repository/auth_repository.dart';
 import 'package:food_delivery/data/source/auth_data_source.dart';
 import 'package:food_delivery/main.dart';
-import 'package:food_delivery/providers.dart';
 
 part 'owner_register_event.dart';
 part 'owner_register_state.dart';

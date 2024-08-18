@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class CategoryDropDownWidget extends StatefulWidget {
-  const CategoryDropDownWidget({super.key});
+class FormItemsWidget extends StatefulWidget {
+  const FormItemsWidget({super.key});
 
   @override
-  State<CategoryDropDownWidget> createState() => _CategoryDropDownWidgetState();
+  State<FormItemsWidget> createState() => _FormItemsWidgetState();
 }
 
-class _CategoryDropDownWidgetState extends State<CategoryDropDownWidget> {
+class _FormItemsWidgetState extends State<FormItemsWidget> {
   @override
   Widget build(BuildContext context) {
     List<String> list = [
