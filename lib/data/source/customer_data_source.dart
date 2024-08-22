@@ -58,9 +58,85 @@ class CustomerDataSource {
     }
   }
 
-  Future<List<Menu>> fetchFoods(int id) async {
+  Future<Restaurant> fetchCafe() async {
+    Response response = await dio.get(
+      'http://127.0.0.1:8000/customer/cofes',
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'JWT ${MyApp.sharedPreferences.getString('access')}',
+        },
+      ),
+    );
+    if (response.statusCode == 200) {
+      var restaurantResponse = restaurantFromJson(jsonEncode(response.data));
+      print(MyApp.sharedPreferences.getString('access'));
+      return restaurantResponse;
+    } else {
+      throw Exception('erorr');
+    }
+  }
+
+  Future<List<Menu>> fetchRestaurantFoods(int id) async {
     Response response = await dio.get(
       'http://127.0.0.1:8000/customer/restaurants/$id/foods',
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'JWT ${MyApp.sharedPreferences.getString('access')}',
+        },
+      ),
+    );
+    if (response.statusCode == 200) {
+      var foodResponse = menuFromJson(jsonEncode(response.data));
+      print(MyApp.sharedPreferences.getString('access'));
+      return foodResponse;
+    } else {
+      throw Exception('erorr');
+    }
+  }
+
+  Future<List<Menu>> fetchCafeFoods(int id) async {
+    Response response = await dio.get(
+      'http://127.0.0.1:8000/customer/cofes/$id/foods',
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'JWT ${MyApp.sharedPreferences.getString('access')}',
+        },
+      ),
+    );
+    if (response.statusCode == 200) {
+      var foodResponse = menuFromJson(jsonEncode(response.data));
+      print(MyApp.sharedPreferences.getString('access'));
+      return foodResponse;
+    } else {
+      throw Exception('erorr');
+    }
+  }
+
+  Future<List<Menu>> filterRestaurantFoods(String categoryName, int id) async {
+    Response response = await dio.get(
+      'http://127.0.0.1:8000/customer/restaurants/$id/foods/?food_category__category_name=$categoryName',
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'JWT ${MyApp.sharedPreferences.getString('access')}',
+        },
+      ),
+    );
+    if (response.statusCode == 200) {
+      var foodResponse = menuFromJson(jsonEncode(response.data));
+      print(MyApp.sharedPreferences.getString('access'));
+      return foodResponse;
+    } else {
+      throw Exception('erorr');
+    }
+  }
+
+  Future<List<Menu>> filterCafeFoods(String categoryName, int id) async {
+    Response response = await dio.get(
+      'http://127.0.0.1:8000/customer/cofes/$id/foods/?food_category__category_name=$categoryName',
       options: Options(
         headers: {
           'Content-Type': 'application/json',

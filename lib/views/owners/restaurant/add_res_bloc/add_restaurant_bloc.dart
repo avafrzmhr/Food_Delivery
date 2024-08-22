@@ -28,7 +28,7 @@ class AddRestaurantBloc extends Bloc<AddRestaurantEvent, AddRestaurantState> {
             event.lat,
             event.long,
           );
-          print(res);
+          print(res.data);
           emit(AddRestaurantSuccess());
         } catch (e) {
           emit(AddRestaurantError('errorrr'));

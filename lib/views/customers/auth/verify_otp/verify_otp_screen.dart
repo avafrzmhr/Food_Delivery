@@ -8,23 +8,16 @@ import 'package:food_delivery/views/customers/auth/verify_otp/bloc/verify_otp_bl
 import 'package:food_delivery/views/owners/home/owner_home.dart';
 import 'package:food_delivery/views/tabs_screen.dart';
 import 'package:pinput/pinput.dart';
-import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class VerifyOTPScreen extends StatefulWidget {
-  VerifyOTPScreen({super.key});
+  const VerifyOTPScreen({super.key});
 
   @override
   State<VerifyOTPScreen> createState() => _VerifyOTPScreenState();
 }
 
 class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
   final pinController = TextEditingController();
   final focusNode = FocusNode();
   @override

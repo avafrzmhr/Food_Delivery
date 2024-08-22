@@ -16,7 +16,7 @@ class AddFoodBloc extends Bloc<AddFoodEvent, AddFoodState> {
         try {
           final res = await ownerRepository.addFood(
               event.image, event.name, event.desc, event.category, event.price);
-          print(res);
+          print(res.data);
           emit(AddFoodSuccess());
         } catch (e) {
           emit(AddFoodError('errorrr'));

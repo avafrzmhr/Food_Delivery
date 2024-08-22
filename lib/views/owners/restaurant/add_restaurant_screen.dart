@@ -1,8 +1,8 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/main.dart';
 import 'package:food_delivery/views/location/location_screen.dart';
@@ -46,7 +46,7 @@ class _AddRestaurantScreenState extends State<AddRestaurantScreen> {
   TimeOfDay timeOfDay = TimeOfDay.now();
 
   Future<void> uploadImage() async {
-    print('Opening file picker...');
+    log('Opening file picker...');
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.image,
     );
@@ -56,7 +56,7 @@ class _AddRestaurantScreenState extends State<AddRestaurantScreen> {
         imagevalue = File(result.files.single.path!);
       });
     } else {
-      print('No image selected.');
+      log('No image selected.');
     }
   }
 
@@ -312,7 +312,7 @@ class _AddRestaurantScreenState extends State<AddRestaurantScreen> {
                               ));
 
                               if (state is AddRestaurantError) {
-                                print(state.message);
+                                log(state.message);
                               }
                             },
                             child: const Text(

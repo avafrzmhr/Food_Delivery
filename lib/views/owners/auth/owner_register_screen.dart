@@ -181,7 +181,7 @@ class _OwnerRegisterScreenState extends State<OwnerRegisterScreen> {
                                           Navigator.push(context,
                                               MaterialPageRoute(
                                                   builder: (context) {
-                                            return VerifyOTPScreen();
+                                            return const VerifyOTPScreen();
                                           }));
                                         }
                                       },
@@ -204,7 +204,8 @@ class _OwnerRegisterScreenState extends State<OwnerRegisterScreen> {
                                             storeDescController.text,
                                           ));
                                           print(MyApp.sharedPreferences
-                                              .getString('access'));
+                                              .getString('access')
+                                              .toString());
                                         },
                                         style: ElevatedButton.styleFrom(
                                           padding: const EdgeInsets.symmetric(

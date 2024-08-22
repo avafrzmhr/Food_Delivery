@@ -21,7 +21,7 @@ abstract class IOwnerRepository {
     double lat,
     double long,
   );
-  Future<List<Menu>> fetchFoods();
+  Future<List<Menu>> fetchRestaurantFoods();
   Future<Restaurant> fetchRestaurant();
   Future<Response> addFood(
     File image,
@@ -67,8 +67,8 @@ class OwnerRepository extends IOwnerRepository {
   }
 
   @override
-  Future<List<Menu>> fetchFoods() async {
-    var response = await OwnerDataSource().fetchFoods();
+  Future<List<Menu>> fetchRestaurantFoods() async {
+    var response = await OwnerDataSource().fetchRestaurantFoods();
     return response;
   }
 

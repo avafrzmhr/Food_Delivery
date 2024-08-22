@@ -43,7 +43,7 @@ class _BottomAddCardWidgetState extends State<BottomAddCardWidget> {
                         ),
                       ),
                       Text(
-                        '${widget.price}',
+                        '${widget.price.toInt()}',
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 27,

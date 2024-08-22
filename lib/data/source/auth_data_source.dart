@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 
 class AuthDataSource {
@@ -80,19 +82,19 @@ class AuthDataSource {
         ),
       );
       return response;
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       // Handle DioError here
-      print('DioError: ${e.message}');
+      log('DioError: ${e.message}');
       if (e.response != null) {
-        print('Response data: ${e.response?.data}');
-        print('Response headers: ${e.response?.headers}');
+        log('Response data: ${e.response?.data}');
+        log('Response headers: ${e.response?.headers}');
       } else {
-        print('Error sending request: ${e.message}');
+        log('Error sending request: ${e.message}');
       }
       rethrow; // Optionally rethrow the error
     } catch (e) {
       // Handle other types of errors
-      print('Error: ${e.toString()}');
+      log('Error: ${e.toString()}');
       rethrow; // Optionally rethrow the error
     }
   }

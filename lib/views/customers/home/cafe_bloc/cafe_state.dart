@@ -13,13 +13,13 @@ class CafeLoading extends CafeState {
   List<Object?> get props => [];
 }
 
-// class CafeSuccess extends CafeState {
-//   // final Cafe Cafes;
-//   // CafeSuccess(this.Cafes);
+class CafeSuccess extends CafeState {
+  final Restaurant cafe;
+  CafeSuccess(this.cafe);
 
-//   // @override
-//   // List<Object?> get props => [Cafes];
-// }
+  @override
+  List<Object?> get props => [cafe];
+}
 
 class CafeError extends CafeState {
   final String message;

@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
@@ -84,7 +85,7 @@ class _AddFoodFormState extends State<AddFoodForm> {
                     BlocBuilder<CategoryBloc, CategoryState>(
                         builder: (context, state) {
                       BlocProvider.of<CategoryBloc>(context)
-                          .add(LoadCategoryEvent());
+                          .add(const LoadCategoryEvent());
 
                       if (state is CategorySuccess) {
                         selectedCategory ??= state.categoryModel.isNotEmpty
@@ -106,8 +107,7 @@ class _AddFoodFormState extends State<AddFoodForm> {
                                   selectedCategory = value;
                                 });
                                 if (selectedCategory != null) {
-                                  print(
-                                      'Selected Category ID: ${selectedCategory!.id}');
+                                  log('Selected Category ID: ${selectedCategory!.id}');
                                 }
                               },
                               dropdownMenuEntries: state.categoryModel
@@ -135,7 +135,7 @@ class _AddFoodFormState extends State<AddFoodForm> {
                       label: '',
                     ),
                     TextFieldRowWidget(
-                      width: 100,
+                      width: 170,
                       controller: priceController,
                       constraints: constraints,
                       text: ':قیمت',
@@ -177,8 +177,8 @@ class _AddFoodFormState extends State<AddFoodForm> {
                           });
                         }
                         if (state is AddFoodError) {
-                          print(state.message);
-                        } // TODO: implement listener
+                          log(state.message);
+                        }
                       },
                       child: BlocBuilder<AddFoodBloc, AddFoodState>(
                         builder: (context, state) {

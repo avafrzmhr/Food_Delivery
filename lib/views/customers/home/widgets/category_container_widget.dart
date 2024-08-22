@@ -5,11 +5,13 @@ class CategoryContainerWidget extends StatefulWidget {
   final String text;
   final String name;
   final BoxConstraints constraints;
+  final bool isCafe;
   CategoryContainerWidget(
     this.constraints, {
     super.key,
     required this.text,
     required this.name,
+    required this.isCafe,
   });
 
   @override
@@ -23,7 +25,7 @@ class _CategoryContainerWidgetState extends State<CategoryContainerWidget> {
     return GestureDetector(
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return CategoryShopsScreen();
+          return CategoryShopsScreen(isCafe: widget.isCafe);
         }));
       },
       child: Column(

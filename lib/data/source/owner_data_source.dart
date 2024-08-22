@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:food_delivery/data/model/restaurant/category_model.dart';
 import 'package:food_delivery/data/model/restaurant/menu_response.dart';
 import 'package:food_delivery/data/model/restaurant/restaurant_response.dart';
@@ -67,7 +66,7 @@ class OwnerDataSource {
     }
   }
 
-  Future<List<Menu>> fetchFoods() async {
+  Future<List<Menu>> fetchRestaurantFoods() async {
     Response response = await dio.get(
       'http://127.0.0.1:8000/core/add_food/',
       options: Options(

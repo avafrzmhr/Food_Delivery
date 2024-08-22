@@ -3,7 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/views/owners/menu/bloc/menu_foods_bloc.dart';
 
 class MenuItems extends StatefulWidget {
-  const MenuItems({super.key});
+  final String categoryName;
+  const MenuItems({
+    super.key,
+    required this.categoryName,
+  });
 
   @override
   State<MenuItems> createState() => _MenuItemsState();
@@ -14,7 +18,7 @@ class _MenuItemsState extends State<MenuItems> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Drinks'),
+        title: Text(widget.categoryName),
       ),
       body: BlocProvider(
         create: (context) => MenuFoodsBloc()..add(const LoadMenuFoodsEvent()),
@@ -29,7 +33,7 @@ class _MenuItemsState extends State<MenuItems> {
                           horizontal: 20, vertical: 10),
                       height: 110,
                       decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 220, 218, 255),
+                        color: const Color.fromARGB(255, 221, 209, 255),
                         borderRadius: BorderRadius.circular(15),
                       ),
                       child: Row(
@@ -65,7 +69,7 @@ class _MenuItemsState extends State<MenuItems> {
                                 child: Text(
                                   '\$${state.menu[index].price}',
                                   style: const TextStyle(
-                                    color: Color.fromRGBO(48, 24, 172, 1),
+                                    color: Color.fromRGBO(84, 54, 230, 1),
                                   ),
                                 ),
                               ),

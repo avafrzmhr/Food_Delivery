@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'dart:convert';
-
 List<CategoryModel> categoryFromJson(String str) => List<CategoryModel>.from(
     json.decode(str).map((x) => CategoryModel.fromJson(x)));
 

@@ -26,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: LayoutBuilder(builder: (context, constraints) {
         return Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
             TopBarWidget(
@@ -41,6 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     imageSrc: p0.image,
                     resName: p0.name,
                     id: p0.id,
+                    isCafe: false,
                   );
                 }));
               },
@@ -51,11 +52,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   CategoryContainerWidget(
+                    isCafe: true,
                     constraints,
                     text: 'کافه',
                     name: Assets.images.nathanDumlaoZUNs99PGDg0Unsplash.keyName,
                   ),
                   CategoryContainerWidget(
+                    isCafe: false,
                     constraints,
                     text: 'رستوران',
                     name: Assets.images.davideCantelliJpkfc5DDIUnsplash.keyName,
@@ -97,10 +100,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Container(
                     margin: const EdgeInsets.only(right: 15),
                     child: RestaurantsListViewWidget(
+                      isCafe: false,
+                      isBoth: true,
                       scrollDirection: Axis.horizontal,
                       constraints: constraints,
-                      width: constraints.maxWidth * 0.72,
-                      height: constraints.maxHeight * 0.28,
+                      width: constraints.maxWidth * 0.65,
+                      height: constraints.maxHeight * 0.25,
                     )),
               ),
             ),

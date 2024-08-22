@@ -8,7 +8,6 @@ import 'package:food_delivery/views/customers/auth/get_mobile/bloc/register/regi
 import 'package:food_delivery/views/customers/auth/get_mobile/widgets/auth_textfield_widget.dart';
 import 'package:food_delivery/views/customers/auth/verify_otp/verify_otp_screen.dart';
 import 'package:food_delivery/views/owners/auth/owner_register_screen.dart';
-import 'package:provider/provider.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -131,7 +130,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                         Navigator.push(context,
                                             MaterialPageRoute(
                                                 builder: (context) {
-                                          return VerifyOTPScreen();
+                                          return const VerifyOTPScreen();
                                         }));
                                       }
                                     },
@@ -142,7 +141,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                         Navigator.push(context,
                                             MaterialPageRoute(
                                                 builder: (context) {
-                                          return VerifyOTPScreen();
+                                          return const VerifyOTPScreen();
                                         }));
                                       }
                                     },
@@ -209,7 +208,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                     }));
                                   });
                                 },
-                                child: Text(
+                                child: const Text(
                                     'میخواهید رستوران خود را ثبت کنید؟اینجا کلیک کنید')),
                           )
                         ],

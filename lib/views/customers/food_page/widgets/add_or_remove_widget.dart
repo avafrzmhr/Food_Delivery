@@ -13,7 +13,7 @@ class AddOrRemoveWidget extends StatelessWidget {
           color: Colors.grey.withOpacity(0.7),
           child: IconButton(
             onPressed: () {},
-            icon: Icon(Icons.remove_rounded),
+            icon: const Icon(Icons.remove_rounded),
             iconSize: 30,
           ),
         ),
@@ -30,7 +30,7 @@ class AddOrRemoveWidget extends StatelessWidget {
           color: Colors.grey.withOpacity(0.7),
           child: IconButton(
             onPressed: () {},
-            icon: Icon(Icons.add_rounded),
+            icon: const Icon(Icons.add_rounded),
             iconSize: 30,
           ),
         )

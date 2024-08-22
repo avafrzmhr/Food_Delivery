@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/data/repository/location_repository.dart';
@@ -84,12 +86,14 @@ class _InitializationScreenState extends State<InitializationScreen> {
       MyApp.sharedPreferences = await SharedPreferences.getInstance();
       _checkAuthStatus();
     } catch (e) {
-      print('Error initializing app: $e');
+      log('Error initializing app: $e');
     }
   }
 
   void _checkAuthStatus() {
     final token = MyApp.sharedPreferences.getString('access');
+    log(MyApp.sharedPreferences.getString('access').toString());
+
     // final ownerProvider = Provider.of<OwnerProvider>(context, listen: false);
     // ownerProvider.setOwner(isOwner);
     if (token != null) {

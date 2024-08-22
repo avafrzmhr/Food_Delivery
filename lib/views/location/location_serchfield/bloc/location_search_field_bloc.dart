@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:food_delivery/data/model/neshan/neshan_search_address_request.dart';
@@ -18,7 +20,7 @@ class LocationSearchFieldBloc
           final items = await locationRepository.searchLocation(event.request);
           emit(LocationSearchFieldSuccess(items));
         } catch (e) {
-          print(e);
+          log(e.toString());
           emit(const LocationSearchFieldError(''));
         }
       }

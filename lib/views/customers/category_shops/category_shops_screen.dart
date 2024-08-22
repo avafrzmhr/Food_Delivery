@@ -8,7 +8,9 @@ import 'package:food_delivery/views/customers/restaurant_page/restaurant_page.da
 import 'package:provider/provider.dart';
 
 class CategoryShopsScreen extends StatefulWidget {
-  const CategoryShopsScreen({super.key});
+  final bool isCafe;
+
+  const CategoryShopsScreen({super.key, required this.isCafe});
 
   @override
   State<CategoryShopsScreen> createState() => _CategoryShopsScreenState();
@@ -33,6 +35,7 @@ class _CategoryShopsScreenState extends State<CategoryShopsScreen> {
                     imageSrc: p0.image,
                     resName: p0.name,
                     id: p0.id,
+                    isCafe: widget.isCafe,
                   );
                 }));
               },
@@ -80,12 +83,15 @@ class _CategoryShopsScreenState extends State<CategoryShopsScreen> {
                 textDirection: TextDirection.rtl,
                 child: Container(
                   padding: EdgeInsets.only(
-                      top: 15, right: constraints.maxWidth * 0.08),
-                  child: RestaurantsListViewWidget(
-                    scrollDirection: Axis.vertical,
-                    constraints: constraints,
-                    width: constraints.maxWidth * 0.83,
-                    height: constraints.maxHeight * 0.3,
+                      top: 15, right: constraints.maxWidth * 0.12),
+                  child: Center(
+                    child: RestaurantsListViewWidget(
+                      isCafe: widget.isCafe,
+                      scrollDirection: Axis.vertical,
+                      constraints: constraints,
+                      width: constraints.maxWidth * 0.75,
+                      height: constraints.maxHeight * 0.25,
+                    ),
                   ),
                 ),
               ),

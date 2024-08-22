@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -54,7 +56,7 @@ class _LocationSearchFieldState extends State<LocationSearchField> {
   }
 
   void _onTextChanged(String text) {
-    print('Text changed: $text');
+    log('Text changed: $text');
     if (text.isNotEmpty) {
       final request = NeshanSearchAddressRequest(
         address: text,
@@ -83,7 +85,7 @@ class _LocationSearchFieldState extends State<LocationSearchField> {
             });
           }
           if (state is LocationSearchFieldError) {
-            print(state.message);
+            log(state.message);
           }
         },
         builder: (context, state) {

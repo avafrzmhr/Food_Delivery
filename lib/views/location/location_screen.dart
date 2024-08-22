@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -119,7 +121,7 @@ class _LocationScreenState extends State<LocationScreen> {
                         BlocProvider.of<LocationBloc>(context).add(
                             LocationChanged(
                                 lat: latlng.latitude, lang: latlng.longitude));
-                        print(latlng);
+                        log(latlng.toString());
                       },
                     ),
                     children: [

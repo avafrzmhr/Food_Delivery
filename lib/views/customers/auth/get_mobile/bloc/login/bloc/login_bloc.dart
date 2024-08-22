@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -15,14 +18,16 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         try {
           emit(LoginLoading());
           final res = await authRepository.login(event.phoneNumber);
-          print(res.statusCode);
           if (res.statusCode == 200) {
             MyApp.sharedPreferences
                 .setString('phone_number', event.phoneNumber);
-            print(res.data);
+
+            // Assuming res.data is a Map, log it as a JSON string
+            log(jsonEncode(res.data));
+
             emit(LoginSuccess());
           } else {
-            emit(LoginError(res.statusMessage.toString()));
+            emit(LoginError(res.statusMessage ?? 'Unknown error'));
           }
         } catch (e) {
           emit(LoginError(e.toString()));

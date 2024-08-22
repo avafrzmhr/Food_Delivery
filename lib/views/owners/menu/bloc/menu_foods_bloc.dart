@@ -13,7 +13,7 @@ class MenuFoodsBloc extends Bloc<MenuFoodsEvent, MenuFoodsState> {
       OwnerRepository ownerRepository = OwnerRepository();
       if (event is LoadMenuFoodsEvent) {
         try {
-          final res = await ownerRepository.fetchFoods();
+          final res = await ownerRepository.fetchRestaurantFoods();
           emit(MenuFoodsSuccess(res));
         } catch (e) {
           emit(MenuFoodsError('errorrr'));

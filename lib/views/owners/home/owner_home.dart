@@ -35,10 +35,6 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
             ) // Populate the Drawer in the next step.
             ),
         appBar: AppBar(
-          title: const Text(
-            'Restaurant Name',
-            style: TextStyle(fontSize: 16),
-          ),
           centerTitle: true,
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(40),

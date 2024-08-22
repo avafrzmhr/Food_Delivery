@@ -1,20 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:food_delivery/views/customers/category_shops/food_types_widget.dart';
-import 'package:food_delivery/views/customers/restaurant_page/bloc/restaurant_detail_bloc.dart';
+import 'package:food_delivery/views/customers/restaurant_page/filter_cafe_bloc/filter_cafe_foods_bloc.dart';
+import 'package:food_delivery/views/customers/restaurant_page/cafe_bloc/cafe_detail_bloc.dart';
+import 'package:food_delivery/views/customers/restaurant_page/widgets/food_types_widget.dart';
+import 'package:food_delivery/views/customers/restaurant_page/res_bloc/restaurant_detail_bloc.dart';
 import 'package:food_delivery/views/customers/restaurant_page/widgets/food_card_widget.dart';
 import 'package:food_delivery/views/customers/restaurant_page/widgets/topbar_picture_widget.dart';
+import 'package:food_delivery/views/customers/restaurant_page/filter_res_bloc/filter_res_foods_bloc.dart';
 
 class RestaurantPage extends StatefulWidget {
   final String resName;
   final int id;
-  final imageSrc;
+  final String imageSrc;
+  final bool isCafe;
 
-  const RestaurantPage(
-      {super.key,
-      required this.resName,
-      required this.imageSrc,
-      required this.id});
+  const RestaurantPage({
+    super.key,
+    required this.resName,
+    required this.imageSrc,
+    required this.id,
+    required this.isCafe,
+  });
 
   @override
   State<RestaurantPage> createState() => _RestaurantPageState();
@@ -24,12 +30,23 @@ class _RestaurantPageState extends State<RestaurantPage> {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
-      return BlocProvider(
-        create: (context) =>
-            RestaurantDetailBloc()..add(LoadRestaurantDetailEvent(widget.id)),
+      return MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => RestaurantDetailBloc()
+              ..add(LoadRestaurantDetailEvent(widget.id)),
+          ),
+          BlocProvider(
+            create: (context) =>
+                CafeDetailBloc()..add(LoadCafeDetailEvent(widget.id)),
+          ),
+          BlocProvider(
+            create: (context) => FilterRestaurantFoodsBloc(),
+          ),
+        ],
         child: Scaffold(
           appBar: AppBar(
-            backgroundColor: Color.fromARGB(255, 224, 213, 255),
+            backgroundColor: const Color.fromARGB(255, 224, 213, 255),
             title: Text(widget.resName),
           ),
           backgroundColor: const Color.fromARGB(255, 235, 235, 235),
@@ -78,32 +95,93 @@ class _RestaurantPageState extends State<RestaurantPage> {
                   ],
                 ),
               ),
-              BlocBuilder<RestaurantDetailBloc, RestaurantDetailState>(
-                builder: (context, state) {
-                  if (state is RestaurantDetailSuccess) {
-                    return FoodTypesWidget(
-                      constraints,
-                      menu: state.menu,
-                    );
-                  }
-                  return Container();
-                },
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              BlocBuilder<RestaurantDetailBloc, RestaurantDetailState>(
-                  builder: (context, state) {
-                if (state is RestaurantDetailSuccess) {
-                  return Expanded(
-                    child: FoodCardWidget(
-                      menu: state.menu,
-                      resName: widget.resName,
+              !widget.isCafe
+                  ? BlocBuilder<RestaurantDetailBloc, RestaurantDetailState>(
+                      builder: (context, state) {
+                        if (state is RestaurantDetailSuccess) {
+                          return FoodTypesWidget(
+                            id: widget.id,
+                            constraints: constraints,
+                            menu: state.menu,
+                            isCafe: widget.isCafe,
+                          );
+                        }
+                        return Container(); // Can show a loading indicator here if needed
+                      },
+                    )
+                  : BlocBuilder<CafeDetailBloc, CafeDetailState>(
+                      builder: (context, state) {
+                        if (state is CafeDetailSuccess) {
+                          return FoodTypesWidget(
+                            id: widget.id,
+                            constraints: constraints,
+                            menu: state.menu,
+                            isCafe: widget.isCafe,
+                          );
+                        }
+                        return Container(); // Can show a loading indicator here if needed
+                      },
                     ),
-                  );
-                }
-                return Container();
-              }),
+              const SizedBox(height: 15),
+              !widget.isCafe
+                  ? BlocBuilder<FilterRestaurantFoodsBloc,
+                      FilterRestaurantFoodsState>(
+                      builder: (context, state) {
+                        if (state is FilterRestaurantFoodsSuccess) {
+                          return Expanded(
+                            child: FoodCardWidget(
+                              menu: state.menu,
+                              resName: widget.resName,
+                            ),
+                          );
+                        } else if (state is FilterRestaurantFoodsInitial) {
+                          // Show the full menu when "همه" is selected
+                          return BlocBuilder<RestaurantDetailBloc,
+                              RestaurantDetailState>(
+                            builder: (context, state) {
+                              if (state is RestaurantDetailSuccess) {
+                                return Expanded(
+                                  child: FoodCardWidget(
+                                    menu: state.menu,
+                                    resName: widget.resName,
+                                  ),
+                                );
+                              }
+                              return Container(); // Can show a loading indicator here if needed
+                            },
+                          );
+                        }
+                        return Container(); // Fallback empty container
+                      },
+                    )
+                  : BlocBuilder<FilterCafeFoodsBloc, FilterCafeFoodsState>(
+                      builder: (context, state) {
+                        if (state is FilterCafeFoodsSuccess) {
+                          return Expanded(
+                            child: FoodCardWidget(
+                              menu: state.menu,
+                              resName: widget.resName,
+                            ),
+                          );
+                        } else if (state is FilterCafeFoodsInitial) {
+                          // Show the full menu when "همه" is selected
+                          return BlocBuilder<CafeDetailBloc, CafeDetailState>(
+                            builder: (context, state) {
+                              if (state is CafeDetailSuccess) {
+                                return Expanded(
+                                  child: FoodCardWidget(
+                                    menu: state.menu,
+                                    resName: widget.resName,
+                                  ),
+                                );
+                              }
+                              return Container(); // Can show a loading indicator here if needed
+                            },
+                          );
+                        }
+                        return Container(); // Fallback empty container
+                      },
+                    )
             ],
           ),
         ),
