@@ -22,7 +22,7 @@ class CartDataSource {
     );
     if (response.statusCode == 200) {
       print(MyApp.sharedPreferences.getString('access'));
-      return response.data;
+      return response;
     } else {
       throw Exception('erorr');
     }

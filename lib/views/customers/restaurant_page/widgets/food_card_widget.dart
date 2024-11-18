@@ -29,13 +29,7 @@ class _FoodCardWidgetState extends State<FoodCardWidget> {
             return GestureDetector(
               onTap: () =>
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return FoodScreen(
-                  imageSrc: widget.menu[index].image,
-                  foodName: widget.menu[index].name,
-                  rate: widget.menu[index].averageRating,
-                  desc: widget.menu[index].desc,
-                  price: widget.menu[index].price,
-                );
+                return FoodScreen(widget.menu[index]);
               })),
               child: Container(
                 margin: const EdgeInsets.only(right: 15, left: 15),

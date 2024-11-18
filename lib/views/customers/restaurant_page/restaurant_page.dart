@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_delivery/views/customers/food_page/bloc/add_to_cart_bloc.dart';
 import 'package:food_delivery/views/customers/restaurant_page/filter_cafe_bloc/filter_cafe_foods_bloc.dart';
 import 'package:food_delivery/views/customers/restaurant_page/cafe_bloc/cafe_detail_bloc.dart';
 import 'package:food_delivery/views/customers/restaurant_page/widgets/food_types_widget.dart';
@@ -42,6 +43,9 @@ class _RestaurantPageState extends State<RestaurantPage> {
           ),
           BlocProvider(
             create: (context) => FilterRestaurantFoodsBloc(),
+          ),
+          BlocProvider(
+            create: (context) => AddToCartBloc(),
           ),
         ],
         child: Scaffold(
