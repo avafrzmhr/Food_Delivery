@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:food_delivery/data/model/restaurant/restaurant_response.dart';
-import 'package:food_delivery/providers.dart';
 import 'package:food_delivery/views/customers/home/res_bloc/restaurant_bloc.dart';
 
 class SearchBarWidget extends StatefulWidget {
@@ -17,30 +16,27 @@ class SearchBarWidget extends StatefulWidget {
 }
 
 class _SearchBarWidgetState extends State<SearchBarWidget> {
-  List<RestaurantModel> restaurants = [];
-
   final TextEditingController _textController = TextEditingController();
-  double _turn = 1;
   final ScrollController _scrollController =
       ScrollController(debugLabel: "LocationSearchField-scroll");
 
   @override
   Widget build(BuildContext context) {
-    context.read<Providers>().init();
-
     return BlocProvider(
-      create: (context) => RestaurantBloc(),
+      create: (context) => RestaurantBloc()
+        ..add(LoadDataEvent(loadRestaurants: true, loadCafes: true)),
       child: BlocBuilder<RestaurantBloc, RestaurantState>(
         builder: (context, state) {
           return LayoutBuilder(builder: (context, constraints) {
             return Container(
               margin: const EdgeInsets.only(top: 30),
-              // padding: const EdgeInsets.only(top: 30),
               width: constraints.maxWidth * 0.9,
               height: 50,
               child: TypeAheadField(
                 hideOnLoading: false,
-                noItemsFoundBuilder: (context) => Container(),
+                noItemsFoundBuilder: (context) => const Center(
+                  child: Text("No suggestions found"),
+                ),
                 scrollController: _scrollController,
                 suggestionsBoxDecoration: SuggestionsBoxDecoration(
                   color: Colors.white,
@@ -74,17 +70,21 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
                       color: Colors.grey,
                     ),
                     border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey.shade100),
-                        borderRadius: BorderRadius.circular(10)),
+                      borderSide: BorderSide(color: Colors.grey.shade100),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                     focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey.shade100),
-                        borderRadius: BorderRadius.circular(10)),
+                      borderSide: BorderSide(color: Colors.grey.shade100),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                     enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey.shade100),
-                        borderRadius: BorderRadius.circular(10)),
+                      borderSide: BorderSide(color: Colors.grey.shade100),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                     disabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey.shade100),
-                        borderRadius: BorderRadius.circular(10)),
+                      borderSide: BorderSide(color: Colors.grey.shade100),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
                 ),
                 itemBuilder: (context, suggestion) {
@@ -102,16 +102,20 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
                   );
                 },
                 suggestionsCallback: (pattern) async {
-                  BlocProvider.of<RestaurantBloc>(context)
-                      .add(LoadRestaurantEvent());
                   if (state is RestaurantSuccess) {
-                    restaurants = state.restaurants.data;
+                    final combinedList = [
+                      ...state.restaurants,
+                      ...state.cafes,
+                    ];
+                    return combinedList
+                        .where((item) => item.name.contains(pattern))
+                        .toList();
                   }
-                  return restaurants;
+                  return [];
                 },
-                onSuggestionsBoxToggle: (p0) {
+                onSuggestionsBoxToggle: (isOpen) {
                   setState(() {
-                    _turn == 1 ? _turn = 0.5 : _turn = 1;
+                    // Flip the state of the arrow or toggle indicator
                   });
                 },
                 onSuggestionSelected: (suggestion) {

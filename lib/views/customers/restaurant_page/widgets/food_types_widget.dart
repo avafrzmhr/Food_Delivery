@@ -1,21 +1,17 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:food_delivery/data/model/restaurant/menu_response.dart';
-import 'package:food_delivery/views/customers/restaurant_page/filter_cafe_bloc/filter_cafe_foods_bloc.dart';
-import 'package:food_delivery/views/customers/restaurant_page/cafe_bloc/cafe_detail_bloc.dart';
-import 'package:food_delivery/views/customers/restaurant_page/res_bloc/restaurant_detail_bloc.dart';
 import 'package:food_delivery/views/customers/restaurant_page/filter_res_bloc/filter_res_foods_bloc.dart';
+import 'package:food_delivery/views/customers/restaurant_page/res_bloc/restaurant_detail_bloc.dart';
 
 class FoodTypesWidget extends StatefulWidget {
   final BoxConstraints constraints;
-  final List<Menu> menu;
   final int id;
   final bool isCafe;
+
   const FoodTypesWidget({
     super.key,
     required this.constraints,
-    required this.menu,
     required this.id,
     required this.isCafe,
   });
@@ -26,116 +22,91 @@ class FoodTypesWidget extends StatefulWidget {
 
 class _FoodTypesWidgetState extends State<FoodTypesWidget> {
   String? _selectedCategory = 'همه';
+
   @override
   Widget build(BuildContext context) {
-    final uniqueCategories = <String>{};
-    final uniqueMenu = widget.menu
-        .where((item) => uniqueCategories.add(item.categoryName))
-        .toList();
+    return BlocBuilder<RestaurantDetailBloc, RestaurantDetailState>(
+      builder: (context, state) {
+        if (state is RestaurantDetailLoading) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (state is RestaurantDetailSuccess) {
+          final uniqueCategories = <String>{};
+          final menu = state.menu;
+          final uniqueMenu = menu
+              .where((item) => uniqueCategories.add(item.categoryName))
+              .toList();
 
-    return SizedBox(
-      height: widget.constraints.maxHeight * 0.06,
-      child: ListView.builder(
-        dragStartBehavior: DragStartBehavior.start,
-        itemCount: uniqueMenu.length + 1, // Increase item count by 1
-        physics: const BouncingScrollPhysics(),
-        scrollDirection: Axis.horizontal,
-        reverse: true,
-        itemBuilder: (context, index) {
-          // Add your manual container before the list items
-          if (index == 0) {
-            return BlocBuilder<RestaurantDetailBloc, RestaurantDetailState>(
-              builder: (context, state) {
+          return SizedBox(
+            height: widget.constraints.maxHeight * 0.06,
+            child: ListView.builder(
+              itemCount: uniqueMenu.length + 1, // Add "همه" option
+              scrollDirection: Axis.horizontal,
+              reverse: true,
+              itemBuilder: (context, index) {
+                if (index == 0) {
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _selectedCategory = 'همه';
+                      });
+                      BlocProvider.of<RestaurantDetailBloc>(context).add(
+                        LoadRestaurantDetailEvent(widget.id, widget.isCafe),
+                      );
+                    },
+                    child: _buildCategoryItem(
+                      categoryName: 'همه',
+                      isSelected: _selectedCategory == 'همه',
+                    ),
+                  );
+                }
+
+                final menuIndex = index - 1;
+                final categoryName = uniqueMenu[menuIndex].categoryName;
+
                 return GestureDetector(
                   onTap: () {
                     setState(() {
-                      _selectedCategory = 'همه';
+                      _selectedCategory = categoryName;
                     });
-                    if (!widget.isCafe) {
-                      BlocProvider.of<FilterRestaurantFoodsBloc>(context)
-                          .add(ResetFilterRestaurantFoodsEvent());
-
-                      // Reload all foods (you might need this to ensure correct behavior)
-                      BlocProvider.of<RestaurantDetailBloc>(context)
-                          .add(LoadRestaurantDetailEvent(widget.id));
-                    } else {
-                      BlocProvider.of<FilterCafeFoodsBloc>(context)
-                          .add(ResetFilterCafeFoodsEvent());
-
-                      // Reload all foods
-                      BlocProvider.of<CafeDetailBloc>(context)
-                          .add(LoadCafeDetailEvent(widget.id));
-                    }
-                    // Passing null to load all foods
+                    BlocProvider.of<FilterFoodsBloc>(context).add(
+                        FilterByCategoryEvent(
+                            categoryName, widget.id, widget.isCafe));
                   },
-                  child: Container(
-                    margin: const EdgeInsets.only(right: 20),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(25),
-                      color: _selectedCategory == 'همه'
-                          ? const Color.fromRGBO(48, 24, 172, 1)
-                          : Colors.white,
-                    ),
-                    width: 100,
-                    child: Center(
-                      child: Text(
-                        'همه',
-                        style: TextStyle(
-                          color: _selectedCategory == 'همه'
-                              ? Colors.white
-                              : const Color.fromRGBO(48, 24, 172, 1),
-                        ),
-                      ),
-                    ),
+                  child: _buildCategoryItem(
+                    categoryName: categoryName,
+                    isSelected: _selectedCategory == categoryName,
                   ),
                 );
               },
-            );
-          }
-
-          // Adjust the index for uniqueMenu since we added a manual item
-          final menuIndex = index - 1;
-          final categoryName = uniqueMenu[menuIndex].categoryName;
-
-          return BlocBuilder<FilterRestaurantFoodsBloc,
-              FilterRestaurantFoodsState>(
-            builder: (context, state) {
-              return GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _selectedCategory = categoryName;
-                  });
-                  !widget.isCafe
-                      ? BlocProvider.of<FilterRestaurantFoodsBloc>(context).add(
-                          LoadFilterRestaurantFoodsEvent(
-                              categoryName, widget.id))
-                      : BlocProvider.of<FilterCafeFoodsBloc>(context).add(
-                          LoadFilterCafeFoodsEvent(categoryName, widget.id));
-                },
-                child: Container(
-                  margin: const EdgeInsets.only(right: 20),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(25),
-                    color: _selectedCategory == categoryName
-                        ? const Color.fromRGBO(48, 24, 172, 1)
-                        : Colors.white,
-                  ),
-                  width: 100,
-                  child: Center(
-                    child: Text(
-                      categoryName,
-                      style: TextStyle(
-                        color: _selectedCategory == categoryName
-                            ? Colors.white
-                            : const Color.fromRGBO(48, 24, 172, 1),
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            },
+            ),
           );
-        },
+        } else {
+          return const Center(child: Text('Error loading data'));
+        }
+      },
+    );
+  }
+
+  Widget _buildCategoryItem({
+    required String categoryName,
+    required bool isSelected,
+  }) {
+    return Container(
+      margin: const EdgeInsets.only(right: 20),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(25),
+        color: isSelected ? const Color.fromRGBO(48, 24, 172, 1) : Colors.white,
+      ),
+      width: 100,
+      child: Center(
+        child: Text(
+          categoryName,
+          style: TextStyle(
+            color: isSelected
+                ? Colors.white
+                : const Color.fromRGBO(48, 24, 172, 1),
+          ),
+        ),
       ),
     );
   }

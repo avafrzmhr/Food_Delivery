@@ -1,19 +1,30 @@
 part of 'filter_res_foods_bloc.dart';
 
 @immutable
-abstract class FilterRestaurantFoodsEvent extends Equatable {
-  const FilterRestaurantFoodsEvent();
+abstract class FilterFoodsEvent extends Equatable {
+  const FilterFoodsEvent();
 }
 
-class LoadFilterRestaurantFoodsEvent extends FilterRestaurantFoodsEvent {
+class FilterByCategoryEvent extends FilterFoodsEvent {
   final String categoryName;
   final int id;
-  const LoadFilterRestaurantFoodsEvent(this.categoryName, this.id);
+  final bool isCafe;
+
+  const FilterByCategoryEvent(this.categoryName, this.id, this.isCafe);
+
   @override
-  List<Object?> get props => [categoryName, id];
+  List<Object?> get props => [categoryName, id, isCafe];
 }
 
-class ResetFilterRestaurantFoodsEvent extends FilterRestaurantFoodsEvent {
+// class LoadFilterCafeFoodsEvent extends FilterFoodsEvent {
+//   final String categoryName;
+//   final int id;
+//   const LoadFilterCafeFoodsEvent(this.categoryName, this.id);
+//   @override
+//   List<Object?> get props => [categoryName, id];
+// }
+
+class ResetFilterFoodsEvent extends FilterFoodsEvent {
   @override
   // TODO: implement props
   List<Object?> get props => throw UnimplementedError();

@@ -7,23 +7,26 @@ import 'package:food_delivery/data/repository/customer_repository.dart';
 part 'filter_res_foods_event.dart';
 part 'filter_res_foods_state.dart';
 
-class FilterRestaurantFoodsBloc
-    extends Bloc<FilterRestaurantFoodsEvent, FilterRestaurantFoodsState> {
-  FilterRestaurantFoodsBloc() : super(FilterRestaurantFoodsInitial()) {
-    on<FilterRestaurantFoodsEvent>((event, emit) async {
+class FilterFoodsBloc extends Bloc<FilterFoodsEvent, FilterFoodsState> {
+  FilterFoodsBloc() : super(FilterFoodsInitial()) {
+    on<FilterFoodsEvent>((event, emit) async {
       CustomerRepository customerRepository = CustomerRepository();
-      if (event is LoadFilterRestaurantFoodsEvent) {
+      if (event is FilterByCategoryEvent) {
         try {
-          final res = await customerRepository.filterRestaurantFoods(
-              event.categoryName, event.id);
-          emit(FilterRestaurantFoodsSuccess(res));
+          final res = event.isCafe
+              ? await customerRepository.filterCafeFoods(
+                  event.categoryName, event.id)
+              : await customerRepository.filterRestaurantFoods(
+                  event.categoryName, event.id);
+          emit(FilterFoodsSuccess(res));
         } catch (e) {
-          emit(FilterRestaurantFoodsError('errorrr'));
+          emit(FilterFoodsError('errorrr'));
         }
       }
     });
-    on<ResetFilterRestaurantFoodsEvent>((event, emit) {
-      emit(FilterRestaurantFoodsInitial());
+
+    on<ResetFilterFoodsEvent>((event, emit) {
+      emit(FilterFoodsInitial());
     });
   }
 }

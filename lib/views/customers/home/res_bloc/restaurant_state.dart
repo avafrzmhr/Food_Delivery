@@ -14,11 +14,13 @@ class RestaurantLoading extends RestaurantState {
 }
 
 class RestaurantSuccess extends RestaurantState {
-  final Restaurant restaurants;
-  RestaurantSuccess(this.restaurants);
+  final List<dynamic> restaurants;
+  final List<dynamic> cafes;
+
+  RestaurantSuccess({required this.restaurants, required this.cafes});
 
   @override
-  List<Object?> get props => [restaurants];
+  List<Object?> get props => [restaurants, cafes];
 }
 
 class RestaurantError extends RestaurantState {

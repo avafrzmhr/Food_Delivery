@@ -3,8 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/views/customers/favorite/bloc/favorite_list_bloc.dart';
 import 'package:food_delivery/views/customers/food_page/bloc/add_to_cart_bloc.dart';
 import 'package:food_delivery/views/customers/restaurant_page/favorite_bloc/favorite_bloc.dart';
-import 'package:food_delivery/views/customers/restaurant_page/filter_cafe_bloc/filter_cafe_foods_bloc.dart';
-import 'package:food_delivery/views/customers/restaurant_page/cafe_bloc/cafe_detail_bloc.dart';
 import 'package:food_delivery/views/customers/restaurant_page/widgets/food_types_widget.dart';
 import 'package:food_delivery/views/customers/restaurant_page/res_bloc/restaurant_detail_bloc.dart';
 import 'package:food_delivery/views/customers/restaurant_page/widgets/food_card_widget.dart';
@@ -30,7 +28,8 @@ class RestaurantPage extends StatefulWidget {
 }
 
 class _RestaurantPageState extends State<RestaurantPage> {
-  bool _isfavorite = false;
+  bool _isFavorite = false;
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
@@ -38,14 +37,12 @@ class _RestaurantPageState extends State<RestaurantPage> {
         providers: [
           BlocProvider(
             create: (context) => RestaurantDetailBloc()
-              ..add(LoadRestaurantDetailEvent(widget.id)),
+              ..add(
+                LoadRestaurantDetailEvent(widget.id, widget.isCafe),
+              ),
           ),
           BlocProvider(
-            create: (context) =>
-                CafeDetailBloc()..add(LoadCafeDetailEvent(widget.id)),
-          ),
-          BlocProvider(
-            create: (context) => FilterRestaurantFoodsBloc(),
+            create: (context) => FilterFoodsBloc(),
           ),
           BlocProvider(
             create: (context) => AddToCartBloc(),
@@ -55,7 +52,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
           ),
           BlocProvider(
             create: (context) =>
-                FavoriteListBloc()..add(LoadFavoriteListEvent()),
+                FavoriteListBloc()..add(const LoadFavoriteListEvent()),
           ),
         ],
         child: Scaffold(
@@ -70,24 +67,22 @@ class _RestaurantPageState extends State<RestaurantPage> {
                 constraints,
                 imageSrc: widget.imageSrc,
               ),
-              const SizedBox(
-                height: 30,
-              ),
+              const SizedBox(height: 30),
               BlocListener<FavoriteBloc, FavoriteState>(
                 listener: (context, state) {
                   if (state is FavoriteSuccess) {
                     setState(() {
-                      _isfavorite = true;
+                      _isFavorite = true;
                     });
                   }
                 },
                 child: BlocBuilder<FavoriteListBloc, FavoriteListState>(
-                  builder: (context, state1) {
-                    if (state1 is FavoriteListSuccess) {
-                      final isFavorite = state1.restaurant
+                  builder: (context, state) {
+                    if (state is FavoriteListSuccess) {
+                      final isFavorite = state.restaurant
                           .any((restaurant) => restaurant.id == widget.id);
                       final favoriteId = isFavorite
-                          ? state1.id[state1.restaurant.indexWhere(
+                          ? state.id[state.restaurant.indexWhere(
                               (restaurant) => restaurant.id == widget.id)]
                           : null;
 
@@ -97,25 +92,26 @@ class _RestaurantPageState extends State<RestaurantPage> {
                             alignment: Alignment.topRight,
                             padding: const EdgeInsets.only(right: 30),
                             child: IconButton(
-                                iconSize: 35,
-                                onPressed: () {
-                                  !isFavorite
-                                      ? BlocProvider.of<FavoriteBloc>(context)
-                                          .add(AddFavorite(widget.id))
-                                      : BlocProvider.of<FavoriteBloc>(context)
-                                          .add(DelFavorite(favoriteId!));
-                                },
-                                icon: Icon(
-                                  !isFavorite
-                                      ? Icons.favorite_border_rounded
-                                      : Icons.favorite_rounded,
-                                  color: Colors.red,
-                                )),
+                              iconSize: 35,
+                              onPressed: () {
+                                !isFavorite
+                                    ? BlocProvider.of<FavoriteBloc>(context)
+                                        .add(AddFavorite(widget.id))
+                                    : BlocProvider.of<FavoriteBloc>(context)
+                                        .add(DelFavorite(favoriteId!));
+                              },
+                              icon: Icon(
+                                !isFavorite
+                                    ? Icons.favorite_border_rounded
+                                    : Icons.favorite_rounded,
+                                color: Colors.red,
+                              ),
+                            ),
                           );
                         },
                       );
                     }
-                    return CircularProgressIndicator();
+                    return const CircularProgressIndicator();
                   },
                 ),
               ),
@@ -126,9 +122,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(
-                height: 5,
-              ),
+              const SizedBox(height: 5),
               Container(
                 margin: const EdgeInsets.only(left: 15),
                 child: Text(
@@ -155,93 +149,52 @@ class _RestaurantPageState extends State<RestaurantPage> {
                   ],
                 ),
               ),
-              !widget.isCafe
-                  ? BlocBuilder<RestaurantDetailBloc, RestaurantDetailState>(
+              BlocBuilder<RestaurantDetailBloc, RestaurantDetailState>(
+                builder: (context, state) {
+                  if (state is RestaurantDetailLoading) {
+                    return const CircularProgressIndicator();
+                  } else if (state is RestaurantDetailSuccess) {
+                    return FoodTypesWidget(
+                      id: widget.id,
+                      constraints: constraints,
+                      isCafe: widget.isCafe,
+                    );
+                  }
+                  return const SizedBox.shrink();
+                },
+              ),
+              const SizedBox(height: 15),
+              BlocBuilder<FilterFoodsBloc, FilterFoodsState>(
+                builder: (context, state) {
+                  if (state is FilterFoodsLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (state is FilterFoodsSuccess) {
+                    return Expanded(
+                      child: FoodCardWidget(
+                        menu: state.menu,
+                        resName: widget.resName,
+                      ),
+                    );
+                  } else if (state is FilterFoodsInitial) {
+                    // Show full menu when "همه" is selected
+                    return BlocBuilder<RestaurantDetailBloc,
+                        RestaurantDetailState>(
                       builder: (context, state) {
                         if (state is RestaurantDetailSuccess) {
-                          return FoodTypesWidget(
-                            id: widget.id,
-                            constraints: constraints,
-                            menu: state.menu,
-                            isCafe: widget.isCafe,
-                          );
-                        }
-                        return Container(); // Can show a loading indicator here if needed
-                      },
-                    )
-                  : BlocBuilder<CafeDetailBloc, CafeDetailState>(
-                      builder: (context, state) {
-                        if (state is CafeDetailSuccess) {
-                          return FoodTypesWidget(
-                            id: widget.id,
-                            constraints: constraints,
-                            menu: state.menu,
-                            isCafe: widget.isCafe,
-                          );
-                        }
-                        return Container(); // Can show a loading indicator here if needed
-                      },
-                    ),
-              const SizedBox(height: 15),
-              !widget.isCafe
-                  ? BlocBuilder<FilterRestaurantFoodsBloc,
-                      FilterRestaurantFoodsState>(
-                      builder: (context, state) {
-                        if (state is FilterRestaurantFoodsSuccess) {
                           return Expanded(
                             child: FoodCardWidget(
                               menu: state.menu,
                               resName: widget.resName,
                             ),
                           );
-                        } else if (state is FilterRestaurantFoodsInitial) {
-                          // Show the full menu when "همه" is selected
-                          return BlocBuilder<RestaurantDetailBloc,
-                              RestaurantDetailState>(
-                            builder: (context, state) {
-                              if (state is RestaurantDetailSuccess) {
-                                return Expanded(
-                                  child: FoodCardWidget(
-                                    menu: state.menu,
-                                    resName: widget.resName,
-                                  ),
-                                );
-                              }
-                              return Container(); // Can show a loading indicator here if needed
-                            },
-                          );
                         }
-                        return Container(); // Fallback empty container
+                        return const SizedBox.shrink();
                       },
-                    )
-                  : BlocBuilder<FilterCafeFoodsBloc, FilterCafeFoodsState>(
-                      builder: (context, state) {
-                        if (state is FilterCafeFoodsSuccess) {
-                          return Expanded(
-                            child: FoodCardWidget(
-                              menu: state.menu,
-                              resName: widget.resName,
-                            ),
-                          );
-                        } else if (state is FilterCafeFoodsInitial) {
-                          // Show the full menu when "همه" is selected
-                          return BlocBuilder<CafeDetailBloc, CafeDetailState>(
-                            builder: (context, state) {
-                              if (state is CafeDetailSuccess) {
-                                return Expanded(
-                                  child: FoodCardWidget(
-                                    menu: state.menu,
-                                    resName: widget.resName,
-                                  ),
-                                );
-                              }
-                              return Container(); // Can show a loading indicator here if needed
-                            },
-                          );
-                        }
-                        return Container(); // Fallback empty container
-                      },
-                    )
+                    );
+                  }
+                  return const SizedBox.shrink();
+                },
+              ),
             ],
           ),
         ),

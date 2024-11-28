@@ -7,7 +7,15 @@ abstract class RestaurantDetailEvent extends Equatable {
 
 class LoadRestaurantDetailEvent extends RestaurantDetailEvent {
   final int id;
-  const LoadRestaurantDetailEvent(this.id);
+  final bool isCafe;
+  const LoadRestaurantDetailEvent(this.id, this.isCafe);
   @override
-  List<Object?> get props => [id];
+  List<Object?> get props => [id, isCafe];
 }
+
+// class LoadCafeDetailEvent extends RestaurantDetailEvent {
+//   final int id;
+//   const LoadCafeDetailEvent(this.id);
+//   @override
+//   List<Object?> get props => [id];
+// }

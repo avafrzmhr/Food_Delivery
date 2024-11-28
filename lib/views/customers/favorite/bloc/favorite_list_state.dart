@@ -14,8 +14,8 @@ class FavoriteListLoading extends FavoriteListState {
 }
 
 class FavoriteListSuccess extends FavoriteListState {
-  List<int> id;
-  List<RestaurantModel> restaurant;
+  final List<int> id;
+  final List<RestaurantModel> restaurant;
   FavoriteListSuccess(this.restaurant, this.id);
 
   @override

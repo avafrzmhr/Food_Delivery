@@ -5,8 +5,12 @@ abstract class RestaurantEvent extends Equatable {
   const RestaurantEvent();
 }
 
-class LoadRestaurantEvent extends RestaurantEvent {
-  const LoadRestaurantEvent();
+class LoadDataEvent extends RestaurantEvent {
+  final bool loadRestaurants;
+  final bool loadCafes;
+
+  const LoadDataEvent({this.loadRestaurants = false, this.loadCafes = false});
+
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [loadRestaurants, loadCafes];
 }

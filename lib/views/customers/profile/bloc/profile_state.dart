@@ -14,7 +14,7 @@ class CustomerProfileLoading extends CustomerProfileState {
 }
 
 class CustomerProfileSuccess extends CustomerProfileState {
-  List<Profile> profile;
+  final List<Profile> profile;
   CustomerProfileSuccess(this.profile);
 
   @override

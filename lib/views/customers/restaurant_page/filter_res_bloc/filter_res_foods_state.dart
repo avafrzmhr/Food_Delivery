@@ -1,30 +1,30 @@
 part of 'filter_res_foods_bloc.dart';
 
 @immutable
-abstract class FilterRestaurantFoodsState extends Equatable {}
+abstract class FilterFoodsState extends Equatable {}
 
-class FilterRestaurantFoodsInitial extends FilterRestaurantFoodsState {
+class FilterFoodsInitial extends FilterFoodsState {
   @override
   List<Object?> get props => [];
 }
 
-class FilterRestaurantFoodsLoading extends FilterRestaurantFoodsState {
+class FilterFoodsLoading extends FilterFoodsState {
   @override
   List<Object?> get props => [];
 }
 
-class FilterRestaurantFoodsSuccess extends FilterRestaurantFoodsState {
+class FilterFoodsSuccess extends FilterFoodsState {
   final List<Menu> menu;
-  FilterRestaurantFoodsSuccess(this.menu);
+  FilterFoodsSuccess(this.menu);
 
   @override
   List<Object?> get props => [menu];
 }
 
-class FilterRestaurantFoodsError extends FilterRestaurantFoodsState {
+class FilterFoodsError extends FilterFoodsState {
   final String message;
 
-  FilterRestaurantFoodsError(this.message);
+  FilterFoodsError(this.message);
 
   @override
   List<Object?> get props => [message];

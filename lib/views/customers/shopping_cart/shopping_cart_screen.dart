@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/views/customers/food_page/bloc/add_to_cart_bloc.dart';
 import 'package:food_delivery/views/customers/payment/bloc/payment_bloc.dart';
-import 'package:food_delivery/views/customers/payment/payment_screen.dart';
 import 'package:food_delivery/views/customers/shopping_cart/bloc/cart_bloc.dart';
 
 class ShoppingCartScreen extends StatefulWidget {
@@ -32,12 +31,6 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
           builder: (context, constraints) {
             return BlocBuilder<CartBloc, CartState>(builder: (context, state) {
               if (state is CartSuccess) {
-                var cartItem;
-                final totalPrice = state.cart.fold<double>(
-                  0,
-                  (sum, item) => sum + (item.food.price * item.quantity),
-                );
-
                 return Column(
                   children: [
                     Row(
@@ -75,7 +68,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                       child: ListView.builder(
                         itemCount: state.cart.length,
                         itemBuilder: (context, index) {
-                          cartItem = state.cart[index];
+                          //  var cartItem = state.cart[index];
                           return Container(
                             margin: const EdgeInsets.all(20),
                             height: 170,
@@ -176,23 +169,21 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                                         ],
                                       ),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 40,
                                     ),
-                                    Container(
-                                      child: ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor:
-                                                Color.fromRGBO(48, 24, 172, 1),
+                                    ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: const Color.fromRGBO(
+                                              48, 24, 172, 1),
+                                        ),
+                                        onPressed: () {},
+                                        child: const Text(
+                                          'پرداخت',
+                                          style: TextStyle(
+                                            color: Colors.white,
                                           ),
-                                          onPressed: () {},
-                                          child: Text(
-                                            'پرداخت',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                            ),
-                                          )),
-                                    ),
+                                        )),
                                   ],
                                 ),
                                 Container(

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:food_delivery/data/model/restaurant/menu_response.dart';
 import 'package:food_delivery/views/customers/food_page/bloc/add_to_cart_bloc.dart';
 import 'package:food_delivery/views/customers/food_page/comments/comment_screen.dart';
 import 'package:food_delivery/views/customers/food_page/widgets/bottom_add_cart_widget.dart';

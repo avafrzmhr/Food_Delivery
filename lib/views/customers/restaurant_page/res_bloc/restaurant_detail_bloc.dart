@@ -14,7 +14,9 @@ class RestaurantDetailBloc
       CustomerRepository customerRepository = CustomerRepository();
       if (event is LoadRestaurantDetailEvent) {
         try {
-          final res = await customerRepository.fetchRestaurantFoods(event.id);
+          final res = event.isCafe
+              ? await customerRepository.fetchCafeFoods(event.id)
+              : await customerRepository.fetchRestaurantFoods(event.id);
           emit(RestaurantDetailSuccess(res));
         } catch (e) {
           emit(RestaurantDetailError('errorrr'));
