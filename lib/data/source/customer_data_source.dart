@@ -1,12 +1,31 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:food_delivery/data/model/customer/profile.dart';
 import 'package:food_delivery/data/model/restaurant/menu_response.dart';
 import 'package:food_delivery/data/model/restaurant/restaurant_response.dart';
 import 'package:food_delivery/main.dart';
 
 class CustomerDataSource {
   Dio dio = Dio();
+
+  Future<List<Profile>> getProfile() async {
+    Response response = await dio.get(
+      'http://127.0.0.1:8000/account/customer_profile/',
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'JWT ${MyApp.sharedPreferences.getString('access')}',
+        },
+      ),
+    );
+    if (response.statusCode == 200) {
+      var profileResponse = profileFromJson(jsonEncode(response.data));
+      return profileResponse;
+    } else {
+      throw Exception('erorr');
+    }
+  }
 
   Future<Response> customerAddress(
       String addressName, double lat, double long) async {
@@ -148,6 +167,60 @@ class CustomerDataSource {
       var foodResponse = menuFromJson(jsonEncode(response.data));
       print(MyApp.sharedPreferences.getString('access'));
       return foodResponse;
+    } else {
+      throw Exception('erorr');
+    }
+  }
+
+  Future<Response> addToFavorite(int resID) async {
+    Response response = await dio.post(
+      'http://127.0.0.1:8000/customer/restaurants/$resID/favorite/',
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'JWT ${MyApp.sharedPreferences.getString('access')}',
+        },
+      ),
+      data: {},
+    );
+    if (response.statusCode == 200) {
+      return response;
+    } else {
+      throw Exception('erorr');
+    }
+  }
+
+  Future<Response> getFavorites() async {
+    Response response = await dio.get(
+      'http://127.0.0.1:8000/customer/myfavorites',
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'JWT ${MyApp.sharedPreferences.getString('access')}',
+        },
+      ),
+      data: {},
+    );
+    if (response.statusCode == 200) {
+      return response;
+    } else {
+      throw Exception('erorr');
+    }
+  }
+
+  Future<Response> removeFavorite(int id) async {
+    Response response = await dio.delete(
+      'http://127.0.0.1:8000/customer/myfavorites/$id',
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'JWT ${MyApp.sharedPreferences.getString('access')}',
+        },
+      ),
+      data: {},
+    );
+    if (response.statusCode == 200) {
+      return response;
     } else {
       throw Exception('erorr');
     }

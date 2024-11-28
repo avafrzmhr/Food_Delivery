@@ -1,12 +1,17 @@
 import 'package:dio/dio.dart';
+import 'package:food_delivery/data/model/customer/profile.dart';
 import 'package:food_delivery/data/model/restaurant/menu_response.dart';
 import 'package:food_delivery/data/model/restaurant/restaurant_response.dart';
 import 'package:food_delivery/data/source/customer_data_source.dart';
 
 abstract class ICustomerRepository {
+  Future<List<Profile>> customerProfile();
   Future<Response> customerAddress(String addressName, double lat, double long);
   Future<Restaurant> fetchRestaurants();
   Future<Restaurant> fetchCafe();
+  Future<Response> addToFavorite(int resID);
+  Future<Response> removeFavorite(int id);
+  Future<Response> getFavorites();
   Future<List<Menu>> fetchRestaurantFoods(int id);
   Future<List<Menu>> fetchCafeFoods(int id);
   Future<List<Menu>> filterRestaurantFoods(String categoryName, int id);
@@ -58,5 +63,29 @@ class CustomerRepository extends ICustomerRepository {
     var foodResponse =
         await CustomerDataSource().filterCafeFoods(categoryName, id);
     return foodResponse;
+  }
+
+  @override
+  Future<List<Profile>> customerProfile() async {
+    var response = await CustomerDataSource().getProfile();
+    return response;
+  }
+
+  @override
+  Future<Response> addToFavorite(int resID) async {
+    var response = await CustomerDataSource().addToFavorite(resID);
+    return response;
+  }
+
+  @override
+  Future<Response> getFavorites() async {
+    var response = await CustomerDataSource().getFavorites();
+    return response;
+  }
+
+  @override
+  Future<Response> removeFavorite(int id) async {
+    var response = await CustomerDataSource().removeFavorite(id);
+    return response;
   }
 }

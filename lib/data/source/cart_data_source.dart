@@ -46,4 +46,25 @@ class CartDataSource {
       throw Exception('erorr');
     }
   }
+
+  Future<Response> payment(int orderID, String cardNum, String cvv2) async {
+    Response response = await dio.get('http://127.0.0.1:8000/cart/payment/',
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization':
+                'JWT ${MyApp.sharedPreferences.getString('access')}',
+          },
+        ),
+        data: {
+          "order_id": orderID,
+          "origin_card_number": cardNum,
+          "cvv2": cvv2
+        });
+    if (response.statusCode == 200) {
+      return response;
+    } else {
+      throw Exception('erorr');
+    }
+  }
 }

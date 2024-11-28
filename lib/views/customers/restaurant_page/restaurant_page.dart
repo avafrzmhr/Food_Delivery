@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_delivery/views/customers/favorite/bloc/favorite_list_bloc.dart';
 import 'package:food_delivery/views/customers/food_page/bloc/add_to_cart_bloc.dart';
+import 'package:food_delivery/views/customers/restaurant_page/favorite_bloc/favorite_bloc.dart';
 import 'package:food_delivery/views/customers/restaurant_page/filter_cafe_bloc/filter_cafe_foods_bloc.dart';
 import 'package:food_delivery/views/customers/restaurant_page/cafe_bloc/cafe_detail_bloc.dart';
 import 'package:food_delivery/views/customers/restaurant_page/widgets/food_types_widget.dart';
@@ -28,6 +30,7 @@ class RestaurantPage extends StatefulWidget {
 }
 
 class _RestaurantPageState extends State<RestaurantPage> {
+  bool _isfavorite = false;
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
@@ -47,6 +50,13 @@ class _RestaurantPageState extends State<RestaurantPage> {
           BlocProvider(
             create: (context) => AddToCartBloc(),
           ),
+          BlocProvider(
+            create: (context) => FavoriteBloc(),
+          ),
+          BlocProvider(
+            create: (context) =>
+                FavoriteListBloc()..add(LoadFavoriteListEvent()),
+          ),
         ],
         child: Scaffold(
           appBar: AppBar(
@@ -62,6 +72,52 @@ class _RestaurantPageState extends State<RestaurantPage> {
               ),
               const SizedBox(
                 height: 30,
+              ),
+              BlocListener<FavoriteBloc, FavoriteState>(
+                listener: (context, state) {
+                  if (state is FavoriteSuccess) {
+                    setState(() {
+                      _isfavorite = true;
+                    });
+                  }
+                },
+                child: BlocBuilder<FavoriteListBloc, FavoriteListState>(
+                  builder: (context, state1) {
+                    if (state1 is FavoriteListSuccess) {
+                      final isFavorite = state1.restaurant
+                          .any((restaurant) => restaurant.id == widget.id);
+                      final favoriteId = isFavorite
+                          ? state1.id[state1.restaurant.indexWhere(
+                              (restaurant) => restaurant.id == widget.id)]
+                          : null;
+
+                      return BlocBuilder<FavoriteBloc, FavoriteState>(
+                        builder: (context, state) {
+                          return Container(
+                            alignment: Alignment.topRight,
+                            padding: const EdgeInsets.only(right: 30),
+                            child: IconButton(
+                                iconSize: 35,
+                                onPressed: () {
+                                  !isFavorite
+                                      ? BlocProvider.of<FavoriteBloc>(context)
+                                          .add(AddFavorite(widget.id))
+                                      : BlocProvider.of<FavoriteBloc>(context)
+                                          .add(DelFavorite(favoriteId!));
+                                },
+                                icon: Icon(
+                                  !isFavorite
+                                      ? Icons.favorite_border_rounded
+                                      : Icons.favorite_rounded,
+                                  color: Colors.red,
+                                )),
+                          );
+                        },
+                      );
+                    }
+                    return CircularProgressIndicator();
+                  },
+                ),
               ),
               Text(
                 widget.resName,

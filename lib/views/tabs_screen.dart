@@ -7,6 +7,7 @@ import 'package:food_delivery/providers.dart';
 import 'package:food_delivery/views/customers/home/bottom_navigation_provider.dart';
 import 'package:food_delivery/views/customers/home/home_screen.dart';
 import 'package:food_delivery/views/customers/home/widgets/bottom_navigation_bar_widget.dart';
+import 'package:food_delivery/views/customers/profile/profile_screen.dart';
 import 'package:food_delivery/views/customers/shopping_cart/shopping_cart_screen.dart';
 import 'package:food_delivery/views/location/bloc/location_bloc.dart';
 import 'package:provider/provider.dart';
@@ -26,8 +27,8 @@ class _TabsScreenState extends State<TabsScreen> {
   void initState() {
     _pages = [
       {
-        'page': const HomeScreen(),
-        'title': 'خانه',
+        'page': const CustomerProfileScreen(),
+        'title': 'پروفایل',
       },
       {
         'page': const ShoppingCartScreen(),
@@ -35,7 +36,7 @@ class _TabsScreenState extends State<TabsScreen> {
       },
       {
         'page': const HomeScreen(),
-        'title': 'پروفایل',
+        'title': 'خانه',
       },
     ];
 

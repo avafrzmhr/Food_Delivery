@@ -53,7 +53,6 @@ class _RestaurantsListViewWidgetState extends State<RestaurantsListViewWidget> {
 
                   List<dynamic> listToShow = [];
 
-                  // Determine which list to show based on the widget properties
                   if (widget.isBoth) {
                     listToShow = [...restaurants.data, ...cafes.data];
                   } else if (widget.isCafe) {

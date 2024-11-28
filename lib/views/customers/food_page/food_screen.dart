@@ -2,25 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/data/model/restaurant/menu_response.dart';
 import 'package:food_delivery/views/customers/food_page/bloc/add_to_cart_bloc.dart';
+import 'package:food_delivery/views/customers/food_page/comments/comment_screen.dart';
 import 'package:food_delivery/views/customers/food_page/widgets/bottom_add_cart_widget.dart';
 import 'package:food_delivery/views/customers/restaurant_page/widgets/topbar_picture_widget.dart';
 
 class FoodScreen extends StatefulWidget {
-  // final String imageSrc;
-  // final String foodName;
-  // final String desc;
-  // final double price;
-  // final int rate;
-  // const FoodScreen({
-  //   super.key,
-  //   required this.desc,
-  //   required this.price,
-  //   required this.imageSrc,
-  //   required this.foodName,
-  //   required this.rate,
-  // });
-  Menu food;
-  FoodScreen(this.food);
+  final String imageSrc;
+  final String foodName;
+  final String desc;
+  final double price;
+  final int rate;
+  final int id;
+  const FoodScreen({
+    super.key,
+    required this.desc,
+    required this.price,
+    required this.imageSrc,
+    required this.foodName,
+    required this.rate,
+    required this.id,
+  });
+  // // Menu food;
+  // FoodScreen();
 
   @override
   State<FoodScreen> createState() => _FoodScreenState();
@@ -34,8 +37,8 @@ class _FoodScreenState extends State<FoodScreen> {
       child: LayoutBuilder(builder: (context, constraints) {
         return Scaffold(
           appBar: AppBar(
-            title: Text(widget.food.name),
-            backgroundColor: Color.fromARGB(255, 224, 213, 255),
+            title: Text(widget.foodName),
+            backgroundColor: const Color.fromARGB(255, 224, 213, 255),
           ),
           backgroundColor: const Color.fromARGB(255, 235, 235, 235),
           body: Stack(
@@ -44,13 +47,13 @@ class _FoodScreenState extends State<FoodScreen> {
                 children: [
                   TopBarPictureWidget(
                     constraints,
-                    imageSrc: widget.food.image,
+                    imageSrc: widget.imageSrc,
                   ),
                   const SizedBox(
                     height: 30,
                   ),
                   Text(
-                    widget.food.name,
+                    widget.foodName,
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -70,7 +73,7 @@ class _FoodScreenState extends State<FoodScreen> {
                         size: 32,
                       ),
                       Text(
-                        widget.food.averageRating.toString(),
+                        widget.rate.toString(),
                         style: const TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 16),
                       ),
@@ -83,7 +86,7 @@ class _FoodScreenState extends State<FoodScreen> {
                     margin: const EdgeInsets.only(left: 15),
                     child: Text(
                       textAlign: TextAlign.right,
-                      widget.food.desc,
+                      widget.desc,
                       style: TextStyle(
                         color: Colors.grey[800],
                         fontSize: 16,
@@ -93,12 +96,20 @@ class _FoodScreenState extends State<FoodScreen> {
                   Container(
                     padding: const EdgeInsets.only(top: 15, right: 15),
                     alignment: Alignment.topRight,
-                    child: const Text(
-                      'نظرات',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Color.fromRGBO(48, 24, 172, 1),
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return const CommentScreen();
+                        }));
+                      },
+                      child: const Text(
+                        'نظرات',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Color.fromRGBO(48, 24, 172, 1),
+                        ),
                       ),
                     ),
                   ),
@@ -108,7 +119,10 @@ class _FoodScreenState extends State<FoodScreen> {
                 ],
               ),
               BottomAddCardWidget(
-                  widget.food.id, widget.food.price, constraints),
+                id: widget.id,
+                price: widget.price,
+                constraints: constraints,
+              ),
             ],
           ),
         );

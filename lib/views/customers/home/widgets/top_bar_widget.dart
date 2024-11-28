@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/main.dart';
+import 'package:food_delivery/views/customers/favorite/favorite_screen.dart';
 import 'package:food_delivery/views/customers/home/bloc/customer_address_bloc.dart';
 import 'package:food_delivery/views/location/bloc/location_bloc.dart';
 import 'package:food_delivery/views/location/location_screen.dart';
@@ -96,7 +97,7 @@ class _TopBarWidgetState extends State<TopBarWidget> {
             }
             BlocProvider.of<CustomerAddressBloc>(context)
                 .add(CustomerAddressRequestEvent(
-              MyApp.sharedPreferences.getString('Address') ?? '',
+              MyApp.sharedPreferences.getString('Address')!,
               widget.lat!,
               widget.lang!,
             ));
@@ -237,6 +238,17 @@ class _TopBarWidgetState extends State<TopBarWidget> {
                           : Container(),
                     ],
                   ),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const FavoriteListScreeen()));
+                    },
+                    icon: const Icon(Icons.favorite_rounded),
+                    color: Colors.red,
+                  )
                 ],
               ),
             ],

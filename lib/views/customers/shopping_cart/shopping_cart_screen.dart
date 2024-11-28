@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_delivery/views/customers/food_page/bloc/add_to_cart_bloc.dart';
+import 'package:food_delivery/views/customers/payment/bloc/payment_bloc.dart';
+import 'package:food_delivery/views/customers/payment/payment_screen.dart';
 import 'package:food_delivery/views/customers/shopping_cart/bloc/cart_bloc.dart';
 
 class ShoppingCartScreen extends StatefulWidget {
@@ -12,13 +15,24 @@ class ShoppingCartScreen extends StatefulWidget {
 class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => CartBloc()..add(const LoadCartEvent()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => CartBloc()..add(const LoadCartEvent()),
+        ),
+        BlocProvider(
+          create: (context) => AddToCartBloc(),
+        ),
+        BlocProvider(
+          create: (context) => PaymentBloc(),
+        ),
+      ],
       child: Scaffold(
         body: LayoutBuilder(
           builder: (context, constraints) {
             return BlocBuilder<CartBloc, CartState>(builder: (context, state) {
               if (state is CartSuccess) {
+                var cartItem;
                 final totalPrice = state.cart.fold<double>(
                   0,
                   (sum, item) => sum + (item.food.price * item.quantity),
@@ -40,15 +54,6 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                             ),
                           ),
                         ),
-                        SizedBox(
-                          width: constraints.maxWidth * 0.38,
-                        ),
-                        const Text(
-                          'مقصد',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
                       ],
                     ),
                     Container(
@@ -62,7 +67,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                     Container(
                       margin: const EdgeInsets.only(top: 20),
                       width: constraints.maxWidth * 0.85,
-                      height: constraints.maxHeight * 0.58,
+                      height: constraints.maxHeight * 0.8,
                       decoration: BoxDecoration(
                         color: Colors.grey[300],
                         borderRadius: BorderRadius.circular(20),
@@ -70,9 +75,10 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                       child: ListView.builder(
                         itemCount: state.cart.length,
                         itemBuilder: (context, index) {
+                          cartItem = state.cart[index];
                           return Container(
                             margin: const EdgeInsets.all(20),
-                            height: 100,
+                            height: 170,
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(15),
@@ -90,10 +96,18 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                                               BorderRadius.circular(10)),
                                       color: const Color.fromARGB(
                                           255, 211, 218, 255),
-                                      child: const Icon(
-                                        Icons.remove_rounded,
-                                        size: 30,
-                                        color: Color.fromRGBO(48, 24, 172, 1),
+                                      child: BlocBuilder<AddToCartBloc,
+                                          AddToCartState>(
+                                        builder: (context, state1) {
+                                          return IconButton(
+                                            iconSize: 20,
+                                            onPressed: () {},
+                                            icon: const Icon(
+                                                Icons.remove_rounded),
+                                            color: const Color.fromRGBO(
+                                                48, 24, 172, 1),
+                                          );
+                                        },
                                       ),
                                     ),
                                     Text(
@@ -105,16 +119,24 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                                       ),
                                     ),
                                     Card(
-                                      margin: const EdgeInsets.only(left: 2),
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 2),
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(10)),
                                       color: const Color.fromARGB(
                                           255, 211, 218, 255),
-                                      child: const Icon(
-                                        Icons.add_rounded,
-                                        size: 30,
-                                        color: Color.fromRGBO(48, 24, 172, 1),
+                                      child: IconButton(
+                                        onPressed: () {
+                                          // BlocProvider.of<AddToCartBloc>(
+                                          //         context)
+                                          //     .add(AddingEvent(
+                                          //         state.cart[index].id));
+                                        },
+                                        icon: const Icon(Icons.add_rounded),
+                                        iconSize: 20,
+                                        color: const Color.fromRGBO(
+                                            48, 24, 172, 1),
                                       ),
                                     )
                                   ],
@@ -154,6 +176,23 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                                         ],
                                       ),
                                     ),
+                                    SizedBox(
+                                      height: 40,
+                                    ),
+                                    Container(
+                                      child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor:
+                                                Color.fromRGBO(48, 24, 172, 1),
+                                          ),
+                                          onPressed: () {},
+                                          child: Text(
+                                            'پرداخت',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            ),
+                                          )),
+                                    ),
                                   ],
                                 ),
                                 Container(
@@ -181,58 +220,73 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                         },
                       ),
                     ),
-                    Expanded(
-                      child: Container(
-                        width: constraints.maxWidth * 0.8,
-                        margin: const EdgeInsets.symmetric(vertical: 15),
-                        decoration: BoxDecoration(
-                          color: const Color.fromRGBO(48, 24, 172, 1),
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Container(
-                              padding:
-                                  const EdgeInsets.only(right: 20, top: 25),
-                              child: Text(
-                                'مجموع: ${totalPrice.toStringAsFixed(2)} تومان',
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                ),
-                              ),
-                            ),
-                            const Spacer(),
-                            Center(
-                              child: Container(
-                                width: constraints.maxWidth * 0.5,
-                                padding: const EdgeInsets.only(bottom: 15),
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.white,
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 20),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                  ),
-                                  onPressed: () {},
-                                  child: const Text(
-                                    'پرداخت',
-                                    style: TextStyle(
-                                      color: Color.fromRGBO(48, 24, 172, 1),
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 17,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
+                    // Expanded(
+                    //   child: Container(
+                    //     width: constraints.maxWidth * 0.8,
+                    //     margin: const EdgeInsets.symmetric(vertical: 15),
+                    //     decoration: BoxDecoration(
+                    //       color: const Color.fromRGBO(48, 24, 172, 1),
+                    //       borderRadius: BorderRadius.circular(30),
+                    //     ),
+                    //     child: Column(
+                    //       crossAxisAlignment: CrossAxisAlignment.end,
+                    //       children: [
+                    //         Container(
+                    //           padding:
+                    //               const EdgeInsets.only(right: 20, top: 25),
+                    //           child: Text(
+                    //             'مجموع: ${totalPrice.toStringAsFixed(2)} تومان',
+                    //             style: const TextStyle(
+                    //               color: Colors.white,
+                    //               fontSize: 20,
+                    //             ),
+                    //           ),
+                    //         ),
+                    //         const Spacer(),
+                    //         BlocBuilder<PaymentBloc, PaymentState>(
+                    //           builder: (context, state2) {
+                    //             return Center(
+                    //               child: Container(
+                    //                 width: constraints.maxWidth * 0.5,
+                    //                 padding: const EdgeInsets.only(bottom: 15),
+                    //                 child: ElevatedButton(
+                    //                   style: ElevatedButton.styleFrom(
+                    //                     backgroundColor: Colors.white,
+                    //                     padding: const EdgeInsets.symmetric(
+                    //                         vertical: 20),
+                    //                     shape: RoundedRectangleBorder(
+                    //                       borderRadius:
+                    //                           BorderRadius.circular(15),
+                    //                     ),
+                    //                   ),
+                    //                   onPressed: () {
+                    //                     BlocProvider.of<PaymentBloc>(context)
+                    //                         .add(LoadPaymentEvent(cartItem));
+                    //                     if (state2 is PaymentSuccess) {
+                    //                       Navigator.push(context,
+                    //                           MaterialPageRoute(
+                    //                               builder: (context) {
+                    //                         return const PaymentScreen();
+                    //                       }));
+                    //                     }
+                    //                   },
+                    //                   child: const Text(
+                    //                     'پرداخت',
+                    //                     style: TextStyle(
+                    //                       color: Color.fromRGBO(48, 24, 172, 1),
+                    //                       fontWeight: FontWeight.bold,
+                    //                       fontSize: 17,
+                    //                     ),
+                    //                   ),
+                    //                 ),
+                    //               ),
+                    //             );
+                    //           },
+                    //         )
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 );
               }

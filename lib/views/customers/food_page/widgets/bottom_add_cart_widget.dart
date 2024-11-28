@@ -7,7 +7,12 @@ class BottomAddCardWidget extends StatefulWidget {
   final double price;
   final BoxConstraints constraints;
   final int id;
-  const BottomAddCardWidget(this.id, this.price, this.constraints, {super.key});
+
+  const BottomAddCardWidget(
+      {required this.id,
+      required this.price,
+      required this.constraints,
+      super.key});
 
   @override
   State<BottomAddCardWidget> createState() => _BottomAddCardWidgetState();
@@ -63,7 +68,7 @@ class _BottomAddCardWidgetState extends State<BottomAddCardWidget> {
                         borderRadius: BorderRadius.circular(40),
                         color: const Color.fromARGB(255, 0, 7, 25),
                       ),
-                      child: const AddOrRemoveWidget(),
+                      child: AddOrRemoveWidget(widget.id),
                     ),
                   ],
                 ),
