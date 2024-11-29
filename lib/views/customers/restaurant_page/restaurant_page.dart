@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/views/customers/favorite/bloc/favorite_list_bloc.dart';
-import 'package:food_delivery/views/customers/food_page/bloc/add_to_cart_bloc.dart';
+import 'package:food_delivery/views/customers/shopping_cart/add_to_cart_bloc/add_to_cart_bloc.dart';
 import 'package:food_delivery/views/customers/restaurant_page/favorite_bloc/favorite_bloc.dart';
 import 'package:food_delivery/views/customers/restaurant_page/widgets/food_types_widget.dart';
 import 'package:food_delivery/views/customers/restaurant_page/res_bloc/restaurant_detail_bloc.dart';

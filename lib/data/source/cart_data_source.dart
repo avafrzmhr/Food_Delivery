@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:food_delivery/data/model/restaurant/cart_response.dart';
+import 'package:food_delivery/data/model/restaurant/order_model.dart';
 import 'package:food_delivery/main.dart';
 
 class CartDataSource {
@@ -63,6 +64,25 @@ class CartDataSource {
         });
     if (response.statusCode == 200) {
       return response;
+    } else {
+      throw Exception('erorr');
+    }
+  }
+
+  Future<OrderModel> orderPage(int id) async {
+    Response response = await dio.get(
+      'http://127.0.0.1:8000/cart/carts/$id/order/',
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'JWT ${MyApp.sharedPreferences.getString('access')}',
+        },
+      ),
+      data: {},
+    );
+    if (response.statusCode == 200) {
+      var res = orderModelFromJson(jsonEncode(response.data));
+      return res;
     } else {
       throw Exception('erorr');
     }
