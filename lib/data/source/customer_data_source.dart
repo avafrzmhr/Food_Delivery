@@ -27,6 +27,29 @@ class CustomerDataSource {
     }
   }
 
+  Future<Response> editProfile(
+      int id, String name, String lastName, String email) async {
+    Response response =
+        await dio.put('http://127.0.0.1:8000/account/customer_profile/$id/',
+            options: Options(
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization':
+                    'JWT ${MyApp.sharedPreferences.getString('access')}',
+              },
+            ),
+            data: {
+          "name": name,
+          "last_name": lastName,
+          "email": email,
+        });
+    if (response.statusCode == 200) {
+      return response;
+    } else {
+      throw Exception('erorr');
+    }
+  }
+
   Future<Response> customerAddress(
       String addressName, double lat, double long) async {
     Response response1 = await dio.get(

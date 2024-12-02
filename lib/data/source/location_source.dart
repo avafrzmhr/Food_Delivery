@@ -55,8 +55,6 @@ class LocationDataSource {
   }
 
   Future<List<Item>> searchLocation(NeshanSearchAddressRequest request) async {
-    // final Dio neshanSearchHttpClient = createApiClient(neshanSearchUrl)
-    //   ..options.headers['Api-Key'] = neshanApiKey;
     var res = await dio.get(
       'https://api.neshan.org/v1/search?term=${request.address}&lat=${request.lat}&lng=${request.lang}',
       options: Options(

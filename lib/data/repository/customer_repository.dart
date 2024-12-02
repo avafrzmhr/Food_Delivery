@@ -6,6 +6,8 @@ import 'package:food_delivery/data/source/customer_data_source.dart';
 
 abstract class ICustomerRepository {
   Future<List<Profile>> customerProfile();
+  Future<Response> editProfile(
+      int id, String name, String lastName, String email);
   Future<Response> customerAddress(String addressName, double lat, double long);
   Future<Restaurant> fetchRestaurants();
   Future<Restaurant> fetchCafe();
@@ -86,6 +88,14 @@ class CustomerRepository extends ICustomerRepository {
   @override
   Future<Response> removeFavorite(int id) async {
     var response = await CustomerDataSource().removeFavorite(id);
+    return response;
+  }
+
+  @override
+  Future<Response> editProfile(
+      int id, String name, String lastName, String email) async {
+    var response =
+        await CustomerDataSource().editProfile(id, name, lastName, email);
     return response;
   }
 }

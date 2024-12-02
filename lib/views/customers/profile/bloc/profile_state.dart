@@ -21,6 +21,13 @@ class CustomerProfileSuccess extends CustomerProfileState {
   List<Object?> get props => [];
 }
 
+class CustomerProfileEditSuccess extends CustomerProfileState {
+  CustomerProfileEditSuccess();
+
+  @override
+  List<Object?> get props => [];
+}
+
 class CustomerProfileError extends CustomerProfileState {
   final String message;
 

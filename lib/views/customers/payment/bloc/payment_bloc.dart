@@ -10,7 +10,7 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
   PaymentBloc() : super(PaymentInitial()) {
     on<PaymentEvent>((event, emit) async {
       CartRepository cartRepository = CartRepository();
-      if (event is LoadPaymentEvent) {
+      if (event is AddPaymentEvent) {
         try {
           final res = await cartRepository.addToCart(event.orderId);
           print(res);

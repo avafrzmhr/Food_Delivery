@@ -20,6 +20,15 @@ class CustomerProfileBloc
         } catch (e) {
           emit(CustomerProfileError(e.toString()));
         }
+      } else if (event is EditProfile) {
+        try {
+          final res = await customerRepository.editProfile(
+              event.id, event.name, event.lastName, event.email);
+          print(res);
+          emit(CustomerProfileEditSuccess());
+        } catch (e) {
+          emit(CustomerProfileError(e.toString()));
+        }
       }
     });
   }

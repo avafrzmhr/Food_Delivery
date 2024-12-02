@@ -11,3 +11,15 @@ class LoadOrderEvent extends OrderEvent {
   @override
   List<Object?> get props => [id];
 }
+
+class AddCustomerAddress extends OrderEvent {
+  final int id;
+  final String address;
+  final double lat;
+  final double long;
+  final int orderID;
+  const AddCustomerAddress(
+      this.address, this.lat, this.long, this.id, this.orderID);
+  @override
+  List<Object?> get props => [address, lat, long, id, orderID];
+}

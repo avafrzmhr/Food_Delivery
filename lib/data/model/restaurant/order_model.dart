@@ -86,37 +86,45 @@ class Detail {
   final String name;
   final int quantity;
   final double price;
+  final String image;
 
   Detail({
     required this.name,
     required this.quantity,
     required this.price,
+    required this.image,
   });
 
   factory Detail.fromJson(dynamic json) {
-    // Check if the JSON is a String
     if (json is String) {
-      // Parse the string into a structured format
       final parts = json.split(' - ');
-      final data = <String, dynamic>{};
+      final data = <String, String>{};
+
       for (var part in parts) {
         final keyValue = part.split(' : ');
         if (keyValue.length == 2) {
           data[keyValue[0].trim()] = keyValue[1].trim();
         }
       }
+
+      String imageUrl = data['image'] ?? '';
+      // Replace localhost with your machine's IP address
+      imageUrl = imageUrl.replaceAll(
+          'localhost', '127.0.0.1'); // Change to your local IP
+
       return Detail(
         name: data['food'] ?? 'Unknown',
         quantity: int.tryParse(data['quantity'] ?? '0') ?? 0,
         price: double.tryParse(data['price'] ?? '0') ?? 0.0,
+        image: imageUrl,
       );
     }
 
-    // If JSON is already structured as a Map
     return Detail(
       name: json['name'] ?? 'Unknown',
       quantity: json['quantity'] ?? 0,
       price: (json['price'] ?? 0).toDouble(),
+      image: json['image'] ?? '',
     );
   }
 
@@ -124,5 +132,6 @@ class Detail {
         "name": name,
         "quantity": quantity,
         "price": price,
+        "image": image,
       };
 }

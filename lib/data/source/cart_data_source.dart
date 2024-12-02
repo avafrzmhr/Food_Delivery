@@ -87,4 +87,28 @@ class CartDataSource {
       throw Exception('erorr');
     }
   }
+
+  Future<OrderModel> putOrderAddress(
+      int id, String address, double lat, double long, int orderID) async {
+    Response response = await dio.put(
+      'http://127.0.0.1:8000/cart/carts/$id/order/$orderID/',
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'JWT ${MyApp.sharedPreferences.getString('access')}',
+        },
+      ),
+      data: {
+        "delivery_address_name": address,
+        "latitude": lat,
+        "longitude": long,
+      },
+    );
+    if (response.statusCode == 200) {
+      var res = orderModelFromJson(jsonEncode(response.data));
+      return res;
+    } else {
+      throw Exception('erorr');
+    }
+  }
 }

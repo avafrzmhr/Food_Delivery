@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/main.dart';
+import 'package:food_delivery/views/customers/payment/payment_screen.dart';
 import 'package:food_delivery/views/customers/shopping_cart/order_bloc/order_bloc.dart';
 import 'package:food_delivery/views/location/location_screen.dart';
 
@@ -39,6 +40,8 @@ class _OrderScreenState extends State<OrderScreen> {
                 child: ListView.builder(
                   itemCount: state.order.data.detail.length,
                   itemBuilder: (context, index) {
+                    print(state.order.data.detail[index].image);
+
                     return Container(
                       padding: const EdgeInsets.all(5),
                       margin: const EdgeInsets.only(top: 10),
@@ -99,7 +102,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                 child: Row(
                                   children: [
                                     const Text(
-                                      'Currency',
+                                      'تومان',
                                       style: TextStyle(
                                         color: Color.fromRGBO(48, 24, 172, 1),
                                       ),
@@ -115,22 +118,22 @@ class _OrderScreenState extends State<OrderScreen> {
                               ),
                             ],
                           ),
-                          Container(
-                            margin: const EdgeInsets.only(left: 10),
-                            width: 85,
-                            height: 85,
-                            decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(15),
-                              child: Image.network(
-                                '',
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
+                          // Container(
+                          //   margin: const EdgeInsets.only(left: 10),
+                          //   width: 85,
+                          //   height: 85,
+                          //   decoration: BoxDecoration(
+                          //     color: Colors.grey[300],
+                          //     borderRadius: BorderRadius.circular(15),
+                          //   ),
+                          //   child: ClipRRect(
+                          //     borderRadius: BorderRadius.circular(15),
+                          //     child: Image.network(
+                          //       state.order.data.detail[index].image,
+                          //       fit: BoxFit.cover,
+                          //     ),
+                          //   ),
+                          // ),
                         ],
                       ),
                     );
@@ -177,7 +180,7 @@ class _OrderScreenState extends State<OrderScreen> {
                         SizedBox(width: 12),
                         Expanded(
                           child: Text(
-                            'Select an address for delivery.',
+                            'ادرس خود را انتخاب کنید',
                             style: TextStyle(fontSize: 14),
                           ),
                         ),
@@ -224,24 +227,25 @@ class _OrderScreenState extends State<OrderScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('جمع سفارش:', style: TextStyle(fontSize: 14)),
+                          const Text('جمع سفارش:',
+                              style: TextStyle(fontSize: 14)),
                           Text(
                               '${state.order.data.totalOrder} تومان', // Replace with order total
-                              style: TextStyle(fontSize: 14)),
+                              style: const TextStyle(fontSize: 14)),
                         ],
                       ),
                       const SizedBox(height: 8),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('هزینه پست:',
+                          const Text('هزینه پست:',
                               style: TextStyle(
                                 fontSize: 14,
                                 color: Color.fromRGBO(48, 24, 172, 1),
                               )),
                           Text(
                               '${state.order.data.deliveryPrice} تومان', // Replace with discount amount
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 14,
                                   color: Color.fromRGBO(48, 24, 172, 1),
                                   fontWeight: FontWeight.bold)),
@@ -251,12 +255,12 @@ class _OrderScreenState extends State<OrderScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('مبلغ قابل پرداخت:',
+                          const Text('مبلغ قابل پرداخت:',
                               style: TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.bold)),
                           Text(
                               '${state.order.data.totalPrice} تومان', // Replace with total payable
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black)),
@@ -266,11 +270,26 @@ class _OrderScreenState extends State<OrderScreen> {
                       // Continue Button
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromRGBO(48, 24, 172, 1),
+                          backgroundColor: const Color.fromRGBO(48, 24, 172, 1),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12)),
                         ),
-                        onPressed: () {}, // Handle continue action
+                        onPressed: () {
+                          BlocProvider.of<OrderBloc>(context)
+                              .add(AddCustomerAddress(
+                            selectedAddress ?? '',
+                            MyApp.sharedPreferences.getDouble('Lat') ??
+                                MyApp.defaultLat,
+                            MyApp.sharedPreferences.getDouble('Long') ??
+                                MyApp.defaultLong,
+                            widget.id,
+                            state.order.data.id,
+                          ));
+                          Navigator.of(context)
+                              .push(MaterialPageRoute(builder: (context) {
+                            return PaymentScreen(state.order.data.id);
+                          }));
+                        }, // Handle continue action
                         child: const Padding(
                           padding: EdgeInsets.all(16.0),
                           child: Text(

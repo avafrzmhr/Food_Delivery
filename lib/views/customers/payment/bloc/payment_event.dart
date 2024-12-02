@@ -5,9 +5,11 @@ abstract class PaymentEvent extends Equatable {
   const PaymentEvent();
 }
 
-class LoadPaymentEvent extends PaymentEvent {
+class AddPaymentEvent extends PaymentEvent {
   final int orderId;
-  const LoadPaymentEvent(this.orderId);
+  final String cardNum;
+  final String cvv2;
+  const AddPaymentEvent(this.orderId, this.cardNum, this.cvv2);
   @override
-  List<Object?> get props => [orderId];
+  List<Object?> get props => [orderId, cardNum, cvv2];
 }
