@@ -12,112 +12,159 @@ class PaymentScreen extends StatefulWidget {
 }
 
 class _PaymentScreenState extends State<PaymentScreen> {
-  // Initial text field controllers
+  // Text controllers
   TextEditingController cardNumController = TextEditingController();
   TextEditingController cvv2Controller = TextEditingController();
-
-  // Controllers for additional fields
   TextEditingController passController = TextEditingController();
   TextEditingController verificationController = TextEditingController();
 
-  // Track if new fields are shown
+  // State for showing extra fields
   bool showExtraFields = false;
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
-      return BlocProvider(
-        create: (context) => PaymentBloc(),
-        child: Scaffold(
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // Original text fields
-              TextFieldRowWidget(
-                label: '',
-                suffixText: '',
-                controller: cardNumController,
-                constraints: constraints,
-                width: constraints.maxWidth * 0.65,
-                text: 'شماره کارت',
-              ),
-              TextFieldRowWidget(
-                label: '',
-                suffixText: '',
-                controller: cvv2Controller,
-                constraints: constraints,
-                width: 100,
-                text: 'cvv2',
-              ),
-              // Conditionally show extra text fields
-              if (showExtraFields) ...[
-                TextFieldRowWidget(
-                  label: '',
-                  suffixText: '',
-                  controller: passController,
-                  constraints: constraints,
-                  width: constraints.maxWidth * 0.65,
-                  text: 'اضافی 1',
-                ),
-                TextFieldRowWidget(
-                  label: '',
-                  suffixText: '',
-                  controller: verificationController,
-                  constraints: constraints,
-                  width: constraints.maxWidth * 0.65,
-                  text: 'اضافی 2',
-                ),
-              ],
-              BlocBuilder<PaymentBloc, PaymentState>(
-                builder: (context, state) {
-                  return Center(
-                    child: Container(
-                      width: constraints.maxWidth * 0.5,
-                      padding: const EdgeInsets.only(bottom: 15),
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color.fromRGBO(48, 24, 172, 1),
-                          padding: const EdgeInsets.symmetric(vertical: 20),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                        ),
-                        onPressed: () {
-                          BlocProvider.of<PaymentBloc>(context).add(
-                            AddPaymentEvent(
-                              widget.orderID,
-                              cardNumController.text,
-                              cvv2Controller.text,
-                            ),
-                          );
-                          state is PaymentSuccess
-                              ? setState(() {
-                                  if (!showExtraFields) {
-                                    showExtraFields = true;
-                                  }
-                                })
-                              : CircularProgressIndicator();
-
-                          // Example: dispatch event (optional)
-                        },
-                        child: const Text(
-                          'پرداخت',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 17,
-                          ),
-                        ),
-                      ),
+    return BlocProvider(
+      create: (context) => PaymentBloc(),
+      child: Scaffold(
+        body: LayoutBuilder(
+          builder: (context, constraints) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // Card number field
+                  TextFieldRowWidget(
+                    label: '',
+                    suffixText: '',
+                    controller: cardNumController,
+                    constraints: constraints,
+                    width: constraints.maxWidth * 0.65,
+                    text: 'شماره کارت',
+                  ),
+                  // CVV2 field
+                  TextFieldRowWidget(
+                    label: '',
+                    suffixText: '',
+                    controller: cvv2Controller,
+                    constraints: constraints,
+                    width: 100,
+                    text: 'cvv2',
+                  ),
+                  // Extra fields (conditionally displayed)
+                  if (showExtraFields) ...[
+                    TextFieldRowWidget(
+                      label: '',
+                      suffixText: '',
+                      controller: passController,
+                      constraints: constraints,
+                      width: constraints.maxWidth * 0.65,
+                      text: 'رمز پویا',
                     ),
-                  );
-                },
+                    TextFieldRowWidget(
+                      label: '',
+                      suffixText: '',
+                      controller: verificationController,
+                      constraints: constraints,
+                      width: constraints.maxWidth * 0.65,
+                      text: 'عبارت امنیتی',
+                    ),
+                  ],
+                  // Listener for payment state
+                  BlocListener<PaymentBloc, PaymentState>(
+                    listener: (context, state) {
+                      if (state is PaymentSuccess) {
+                        setState(() {
+                          showExtraFields = true;
+                          // Optionally auto-fill verification field
+                          // verificationController.text = state.response.data['verification'] ?? '';
+                        });
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor: Colors.green,
+                            content: const Text('پرداخت با موفقیت انجام شد'),
+                          ),
+                        );
+                      } else if (state is VerifyPaymentSuccess) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor: Colors.green,
+                            content: const Text('تأیید پرداخت موفق بود'),
+                          ),
+                        );
+                      } else if (state is PaymentError) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor: Colors.red,
+                            content: Text('خطا: ${state.message}'),
+                          ),
+                        );
+                      }
+                    },
+                    child: BlocBuilder<PaymentBloc, PaymentState>(
+                      builder: (context, state) {
+                        bool isLoading = state is PaymentLoading;
+
+                        return Container(
+                          width: constraints.maxWidth * 0.5,
+                          padding: const EdgeInsets.only(bottom: 15),
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  const Color.fromRGBO(48, 24, 172, 1),
+                              padding: const EdgeInsets.symmetric(vertical: 20),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                            ),
+                            onPressed: isLoading
+                                ? null // Disable button while loading
+                                : () {
+                                    if (!showExtraFields) {
+                                      // Dispatch AddPaymentEvent
+                                      BlocProvider.of<PaymentBloc>(context).add(
+                                        AddPaymentEvent(
+                                          widget.orderID,
+                                          cardNumController.text,
+                                          cvv2Controller.text,
+                                        ),
+                                      );
+                                    } else {
+                                      // Dispatch VerifyPayment event when extra fields are visible
+                                      BlocProvider.of<PaymentBloc>(context).add(
+                                        VerifyPayment(
+                                          widget.orderID,
+                                          cardNumController.text,
+                                          cvv2Controller.text,
+                                          passController.text,
+                                          verificationController.text,
+                                        ),
+                                      );
+                                    }
+                                  },
+                            child: isLoading
+                                ? CircularProgressIndicator(
+                                    color: Colors.white,
+                                  )
+                                : Text(
+                                    showExtraFields ? 'تأیید پرداخت' : 'پرداخت',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 17,
+                                    ),
+                                  ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            );
+          },
         ),
-      );
-    });
+      ),
+    );
   }
 }

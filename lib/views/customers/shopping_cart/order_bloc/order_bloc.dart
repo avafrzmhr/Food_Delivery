@@ -14,8 +14,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
       if (event is LoadOrderEvent) {
         try {
           final res = await cartRepository.orderPage(event.id);
-          print(res.data.detail[1]
-              .image); // Outputs: "http://localhost:8000/media/restaurants/chad-montano-MqT0asuoIcU-unsplash.jpg"
+          // Outputs: "http://localhost:8000/media/restaurants/chad-montano-MqT0asuoIcU-unsplash.jpg"
 
           emit(OrderSuccess(res));
         } catch (e) {
@@ -26,7 +25,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
         try {
           final res = await cartRepository.putOrderAddress(
               event.id, event.address, event.lat, event.long, event.orderID);
-          emit(OrderSuccess(res));
+          emit(AddAdressOrderSuccess(res));
         } catch (e) {
           emit(OrderError('errorrr'));
         }

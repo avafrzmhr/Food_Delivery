@@ -7,6 +7,8 @@ abstract class ICartRepository {
   Future<List<Cart>> getCartItems();
   Future<Response> addToCart(int id);
   Future<OrderModel> orderPage(int id);
+  Future<Response> verifyPayment(int orderID, String cardNum, String cvv2,
+      String dynamicPass, String verification);
   Future<OrderModel> putOrderAddress(
       int id, String address, double lat, double long, int orderID);
   Future<Response> payment(int orderID, String cardNum, String cvv2);
@@ -42,6 +44,14 @@ class CartRepository extends ICartRepository {
       int id, String address, double lat, double long, int orderID) async {
     var response =
         await CartDataSource().putOrderAddress(id, address, lat, long, orderID);
+    return response;
+  }
+
+  @override
+  Future<Response> verifyPayment(int orderID, String cardNum, String cvv2,
+      String dynamicPass, String verification) async {
+    var response = await CartDataSource()
+        .verifyPayment(orderID, cardNum, cvv2, dynamicPass, verification);
     return response;
   }
 }

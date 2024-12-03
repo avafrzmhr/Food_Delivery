@@ -21,6 +21,14 @@ class OrderSuccess extends OrderState {
   List<Object?> get props => [order];
 }
 
+class AddAdressOrderSuccess extends OrderState {
+  final OrderModel order;
+  AddAdressOrderSuccess(this.order);
+
+  @override
+  List<Object?> get props => [order];
+}
+
 class OrderError extends OrderState {
   final String message;
 

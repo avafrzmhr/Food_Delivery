@@ -14,10 +14,19 @@ class PaymentLoading extends PaymentState {
 }
 
 class PaymentSuccess extends PaymentState {
-  PaymentSuccess();
+  Response res;
+  PaymentSuccess(this.res);
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [res];
+}
+
+class VerifyPaymentSuccess extends PaymentState {
+  Response res;
+  VerifyPaymentSuccess(this.res);
+
+  @override
+  List<Object?> get props => [res];
 }
 
 class PaymentError extends PaymentState {
