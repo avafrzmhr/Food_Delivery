@@ -1,7 +1,8 @@
 import 'dart:developer';
-import 'dart:io';
-
+import 'dart:typed_data';
+import 'dart:html' as html;
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/main.dart';
@@ -21,7 +22,7 @@ class _AddRestaurantScreenState extends State<AddRestaurantScreen> {
     'iranian',
     'fastfood',
     'kebab',
-    'piza',
+    'pizza',
     'burger',
     'sandwich',
     'fried',
@@ -32,8 +33,10 @@ class _AddRestaurantScreenState extends State<AddRestaurantScreen> {
     'Gilani'
   ];
 
-  File? imagevalue;
-  File? file1;
+  Uint8List? imageBytes; // For web-specific image handling
+// Stores binary image data for both platforms
+
+  String? imageFileName;
   TextEditingController deliveryTimeController = TextEditingController();
   TextEditingController deliveryPriceController = TextEditingController();
   TextEditingController minPriceController = TextEditingController();
@@ -42,21 +45,41 @@ class _AddRestaurantScreenState extends State<AddRestaurantScreen> {
   TextEditingController openTimeController = TextEditingController();
   TextEditingController closeTimeController = TextEditingController();
   TextEditingController addressController = TextEditingController();
-  String? fileName;
   TimeOfDay timeOfDay = TimeOfDay.now();
 
   Future<void> uploadImage() async {
-    log('Opening file picker...');
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.image,
-    );
+    if (kIsWeb) {
+      final html.FileUploadInputElement uploadInput =
+          html.FileUploadInputElement()
+            ..accept = 'image/*'
+            ..multiple = false;
 
-    if (result != null) {
-      setState(() {
-        imagevalue = File(result.files.single.path!);
+      uploadInput.click();
+
+      uploadInput.onChange.listen((e) async {
+        final files = uploadInput.files;
+        if (files!.isEmpty) return;
+
+        final reader = html.FileReader();
+        reader.readAsArrayBuffer(files[0]!);
+        reader.onLoadEnd.listen((e) {
+          setState(() {
+            imageBytes = reader.result as Uint8List; // Handle as Uint8List
+          });
+        });
       });
     } else {
-      log('No image selected.');
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.image,
+      );
+
+      if (result != null) {
+        setState(() {
+          imageBytes = result.files.single.bytes; // Use Uint8List directly
+        });
+      } else {
+        log('No image selected.');
+      }
     }
   }
 
@@ -76,18 +99,34 @@ class _AddRestaurantScreenState extends State<AddRestaurantScreen> {
               padding: const EdgeInsets.all(10),
               physics: const BouncingScrollPhysics(),
               children: [
-                Container(
-                    child: imagevalue == null
-                        ? const Text('No Image')
-                        : Image.file(imagevalue!)),
+                // Display the image
+                imageBytes == null
+                    ? const Center(
+                        child: Text(
+                          'No Image Selected',
+                          style: TextStyle(fontSize: 16, color: Colors.grey),
+                        ),
+                      )
+                    : Center(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Image.memory(
+                            imageBytes!,
+                            width: constraints.maxWidth * 0.8,
+                            height: constraints.maxWidth * 0.8,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
                 Align(
                   alignment: Alignment.center,
                   child: SizedBox(
                     width: 150,
                     height: 40,
                     child: ElevatedButton(
-                        onPressed: () => uploadImage(),
-                        child: const Text("انتخاب عکس")),
+                      onPressed: () => uploadImage(),
+                      child: const Text("انتخاب عکس"),
+                    ),
                   ),
                 ),
                 const SizedBox(
@@ -272,32 +311,25 @@ class _AddRestaurantScreenState extends State<AddRestaurantScreen> {
                         )),
                   ),
                 ),
+                const SizedBox(height: 10),
                 BlocListener<AddRestaurantBloc, AddRestaurantState>(
                   listener: (context, state) {
-                    setState(() {
+                    if (state is AddRestaurantSuccess) {
                       Navigator.pop(context);
-                    });
+                    }
+                    if (state is AddRestaurantError) {
+                      log(state.message);
+                    }
                   },
                   child: BlocBuilder<AddRestaurantBloc, AddRestaurantState>(
                     builder: (context, state) {
                       return Align(
                         alignment: Alignment.bottomCenter,
-                        child: Container(
-                          padding: const EdgeInsets.only(top: 20),
-                          width: constraints.maxWidth * 0.5,
-                          height: 75,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              backgroundColor:
-                                  const Color.fromRGBO(48, 24, 172, 1),
-                            ),
-                            onPressed: () {
-                              BlocProvider.of<AddRestaurantBloc>(context)
-                                  .add(AddRestaurantRequestEvent(
-                                imagevalue!,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            BlocProvider.of<AddRestaurantBloc>(context).add(
+                              AddRestaurantRequestEvent(
+                                imageBytes!,
                                 dropdownValue,
                                 deliveryTimeController.text,
                                 double.parse(minPriceController.text),
@@ -309,20 +341,12 @@ class _AddRestaurantScreenState extends State<AddRestaurantScreen> {
                                 addressController.text,
                                 MyApp.sharedPreferences.getDouble('Lat')!,
                                 MyApp.sharedPreferences.getDouble('Long')!,
-                              ));
-
-                              if (state is AddRestaurantError) {
-                                log(state.message);
-                              }
-                            },
-                            child: const Text(
-                              'تایید',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 17,
-                                fontWeight: FontWeight.bold,
                               ),
-                            ),
+                            );
+                          },
+                          child: const Text(
+                            'تایید',
+                            style: TextStyle(fontSize: 17),
                           ),
                         ),
                       );

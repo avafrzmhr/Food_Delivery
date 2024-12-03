@@ -6,7 +6,7 @@ abstract class AddFoodEvent extends Equatable {
 }
 
 class AddFoodRequestEvent extends AddFoodEvent {
-  final File image;
+  final Uint8List image; // Use Uint8List for cross-platform compatibility
   final int category;
   final double price;
   final String name;

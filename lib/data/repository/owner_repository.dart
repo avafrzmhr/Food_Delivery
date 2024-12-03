@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 import 'package:food_delivery/data/model/restaurant/category_model.dart';
@@ -8,7 +9,7 @@ import 'package:food_delivery/data/source/owner_data_source.dart';
 
 abstract class IOwnerRepository {
   Future<Response> addRestaurant(
-    File image,
+    Uint8List image,
     String category,
     String deliveryTime,
     double minCartPrice,
@@ -24,7 +25,7 @@ abstract class IOwnerRepository {
   Future<List<Menu>> fetchRestaurantFoods();
   Future<Restaurant> fetchRestaurant();
   Future<Response> addFood(
-    File image,
+    Uint8List image,
     String name,
     String desc,
     int category,
@@ -36,7 +37,7 @@ abstract class IOwnerRepository {
 class OwnerRepository extends IOwnerRepository {
   @override
   Future<Response> addRestaurant(
-    File image,
+    Uint8List image,
     String category,
     String deliveryTime,
     double minCartPrice,
@@ -79,8 +80,8 @@ class OwnerRepository extends IOwnerRepository {
   }
 
   @override
-  Future<Response> addFood(
-      File image, String name, String desc, int category, double price) async {
+  Future<Response> addFood(Uint8List image, String name, String desc,
+      int category, double price) async {
     var response =
         await OwnerDataSource().addFood(image, name, desc, category, price);
     return response;

@@ -6,7 +6,7 @@ abstract class AddRestaurantEvent extends Equatable {
 }
 
 class AddRestaurantRequestEvent extends AddRestaurantEvent {
-  final File image;
+  final Uint8List image; // Use Uint8List for cross-platform compatibility
   final String category;
   final String deliveryTime;
   final double minCartPrice;
@@ -33,6 +33,7 @@ class AddRestaurantRequestEvent extends AddRestaurantEvent {
     this.lat,
     this.long,
   );
+
   @override
   List<Object?> get props => [
         image,

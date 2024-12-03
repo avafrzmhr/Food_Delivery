@@ -1,7 +1,10 @@
 import 'dart:developer';
+import 'dart:html' as html;
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/data/model/restaurant/category_model.dart';
@@ -19,7 +22,7 @@ class AddFoodForm extends StatefulWidget {
 class _AddFoodFormState extends State<AddFoodForm> {
   List<String> list = ['Drinks', 'FastFoods'];
 
-  File? imagevalue;
+  Uint8List? imageBytes;
   File? file1;
   TextEditingController priceController = TextEditingController();
   TextEditingController descController = TextEditingController();
@@ -27,17 +30,38 @@ class _AddFoodFormState extends State<AddFoodForm> {
   String? fileName;
 
   Future<void> uploadImage() async {
-    print('Opening file picker...');
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.image,
-    );
+    if (kIsWeb) {
+      final html.FileUploadInputElement uploadInput =
+          html.FileUploadInputElement()
+            ..accept = 'image/*'
+            ..multiple = false;
 
-    if (result != null) {
-      setState(() {
-        imagevalue = File(result.files.single.path!);
+      uploadInput.click();
+
+      uploadInput.onChange.listen((e) async {
+        final files = uploadInput.files;
+        if (files!.isEmpty) return;
+
+        final reader = html.FileReader();
+        reader.readAsArrayBuffer(files[0]!);
+        reader.onLoadEnd.listen((e) {
+          setState(() {
+            imageBytes = reader.result as Uint8List; // Handle as Uint8List
+          });
+        });
       });
     } else {
-      print('No image selected.');
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.image,
+      );
+
+      if (result != null) {
+        setState(() {
+          imageBytes = result.files.single.bytes; // Use Uint8List directly
+        });
+      } else {
+        log('No image selected.');
+      }
     }
   }
 
@@ -65,18 +89,34 @@ class _AddFoodFormState extends State<AddFoodForm> {
                   padding: const EdgeInsets.all(10),
                   physics: const BouncingScrollPhysics(),
                   children: [
-                    Container(
-                        child: imagevalue == null
-                            ? const Text('No Image')
-                            : Image.file(imagevalue!)),
+                    imageBytes == null
+                        ? const Center(
+                            child: Text(
+                              'No Image Selected',
+                              style:
+                                  TextStyle(fontSize: 16, color: Colors.grey),
+                            ),
+                          )
+                        : Center(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Image.memory(
+                                imageBytes!,
+                                width: constraints.maxWidth * 0.8,
+                                height: constraints.maxWidth * 0.8,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
                     Align(
                       alignment: Alignment.center,
                       child: SizedBox(
                         width: 150,
                         height: 40,
                         child: ElevatedButton(
-                            onPressed: () => uploadImage(),
-                            child: const Text("انتخاب عکس")),
+                          onPressed: () => uploadImage(),
+                          child: const Text("انتخاب عکس"),
+                        ),
                       ),
                     ),
                     const SizedBox(
@@ -199,7 +239,7 @@ class _AddFoodFormState extends State<AddFoodForm> {
                                 onPressed: () {
                                   BlocProvider.of<AddFoodBloc>(context).add(
                                       AddFoodRequestEvent(
-                                          imagevalue!,
+                                          imageBytes!,
                                           selectedCategory!.id,
                                           nameController.text,
                                           descController.text,

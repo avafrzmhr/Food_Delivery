@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 import 'package:food_delivery/data/model/restaurant/category_model.dart';
@@ -11,7 +12,7 @@ class OwnerDataSource {
   Dio dio = Dio();
 
   Future<Response> addRestaurant(
-    File image,
+    Uint8List image,
     String category,
     String deliveryTime,
     double minCartPrice,
@@ -25,9 +26,9 @@ class OwnerDataSource {
     double long,
   ) async {
     try {
-      String fileName = image.path.split('/').last;
+      String fileName = "restaurant_image.jpg"; // Default name for the image
       FormData formData = FormData.fromMap({
-        "image": await MultipartFile.fromFile(image.path, filename: fileName),
+        "image": MultipartFile.fromBytes(image, filename: fileName),
         "category": category,
         "delivery_time": deliveryTime,
         "min_cart_price": minCartPrice,
@@ -52,7 +53,7 @@ class OwnerDataSource {
         data: formData,
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         return response;
       } else {
         print("Failed with status code: ${response.statusCode}");
@@ -106,12 +107,17 @@ class OwnerDataSource {
   }
 
   Future<Response> addFood(
-      File image, String name, String desc, int category, double price) async {
+    Uint8List image,
+    String name,
+    String desc,
+    int category,
+    double price,
+  ) async {
     try {
-      String fileName = image.path.split('/').last;
+      String fileName = 'food_image.jpg';
 
       FormData formData = FormData.fromMap({
-        "image": await MultipartFile.fromFile(image.path, filename: fileName),
+        "image": MultipartFile.fromBytes(image, filename: fileName),
         "food_category": category,
         "name": name,
         "desc": desc,
@@ -129,7 +135,7 @@ class OwnerDataSource {
         data: formData,
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         return response;
       } else {
         print("Failed with status code: ${response.statusCode}");
