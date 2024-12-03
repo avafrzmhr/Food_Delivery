@@ -94,8 +94,6 @@ class _InitializationScreenState extends State<InitializationScreen> {
     final token = MyApp.sharedPreferences.getString('access');
     log(MyApp.sharedPreferences.getString('access').toString());
 
-    // final ownerProvider = Provider.of<OwnerProvider>(context, listen: false);
-    // ownerProvider.setOwner(isOwner);
     if (token != null) {
       if (MyApp.sharedPreferences.getBool('isOwner') == true) {
         Navigator.of(context).pushReplacement(
