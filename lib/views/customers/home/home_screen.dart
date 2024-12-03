@@ -7,7 +7,7 @@ import 'package:food_delivery/views/customers/home/widgets/category_container_wi
 import 'package:food_delivery/views/customers/home/widgets/search_bar_widget.dart';
 import 'package:food_delivery/views/customers/home/widgets/top_bar_widget.dart';
 import 'package:food_delivery/views/customers/home/widgets/restaurants_listview_widget.dart';
-import 'package:food_delivery/views/customers/restaurant_page/restaurant_page.dart';
+import 'package:food_delivery/views/customers/restaurant/restaurant_page.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

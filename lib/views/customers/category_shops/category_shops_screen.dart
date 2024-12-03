@@ -6,7 +6,7 @@ import 'package:food_delivery/views/customers/home/widgets/bottom_navigation_bar
 import 'package:food_delivery/views/customers/home/widgets/search_bar_widget.dart';
 import 'package:food_delivery/views/customers/home/widgets/top_bar_widget.dart';
 import 'package:food_delivery/views/customers/home/widgets/restaurants_listview_widget.dart';
-import 'package:food_delivery/views/customers/restaurant_page/restaurant_page.dart';
+import 'package:food_delivery/views/customers/restaurant/restaurant_page.dart';
 import 'package:provider/provider.dart';
 
 class CategoryShopsScreen extends StatefulWidget {

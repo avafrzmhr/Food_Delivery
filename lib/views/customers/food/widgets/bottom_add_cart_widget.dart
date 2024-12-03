@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/views/customers/shopping_cart/add_to_cart_bloc/add_to_cart_bloc.dart';
-import 'package:food_delivery/views/customers/food_page/widgets/add_or_remove_widget.dart';
+import 'package:food_delivery/views/customers/food/widgets/add_or_remove_widget.dart';
 
 class BottomAddCardWidget extends StatefulWidget {
   final double price;

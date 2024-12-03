@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:food_delivery/data/model/restaurant/menu_response.dart';
-import 'package:food_delivery/views/customers/food_page/food_screen.dart';
+import 'package:food_delivery/views/customers/food/food_screen.dart';
 
 class FoodCardWidget extends StatefulWidget {
   final List<Menu> menu;

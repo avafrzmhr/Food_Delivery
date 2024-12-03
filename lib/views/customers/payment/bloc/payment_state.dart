@@ -14,7 +14,7 @@ class PaymentLoading extends PaymentState {
 }
 
 class PaymentSuccess extends PaymentState {
-  Response res;
+  final Response res;
   PaymentSuccess(this.res);
 
   @override
@@ -22,7 +22,7 @@ class PaymentSuccess extends PaymentState {
 }
 
 class VerifyPaymentSuccess extends PaymentState {
-  Response res;
+  final Response res;
   VerifyPaymentSuccess(this.res);
 
   @override

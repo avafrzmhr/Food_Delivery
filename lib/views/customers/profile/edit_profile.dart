@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:food_delivery/main.dart';
 import 'package:food_delivery/views/customers/profile/bloc/profile_bloc.dart';
-import 'package:food_delivery/views/location/location_screen.dart';
 import 'package:food_delivery/views/owners/restaurant/widgets/textfield_row_widget.dart';
 
 class EditProfileScreen extends StatefulWidget {

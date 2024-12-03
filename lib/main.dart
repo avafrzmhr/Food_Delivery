@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/data/repository/location_repository.dart';
 import 'package:food_delivery/data/source/location_source.dart';
-import 'package:food_delivery/owner_provider.dart';
 import 'package:food_delivery/providers.dart';
 import 'package:food_delivery/views/customers/auth/get_mobile/auth_screen.dart';
 import 'package:food_delivery/views/customers/home/bottom_navigation_provider.dart';
@@ -34,7 +33,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => OwnerProvider()),
         ChangeNotifierProvider(create: (_) => LocationProvider()),
         BlocProvider(
           create: (context) =>

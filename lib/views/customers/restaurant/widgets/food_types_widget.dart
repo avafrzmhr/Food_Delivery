@@ -1,8 +1,7 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:food_delivery/views/customers/restaurant_page/filter_res_bloc/filter_res_foods_bloc.dart';
-import 'package:food_delivery/views/customers/restaurant_page/res_bloc/restaurant_detail_bloc.dart';
+import 'package:food_delivery/views/customers/restaurant/filter_res_bloc/filter_res_foods_bloc.dart';
+import 'package:food_delivery/views/customers/restaurant/res_bloc/restaurant_detail_bloc.dart';
 
 class FoodTypesWidget extends StatefulWidget {
   final BoxConstraints constraints;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/views/customers/home/res_bloc/restaurant_bloc.dart';
-import 'package:food_delivery/views/customers/restaurant_page/restaurant_page.dart';
+import 'package:food_delivery/views/customers/restaurant/restaurant_page.dart';
 
 class RestaurantsListViewWidget extends StatefulWidget {
   final BoxConstraints constraints;
